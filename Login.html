@@ -9,83 +9,155 @@
 </head>
 <body class="login-body">
 
-    <main class="login-container">
-        <header class="login-header">
-            <div class="logo-icon">
+    <div class="login-layout">
+
+        <!-- ============ LEFT PANEL: Illustration / Branding ============ -->
+        <div class="left-panel">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <div class="blob blob-3"></div>
+
+            <div class="brand-mark">
                 <i class="fa-regular fa-circle-check"></i>
-            </div>
-            <h1>Habit <span>Tracker</span></h1>
-            <p class="tagline">Build habits. Track progress. Become better.</p>
-        </header>
-
-        <section class="welcome-section">
-            <h2 id="greeting">Welcome Back! 👋</h2>
-            <p>Please login to your account</p>
-        </section>
-
-        <form class="login-form">
-            <div class="input-group">
-                <div class="label-row">
-                    <label for="email">Email Address</label>
-                    <small id="email-error"></small>
-                </div>
-                <div class="input-wrapper">
-                    <i class="fa-regular fa-envelope input-icon"></i>
-                    <input type="email" id="email" placeholder="Enter your email" required>
-                </div>
+                Habit Tracker
             </div>
 
-            <div class="input-group">
-                <div class="label-row">
-                    <label for="password">Password</label>
-                    <small id="caps-warning"></small>
+            <div class="left-content">
+                <h2>Track Every Habit. Build a Better You.</h2>
+                <p class="quote">"Small daily improvements are the key to staggering long-term results." Show up today, and your streak will thank you tomorrow.</p>
+
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span class="icon-badge"><i class="fa-solid fa-fire"></i></span>
+                        Keep your streaks alive with daily check-ins
+                    </div>
+                    <div class="feature-item">
+                        <span class="icon-badge"><i class="fa-solid fa-chart-line"></i></span>
+                        Visualize your progress with clear insights
+                    </div>
+                    <div class="feature-item">
+                        <span class="icon-badge"><i class="fa-solid fa-bullseye"></i></span>
+                        Set goals and get gentle reminders
+                    </div>
                 </div>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-lock input-icon"></i>
-                    <input type="password" id="password" placeholder="Enter your password" required>
-                    <i class="fa-regular fa-eye toggle-password"></i>
+
+                <div class="dashboard-preview">
+                    <h4>Today's Habits <span>3/4 done</span></h4>
+                    <div class="habit-row"><i class="fa-solid fa-circle-check"></i> Exercise</div>
+                    <div class="habit-row"><i class="fa-solid fa-circle-check"></i> Read a Book</div>
+                    <div class="habit-row"><i class="fa-solid fa-circle-check"></i> Drink Water</div>
+                    <div class="habit-row pending"><i class="fa-regular fa-circle"></i> Meditate</div>
                 </div>
-                
-                <div class="password-strength">
-                    <div class="strength-bar"></div>
-                </div>
-                <p id="strength-text"></p>
             </div>
-
-            <div class="form-actions">
-                <label class="remember-me">
-                    <input type="checkbox" id="remember">
-                    <span>Remember me</span>
-                </label>
-                <a href="#" class="forgot-password">Forgot Password?</a>
-            </div>
-
-            <button type="submit" class="btn-login">Login</button>
-        </form>
-
-        <div class="divider">
-            <span>or</span>
         </div>
 
-        <div class="social-login">
-    <button class="btn-google">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_Logo.svg" alt="Google Logo">
-        Continue with Google
-            </button>
-         </div>
+        <!-- ============ RIGHT PANEL: Login Form ============ -->
+        <div class="right-panel">
+            <main class="login-container">
+                <header class="login-header">
+                    <div class="logo-icon">
+                        <i class="fa-regular fa-circle-check"></i>
+                    </div>
+                    <h1>Habit <span>Tracker</span></h1>
+                    <p class="tagline">Build habits. Track progress. Become better.</p>
+                </header>
 
-        <div class="theme-toggle-container">
-            <span>Light Mode</span>
-            <label class="switch">
-                <input type="checkbox" id="themeBtn">
-                <span class="slider round"></span>
-            </label>
+                <section class="welcome-section">
+                    <h2 id="greeting">Welcome Back! 👋</h2>
+                    <p id="greeting-sub">Please login to your account</p>
+                </section>
+
+                <div class="stats">
+                    <div>🔥 12 Day Streak</div>
+                    <div>🎯 5 Active Goals</div>
+                </div>
+
+                <form class="login-form">
+                    <div class="input-group">
+                        <div class="label-row">
+                            <label for="email">Email Address</label>
+                            <small id="email-error"></small>
+                        </div>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-envelope input-icon"></i>
+                            <input type="email" id="email" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="label-row">
+                            <label for="password">Password</label>
+                            <small id="caps-warning"></small>
+                        </div>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input type="password" id="password" placeholder="Enter your password" required>
+                            <i class="fa-regular fa-eye toggle-password"></i>
+                        </div>
+
+                        <div class="password-strength">
+                            <div class="strength-bar"></div>
+                        </div>
+                        <p id="strength-text"></p>
+
+                        <ul class="password-rules" id="password-rules">
+                            <li id="rule-length"><i class="fa-solid fa-circle"></i> 8+ characters</li>
+                            <li id="rule-upper"><i class="fa-solid fa-circle"></i> Uppercase letter</li>
+                            <li id="rule-number"><i class="fa-solid fa-circle"></i> Number</li>
+                            <li id="rule-special"><i class="fa-solid fa-circle"></i> Special character</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-actions">
+                        <label class="remember-me">
+                            <input type="checkbox" id="remember">
+                            <span>Keep me signed in</span>
+                        </label>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-login">Login</button>
+                    <button type="button" class="btn-guest">Continue as Guest</button>
+                </form>
+
+                <div class="divider">
+                    <span>or</span>
+                </div>
+
+                <div class="social-login">
+                    <button class="btn-social btn-google">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_Logo.svg" alt="Google Logo">
+                        Continue with Google
+                    </button>
+                    <button class="btn-social btn-github">
+                        <i class="fa-brands fa-github"></i>
+                        Continue with GitHub
+                    </button>
+                    <button class="btn-social btn-microsoft">
+                        <i class="fa-brands fa-microsoft"></i>
+                        Continue with Microsoft
+                    </button>
+                </div>
+
+                <div class="theme-toggle-container">
+                    <span>Light Mode</span>
+                    <label class="switch">
+                        <input type="checkbox" id="themeBtn">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+                <div class="security-note">
+                    <i class="fa-solid fa-lock"></i> Secure login protected by encryption
+                </div>
+
+                <footer class="login-footer">
+                    <p>Don't have an account? <a href="#">Sign up</a></p>
+                </footer>
+            </main>
         </div>
 
-        <footer class="login-footer">
-            <p>Don't have an account? <a href="#">Sign up</a></p>
-        </footer>
-    </main>
+    </div>
 
     <script src="login.js" defer></script>
 </body>
