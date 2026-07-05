@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Tracker - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="login-body">
+
+    <main class="login-container">
+        <header class="login-header">
+            <div class="logo-icon">
+                <i class="fa-regular fa-circle-check"></i>
+            </div>
+            <h1>Habit <span>Tracker</span></h1>
+            <p class="tagline">Build habits. Track progress. Become better.</p>
+        </header>
+
+        <section class="welcome-section">
+            <h2>Welcome Back! 👋</h2>
+            <p>Please login to your account</p>
+        </section>
+
+        <form class="login-form">
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrapper">
+                    <i class="fa-regular fa-envelope input-icon"></i>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <i class="fa-regular fa-eye toggle-password"></i>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <label class="remember-me">
+                    <input type="checkbox" id="remember">
+                    <span>Remember me</span>
+                </label>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn-login">Login</button>
+        </form>
+
+        <div class="divider">
+            <span>or</span>
+        </div>
+
+        <div class="social-login">
+            <button class="btn-google">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_\"G\"_Logo.svg" alt="Google Logo">
+                Continue with Google
+            </button>
+        </div>
+
+        <footer class="login-footer">
+            <p>Don't have an account? <a href="#">Sign up</a></p>
+        </footer>
+    </main>
+
+</body>
+</html>
