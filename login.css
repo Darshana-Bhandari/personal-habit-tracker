@@ -4,64 +4,95 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+:root {
+    --bg-body: #0b0f19;
+    --bg-card: #111622;
+    --bg-input: #1a202c;
+    --border-color: #2d3748;
+    --text-primary: #ffffff;
+    --text-secondary: #718096;
+    --text-muted: #a0aec0;
+    --primary-green: #2eb65e;
+}
+
+/* Feature 6: Light Theme Variables */
+body.light {
+    --bg-body: #f7fafc;
+    --bg-card: #ffffff;
+    --bg-input: #edf2f7;
+    --border-color: #e2e8f0;
+    --text-primary: #1a202c;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
 }
 
 body.login-body {
-    background-color: #0b0f19; /* Deep dark background */
-    color: #ffffff;
+    background-color: var(--bg-body);
+    color: var(--text-primary);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
-    /* Optional subtle green glow background element like the UI */
-    background-image: radial-gradient(circle at 100% 0%, rgba(46, 182, 94, 0.15) 0%, transparent 40%);
+    background-image: radial-gradient(circle at 100% 0%, rgba(46, 182, 94, 0.1), transparent 40%);
 }
 
-/* Container Card */
+/* Container Card & Feature 5: Shake Animation */
 .login-container {
-    background-color: #111622;
-    border: 1px solid #1a2233;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
     width: 100%;
     max-width: 400px;
-    padding: 40px 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    padding: 35px 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.shake {
+    animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    50% { transform: translateX(8px); }
+    75% { transform: translateX(-8px); }
 }
 
 /* Header & Logo */
 .login-header {
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 .logo-icon {
-    font-size: 48px;
-    color: #2eb65e; /* Vibrant UI Green */
-    margin-bottom: 12px;
+    font-size: 44px;
+    color: var(--primary-green);
+    margin-bottom: 8px;
 }
 
 .login-header h1 {
     font-size: 24px;
     font-weight: 600;
-    letter-spacing: 0.5px;
 }
 
 .login-header h1 span {
     font-weight: 400;
-    color: #a0aec0;
+    color: var(--text-muted);
 }
 
 .tagline {
-    color: #718096;
+    color: var(--text-secondary);
     font-size: 13px;
-    margin-top: 6px;
+    margin-top: 4px;
 }
 
-/* Welcome Section */
 .welcome-section {
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
 }
 
 .welcome-section h2 {
@@ -71,26 +102,41 @@ body.login-body {
 }
 
 .welcome-section p {
-    color: #718096;
+    color: var(--text-secondary);
     font-size: 14px;
 }
 
-/* Form Controls */
+/* Inputs & Labels */
 .login-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
 }
 
 .input-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .input-group label {
     font-size: 13px;
-    color: #a0aec0;
+    color: var(--text-muted);
+}
+
+/* Feature 4 & 7: Dynamic Message Styles */
+#email-error, #caps-warning {
+    font-size: 12px;
+    font-weight: 500;
+}
+#caps-warning {
+    color: #ed8936; /* Warning Orange */
 }
 
 .input-wrapper {
@@ -102,40 +148,57 @@ body.login-body {
 .input-icon {
     position: absolute;
     left: 14px;
-    color: #4a5568;
-    font-size: 16px;
+    color: var(--text-secondary);
+    font-size: 15px;
 }
 
 .input-wrapper input {
     width: 100%;
-    padding: 14px 14px 14px 42px;
-    background-color: #1a202c;
-    border: 1px solid #2d3748;
+    padding: 12px 14px 12px 42px;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    color: #ffffff;
+    color: var(--text-primary);
     font-size: 14px;
     outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input-wrapper input:focus {
-    border-color: #2eb65e;
-    box-shadow: 0 0 0 2px rgba(46, 182, 94, 0.2);
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 2px rgba(46, 182, 94, 0.15);
 }
 
 .toggle-password {
     position: absolute;
     right: 14px;
-    color: #4a5568;
+    color: var(--text-secondary);
     cursor: pointer;
-    font-size: 16px;
 }
 
-.toggle-password:hover {
-    color: #a0aec0;
+/* Feature 1: Password Strength Meter CSS */
+.password-strength {
+    height: 5px;
+    background: var(--border-color);
+    border-radius: 20px;
+    margin-top: 8px;
+    overflow: hidden;
+    display: none; /* Hidden until keys are pressed */
 }
 
-/* Form Actions (Remember & Forgot) */
+.strength-bar {
+    height: 100%;
+    width: 0%;
+    background: red;
+    transition: 0.3s ease;
+}
+
+#strength-text {
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+/* Remember & Actions */
 .form-actions {
     display: flex;
     justify-content: space-between;
@@ -148,47 +211,40 @@ body.login-body {
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    color: #a0aec0;
+    color: var(--text-muted);
 }
 
 .remember-me input {
-    accent-color: #2eb65e;
-    cursor: pointer;
+    accent-color: var(--primary-green);
 }
 
 .forgot-password {
-    color: #2eb65e;
+    color: var(--primary-green);
     text-decoration: none;
-    font-weight: 500;
 }
 
-.forgot-password:hover {
-    text-decoration: underline;
-}
-
-/* Buttons */
+/* Feature 2: Buttons & Disabled State */
 .btn-login {
-    background-color: #2eb65e;
+    background-color: var(--primary-green);
     color: #ffffff;
     border: none;
     border-radius: 8px;
-    padding: 14px;
+    padding: 12px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
-    margin-top: 5px;
 }
 
-.btn-login:hover {
-    background-color: #25934a;
+.btn-login:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 /* Divider */
 .divider {
     text-align: center;
     position: relative;
-    margin: 20px 0;
+    margin: 16px 0;
 }
 
 .divider::before {
@@ -198,14 +254,14 @@ body.login-body {
     left: 0;
     right: 0;
     height: 1px;
-    background-color: #2d3748;
+    background-color: var(--border-color);
     z-index: 1;
 }
 
 .divider span {
-    background-color: #111622;
+    background-color: var(--bg-card);
     padding: 0 10px;
-    color: #718096;
+    color: var(--text-secondary);
     font-size: 13px;
     position: relative;
     z-index: 2;
@@ -214,44 +270,85 @@ body.login-body {
 /* Social Login */
 .social-login .btn-google {
     width: 100%;
-    background-color: #1a202c;
-    border: 1px solid #2d3748;
-    color: #ffffff;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
     border-radius: 8px;
-    padding: 12px;
+    padding: 10px;
     font-size: 14px;
-    font-weight: 500;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
     cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.social-login .btn-google:hover {
-    background-color: #2d3748;
 }
 
 .social-login .btn-google img {
-    width: 18px;
-    height: 18px;
+    width: 16px;
 }
 
-/* Footer / Sign up */
+/* Feature 6: Beautiful Switch UI for Dark/Light Mode */
+.theme-toggle-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--border-color);
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #4a5568;
+    transition: .3s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--primary-green);
+}
+
+input:checked + .slider:before {
+    transform: translateX(18px);
+}
+
 .login-footer {
     text-align: center;
-    margin-top: 28px;
+    margin-top: 20px;
     font-size: 13px;
-    color: #a0aec0;
+    color: var(--text-muted);
 }
 
 .login-footer a {
-    color: #2eb65e;
+    color: var(--primary-green);
     text-decoration: none;
-    font-weight: 500;
-}
-
-.login-footer a:hover {
-    text-decoration: underline;
 }
