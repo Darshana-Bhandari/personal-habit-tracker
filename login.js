@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Cache Elements
     const loginForm = document.querySelector('.login-form');
@@ -9,26 +10,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const strengthBar = document.querySelector('.strength-bar');
     const strengthMeterContainer = document.querySelector('.password-strength');
     const strengthText = document.getElementById('strength-text');
+    const passwordRules = document.getElementById('password-rules');
     const rememberCheckbox = document.getElementById('remember');
     const themeBtn = document.getElementById('themeBtn');
     const greetingEl = document.getElementById('greeting');
+    const greetingSubEl = document.getElementById('greeting-sub');
     const loginCard = document.querySelector('.login-container');
     const loginBtn = document.querySelector('.btn-login');
+    const guestBtn = document.querySelector('.btn-guest');
 
     // ----------------------------------------------------
-    // Feature 8: Welcome Message Based on Time
+    // Feature: Welcome Message Based on Time (+ saved name)
     // ----------------------------------------------------
     const hour = new Date().getHours();
+    let timeGreeting = "Good Evening";
+    let emoji = "🌙";
     if (hour < 12) {
-        greetingEl.textContent = "Good Morning ☀️";
+        timeGreeting = "Good Morning";
+        emoji = "☀️";
     } else if (hour < 18) {
-        greetingEl.textContent = "Good Afternoon 🌤️";
+        timeGreeting = "Good Afternoon";
+        emoji = "🌤️";
+    }
+
+    const savedName = localStorage.getItem("userName");
+    if (savedName) {
+        greetingEl.textContent = `${timeGreeting}, ${savedName} ${emoji}`;
+        greetingSubEl.textContent = "Ready to continue your streak?";
     } else {
-        greetingEl.textContent = "Good Evening 🌙";
+        greetingEl.textContent = `${timeGreeting} ${emoji}`;
     }
 
     // ----------------------------------------------------
-    // Feature 3: Load Saved Email (Remember Me)
+    // Feature: Load Saved Email (Remember Me / Keep signed in)
     // ----------------------------------------------------
     const savedEmail = localStorage.getItem("savedEmail");
     if (savedEmail) {
@@ -37,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----------------------------------------------------
-    // Feature 6: Light / Dark Theme Toggle
+    // Feature: Light / Dark Theme Toggle
     // ----------------------------------------------------
     if (localStorage.getItem("theme") === "light") {
         document.body.classList.add("light");
@@ -65,11 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ----------------------------------------------------
-    // Feature 4: Real-Time Email Validation
+    // Feature: Real-Time Email Validation
     // ----------------------------------------------------
     emailInput.addEventListener("input", () => {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        
+
         if (emailInput.value.trim() === "") {
             emailError.textContent = "";
         } else if (emailPattern.test(emailInput.value)) {
@@ -82,25 +96,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ----------------------------------------------------
-    // Feature 1 & 7: Strength Meter & Caps Lock Detection
+    // Feature: Strength Meter, Password Rules & Caps Lock Detection
     // ----------------------------------------------------
+    const ruleChecks = {
+        length: { el: document.getElementById('rule-length'), test: (v) => v.length >= 8 },
+        upper: { el: document.getElementById('rule-upper'), test: (v) => /[A-Z]/.test(v) },
+        number: { el: document.getElementById('rule-number'), test: (v) => /[0-9]/.test(v) },
+        special: { el: document.getElementById('rule-special'), test: (v) => /[^A-Za-z0-9]/.test(v) }
+    };
+
     passwordInput.addEventListener("input", () => {
         let value = passwordInput.value;
 
         if (value.length === 0) {
             strengthMeterContainer.style.display = "none";
             strengthText.textContent = "";
+            passwordRules.classList.remove("visible");
             return;
         }
 
         strengthMeterContainer.style.display = "block";
+        passwordRules.classList.add("visible");
 
-        if (value.length < 6) {
+        // Update rule checklist
+        let metCount = 0;
+        Object.values(ruleChecks).forEach(({ el, test }) => {
+            if (test(value)) {
+                el.classList.add("met");
+                el.querySelector('i').className = "fa-solid fa-circle-check";
+                metCount++;
+            } else {
+                el.classList.remove("met");
+                el.querySelector('i').className = "fa-solid fa-circle";
+            }
+        });
+
+        // Strength based on rules met + length
+        if (value.length < 6 || metCount <= 1) {
             strengthBar.style.width = "30%";
             strengthBar.style.background = "#e53e3e";
             strengthText.textContent = "Weak";
             strengthText.style.color = "#e53e3e";
-        } else if (value.length < 10) {
+        } else if (metCount <= 3) {
             strengthBar.style.width = "70%";
             strengthBar.style.background = "#dd6b20";
             strengthText.textContent = "Medium";
@@ -123,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ----------------------------------------------------
-    // Feature 2, 3 & 5: Form Handling (Submit, Loading, Shake)
+    // Feature: Form Handling (Submit, Spinner, Success, Redirect, Shake)
     // ----------------------------------------------------
     loginForm.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -133,7 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Custom validation check example to showcase the shake animation
         if (password.length < 6) {
-            // Feature 5: Shake Animation for mock failure
             loginCard.classList.add("shake");
             setTimeout(() => {
                 loginCard.classList.remove("shake");
@@ -141,21 +177,42 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Feature 3: Save email check status 
+        // Save email / name if "Keep me signed in" is checked
         if (rememberCheckbox.checked) {
             localStorage.setItem("savedEmail", email);
+            const namePart = email.split('@')[0];
+            if (namePart) {
+                localStorage.setItem("userName", namePart);
+            }
         } else {
             localStorage.removeItem("savedEmail");
+            localStorage.removeItem("userName");
         }
 
-        // Feature 2: Loading Button Animation state
+        // Loading spinner state
         loginBtn.disabled = true;
-        loginBtn.textContent = "Signing In...";
+        loginBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Signing In...';
 
         setTimeout(() => {
-            loginBtn.textContent = "Login";
-            loginBtn.disabled = false;
-            alert("Login Successful! Processing Dashboard routing.");
-        }, 2000);
+            // Success animation
+            loginBtn.classList.add("success");
+            loginBtn.innerHTML = '<i class="fa-solid fa-check"></i> Success';
+
+            // Redirect to dashboard
+            setTimeout(() => {
+                window.location.href = "dashboard.html";
+            }, 900);
+        }, 1600);
+    });
+
+    // ----------------------------------------------------
+    // Feature: Continue as Guest
+    // ----------------------------------------------------
+    guestBtn.addEventListener("click", () => {
+        guestBtn.disabled = true;
+        guestBtn.textContent = "Entering as Guest...";
+        setTimeout(() => {
+            window.location.href = "dashboard.html";
+        }, 900);
     });
 });
