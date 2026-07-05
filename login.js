@@ -44,9 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----------------------------------------------------
-    // Feature: Redirect If Already Logged In
+    // Feature: Redirect If Already Logged In (real login OR guest session)
     // ----------------------------------------------------
-    if (localStorage.getItem("isLoggedIn") === "true") {
+    if (localStorage.getItem("isLoggedIn") === "true" || localStorage.getItem("isGuest") === "true") {
         window.location.href = "dashboard.html";
         return;
     }
@@ -353,8 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isSubmitting = true;
         guestBtn.disabled = true;
         guestBtn.textContent = "Entering as Guest...";
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("lastLogin", new Date().toISOString());
+        localStorage.setItem("isGuest", "true");
         localStorage.setItem("loginTime", Date.now());
         showToast("Continuing as Guest");
         setTimeout(() => {
@@ -376,6 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (loginTime && Date.now() - loginTime > SESSION_LIMIT_MS) {
             showToast("Session expired", "error");
             localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("isGuest");
             localStorage.removeItem("loginTime");
             setTimeout(() => window.location.reload(), 1200);
         }
