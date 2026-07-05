@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Habit Tracker - Login</title>
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="login-body">
 
@@ -18,13 +19,16 @@
         </header>
 
         <section class="welcome-section">
-            <h2>Welcome Back! 👋</h2>
+            <h2 id="greeting">Welcome Back! 👋</h2>
             <p>Please login to your account</p>
         </section>
 
         <form class="login-form">
             <div class="input-group">
-                <label for="email">Email Address</label>
+                <div class="label-row">
+                    <label for="email">Email Address</label>
+                    <small id="email-error"></small>
+                </div>
                 <div class="input-wrapper">
                     <i class="fa-regular fa-envelope input-icon"></i>
                     <input type="email" id="email" placeholder="Enter your email" required>
@@ -32,12 +36,20 @@
             </div>
 
             <div class="input-group">
-                <label for="password">Password</label>
+                <div class="label-row">
+                    <label for="password">Password</label>
+                    <small id="caps-warning"></small>
+                </div>
                 <div class="input-wrapper">
                     <i class="fa-solid fa-lock input-icon"></i>
                     <input type="password" id="password" placeholder="Enter your password" required>
                     <i class="fa-regular fa-eye toggle-password"></i>
                 </div>
+                
+                <div class="password-strength">
+                    <div class="strength-bar"></div>
+                </div>
+                <p id="strength-text"></p>
             </div>
 
             <div class="form-actions">
@@ -57,9 +69,17 @@
 
         <div class="social-login">
             <button class="btn-google">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_\"G\"_Logo.svg" alt="Google Logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_Logo.svg" alt="Google Logo">
                 Continue with Google
             </button>
+        </div>
+
+        <div class="theme-toggle-container">
+            <span>Light Mode</span>
+            <label class="switch">
+                <input type="checkbox" id="themeBtn">
+                <span class="slider round"></span>
+            </label>
         </div>
 
         <footer class="login-footer">
@@ -67,5 +87,6 @@
         </footer>
     </main>
 
+    <script src="script.js" defer></script>
 </body>
 </html>
