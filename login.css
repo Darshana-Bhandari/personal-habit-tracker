@@ -1,0 +1,257 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body.login-body {
+    background-color: #0b0f19; /* Deep dark background */
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    /* Optional subtle green glow background element like the UI */
+    background-image: radial-gradient(circle at 100% 0%, rgba(46, 182, 94, 0.15) 0%, transparent 40%);
+}
+
+/* Container Card */
+.login-container {
+    background-color: #111622;
+    border: 1px solid #1a2233;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 400px;
+    padding: 40px 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Header & Logo */
+.login-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.logo-icon {
+    font-size: 48px;
+    color: #2eb65e; /* Vibrant UI Green */
+    margin-bottom: 12px;
+}
+
+.login-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.login-header h1 span {
+    font-weight: 400;
+    color: #a0aec0;
+}
+
+.tagline {
+    color: #718096;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+/* Welcome Section */
+.welcome-section {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.welcome-section h2 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.welcome-section p {
+    color: #718096;
+    font-size: 14px;
+}
+
+/* Form Controls */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 13px;
+    color: #a0aec0;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    color: #4a5568;
+    font-size: 16px;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 14px 14px 14px 42px;
+    background-color: #1a202c;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-wrapper input:focus {
+    border-color: #2eb65e;
+    box-shadow: 0 0 0 2px rgba(46, 182, 94, 0.2);
+}
+
+.toggle-password {
+    position: absolute;
+    right: 14px;
+    color: #4a5568;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.toggle-password:hover {
+    color: #a0aec0;
+}
+
+/* Form Actions (Remember & Forgot) */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: #a0aec0;
+}
+
+.remember-me input {
+    accent-color: #2eb65e;
+    cursor: pointer;
+}
+
+.forgot-password {
+    color: #2eb65e;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Buttons */
+.btn-login {
+    background-color: #2eb65e;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 5px;
+}
+
+.btn-login:hover {
+    background-color: #25934a;
+}
+
+/* Divider */
+.divider {
+    text-align: center;
+    position: relative;
+    margin: 20px 0;
+}
+
+.divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #2d3748;
+    z-index: 1;
+}
+
+.divider span {
+    background-color: #111622;
+    padding: 0 10px;
+    color: #718096;
+    font-size: 13px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Social Login */
+.social-login .btn-google {
+    width: 100%;
+    background-color: #1a202c;
+    border: 1px solid #2d3748;
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.social-login .btn-google:hover {
+    background-color: #2d3748;
+}
+
+.social-login .btn-google img {
+    width: 18px;
+    height: 18px;
+}
+
+/* Footer / Sign up */
+.login-footer {
+    text-align: center;
+    margin-top: 28px;
+    font-size: 13px;
+    color: #a0aec0;
+}
+
+.login-footer a {
+    color: #2eb65e;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
