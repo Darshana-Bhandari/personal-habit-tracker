@@ -287,8 +287,8 @@ body.login-body {
 }
 
 .login-header h1 span {
-    font-weight: 400;
-    color: var(--text-muted);
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
 .tagline {
@@ -597,6 +597,7 @@ body.login-body {
     font-size: 15px;
 }
 
+.btn-google i { color: #ea4335; }
 .btn-github i { color: var(--text-primary); }
 .btn-microsoft i { color: #00a4ef; }
 
