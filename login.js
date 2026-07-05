@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     // DOM Cache Elements
     const loginForm = document.querySelector('.login-form');
@@ -19,8 +18,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginBtn = document.querySelector('.btn-login');
     const guestBtn = document.querySelector('.btn-guest');
 
+    // Demo user store — replace with a real auth check on a live backend
+    const users = [
+        { email: "demo@habit.com", password: "Demo123!" }
+    ];
+
+    const MAX_ATTEMPTS = 5;
+    const SESSION_LIMIT_MS = 3600000; // 1 hour
+    let isSubmitting = false;
+    let attempts = Number(localStorage.getItem("attempts")) || 0;
+
     // ----------------------------------------------------
-    // Feature: Welcome Message Based on Time (+ saved name)
+    // Feature: Toast Notifications (replaces alert())
+    // ----------------------------------------------------
+    function showToast(message, type = "default") {
+        const toast = document.createElement("div");
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add("toast-out");
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    // ----------------------------------------------------
+    // Feature: Redirect If Already Logged In
+    // ----------------------------------------------------
+    if (localStorage.getItem("isLoggedIn") === "true") {
+        window.location.href = "dashboard.html";
+        return;
+    }
+
+    // ----------------------------------------------------
+    // Feature: Welcome Message Based on Time (+ saved name + typing effect)
     // ----------------------------------------------------
     const hour = new Date().getHours();
     let timeGreeting = "Good Evening";
@@ -34,12 +66,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const savedName = localStorage.getItem("userName");
+    const greetingText = savedName
+        ? `${timeGreeting}, ${savedName} ${emoji}`
+        : `${timeGreeting} ${emoji}`;
+
+    // Feature: Show Last Login Time (used as the sub-greeting)
+    const lastLogin = localStorage.getItem("lastLogin");
     if (savedName) {
-        greetingEl.textContent = `${timeGreeting}, ${savedName} ${emoji}`;
-        greetingSubEl.textContent = "Ready to continue your streak?";
-    } else {
-        greetingEl.textContent = `${timeGreeting} ${emoji}`;
+        greetingSubEl.textContent = lastLogin
+            ? `Last login: ${new Date(lastLogin).toLocaleString()}`
+            : "Ready to continue your streak?";
     }
+
+    function typeText(element, text) {
+        let i = 0;
+        element.textContent = "";
+        (function typing() {
+            if (i < text.length) {
+                element.textContent += text.charAt(i);
+                i++;
+                setTimeout(typing, 40);
+            }
+        })();
+    }
+    typeText(greetingEl, greetingText);
 
     // ----------------------------------------------------
     // Feature: Load Saved Email (Remember Me / Keep signed in)
@@ -51,9 +101,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----------------------------------------------------
-    // Feature: Light / Dark Theme Toggle
+    // Feature: Light / Dark Theme Toggle (+ system preference on first visit)
     // ----------------------------------------------------
-    if (localStorage.getItem("theme") === "light") {
+    if (!localStorage.getItem("theme")) {
+        const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+        if (prefersLight) {
+            document.body.classList.add("light");
+            themeBtn.checked = true;
+        }
+    } else if (localStorage.getItem("theme") === "light") {
         document.body.classList.add("light");
         themeBtn.checked = true;
     }
@@ -62,28 +118,40 @@ document.addEventListener('DOMContentLoaded', () => {
         if (themeBtn.checked) {
             document.body.classList.add("light");
             localStorage.setItem("theme", "light");
+            showToast("Switched to Light Mode");
         } else {
             document.body.classList.remove("light");
             localStorage.setItem("theme", "dark");
+            showToast("Switched to Dark Mode");
         }
     });
 
     // ----------------------------------------------------
-    // Basic UI element: Password Eye Toggle
+    // Feature: Password Visibility — Hold To Reveal
     // ----------------------------------------------------
-    togglePasswordIcon.addEventListener('click', () => {
-        const isPassword = passwordInput.getAttribute('type') === 'password';
-        passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
-        togglePasswordIcon.classList.toggle('fa-eye');
-        togglePasswordIcon.classList.toggle('fa-eye-slash');
-    });
+    function showPassword() {
+        passwordInput.setAttribute('type', 'text');
+        togglePasswordIcon.classList.remove('fa-eye');
+        togglePasswordIcon.classList.add('fa-eye-slash');
+    }
+    function hidePassword() {
+        passwordInput.setAttribute('type', 'password');
+        togglePasswordIcon.classList.remove('fa-eye-slash');
+        togglePasswordIcon.classList.add('fa-eye');
+    }
+
+    togglePasswordIcon.addEventListener('mousedown', showPassword);
+    togglePasswordIcon.addEventListener('mouseup', hidePassword);
+    togglePasswordIcon.addEventListener('mouseleave', hidePassword);
+    togglePasswordIcon.addEventListener('touchstart', (e) => { e.preventDefault(); showPassword(); });
+    togglePasswordIcon.addEventListener('touchend', hidePassword);
 
     // ----------------------------------------------------
     // Feature: Real-Time Email Validation
     // ----------------------------------------------------
-    emailInput.addEventListener("input", () => {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+    emailInput.addEventListener("input", () => {
         if (emailInput.value.trim() === "") {
             emailError.textContent = "";
         } else if (emailPattern.test(emailInput.value)) {
@@ -93,10 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
             emailError.textContent = "Invalid Email";
             emailError.style.color = "#e53e3e";
         }
+        validateForm();
     });
 
     // ----------------------------------------------------
-    // Feature: Strength Meter, Password Rules & Caps Lock Detection
+    // Feature: Strength Meter, Password Rules, Character Counter & Caps Lock
     // ----------------------------------------------------
     const ruleChecks = {
         length: { el: document.getElementById('rule-length'), test: (v) => v.length >= 8 },
@@ -105,6 +174,10 @@ document.addEventListener('DOMContentLoaded', () => {
         special: { el: document.getElementById('rule-special'), test: (v) => /[^A-Za-z0-9]/.test(v) }
     };
 
+    const passwordCounter = document.createElement("small");
+    passwordCounter.className = "password-counter";
+    passwordRules.insertAdjacentElement("afterend", passwordCounter);
+
     passwordInput.addEventListener("input", () => {
         let value = passwordInput.value;
 
@@ -112,11 +185,14 @@ document.addEventListener('DOMContentLoaded', () => {
             strengthMeterContainer.style.display = "none";
             strengthText.textContent = "";
             passwordRules.classList.remove("visible");
+            passwordCounter.textContent = "";
+            validateForm();
             return;
         }
 
         strengthMeterContainer.style.display = "block";
         passwordRules.classList.add("visible");
+        passwordCounter.textContent = `${value.length} characters`;
 
         // Update rule checklist
         let metCount = 0;
@@ -148,6 +224,8 @@ document.addEventListener('DOMContentLoaded', () => {
             strengthText.textContent = "Strong";
             strengthText.style.color = "#2eb65e";
         }
+
+        validateForm();
     });
 
     // Check CapsLock state cleanly during typing interaction
@@ -159,23 +237,66 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Feature: Auto Hide Caps Lock Warning on blur
+    passwordInput.addEventListener("blur", () => {
+        capsWarning.textContent = "";
+    });
+
+    // ----------------------------------------------------
+    // Feature: Login Button Disabled Until Valid Input (+ attempt limit)
+    // ----------------------------------------------------
+    function validateForm() {
+        if (attempts >= MAX_ATTEMPTS) {
+            loginBtn.disabled = true;
+            return;
+        }
+        const emailValid = emailPattern.test(emailInput.value);
+        const passwordValid = passwordInput.value.length >= 8;
+        loginBtn.disabled = !(emailValid && passwordValid);
+    }
+
+    function increaseAttempts() {
+        attempts++;
+        localStorage.setItem("attempts", attempts);
+        if (attempts >= MAX_ATTEMPTS) {
+            loginBtn.disabled = true;
+            loginBtn.textContent = "Too Many Attempts";
+        }
+    }
+
+    if (attempts >= MAX_ATTEMPTS) {
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Too Many Attempts";
+    }
+    validateForm();
+
     // ----------------------------------------------------
     // Feature: Form Handling (Submit, Spinner, Success, Redirect, Shake)
     // ----------------------------------------------------
-    loginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
+    function attemptLogin() {
+        if (isSubmitting || attempts >= MAX_ATTEMPTS) return;
 
         const email = emailInput.value;
         const password = passwordInput.value;
 
         // Custom validation check example to showcase the shake animation
-        if (password.length < 6) {
+        if (!emailPattern.test(email) || password.length < 6) {
             loginCard.classList.add("shake");
-            setTimeout(() => {
-                loginCard.classList.remove("shake");
-            }, 400);
+            setTimeout(() => loginCard.classList.remove("shake"), 400);
             return;
         }
+
+        // Feature: Real Login Simulation Using Users Array
+        const user = users.find(u => u.email === email && u.password === password);
+        if (!user) {
+            increaseAttempts();
+            showToast("Invalid credentials", "error");
+            loginCard.classList.add("shake");
+            setTimeout(() => loginCard.classList.remove("shake"), 400);
+            return;
+        }
+
+        isSubmitting = true;
 
         // Save email / name if "Keep me signed in" is checked
         if (rememberCheckbox.checked) {
@@ -197,22 +318,66 @@ document.addEventListener('DOMContentLoaded', () => {
             // Success animation
             loginBtn.classList.add("success");
             loginBtn.innerHTML = '<i class="fa-solid fa-check"></i> Success';
+            showToast("Login Successful", "success");
+
+            // Persist session info
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("lastLogin", new Date().toISOString());
+            localStorage.setItem("loginTime", Date.now());
+            localStorage.removeItem("attempts");
 
             // Redirect to dashboard
             setTimeout(() => {
                 window.location.href = "dashboard.html";
             }, 900);
         }, 1600);
+    }
+
+    loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        attemptLogin();
+    });
+
+    // Feature: Press Enter Anywhere To Login
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !isSubmitting) {
+            loginForm.requestSubmit();
+        }
     });
 
     // ----------------------------------------------------
     // Feature: Continue as Guest
     // ----------------------------------------------------
     guestBtn.addEventListener("click", () => {
+        if (isSubmitting) return;
+        isSubmitting = true;
         guestBtn.disabled = true;
         guestBtn.textContent = "Entering as Guest...";
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("lastLogin", new Date().toISOString());
+        localStorage.setItem("loginTime", Date.now());
+        showToast("Continuing as Guest");
         setTimeout(() => {
             window.location.href = "dashboard.html";
         }, 900);
     });
+
+    // ----------------------------------------------------
+    // Feature: Network Status Detection
+    // ----------------------------------------------------
+    window.addEventListener("offline", () => showToast("You are offline", "error"));
+    window.addEventListener("online", () => showToast("Back online"));
+
+    // ----------------------------------------------------
+    // Feature: Session Timeout Simulation
+    // ----------------------------------------------------
+    setInterval(() => {
+        const loginTime = Number(localStorage.getItem("loginTime"));
+        if (loginTime && Date.now() - loginTime > SESSION_LIMIT_MS) {
+            showToast("Session expired", "error");
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("loginTime");
+            setTimeout(() => window.location.reload(), 1200);
+        }
+    }, 60000);
 });
