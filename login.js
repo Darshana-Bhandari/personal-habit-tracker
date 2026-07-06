@@ -257,6 +257,146 @@ document.addEventListener('DOMContentLoaded', () => {
         capsWarning.textContent = "";
     });
 
-   
-        
+    // ----------------------------------------------------
+    // Feature: Login Button Disabled Until Valid Input (+ attempt limit)
+    // ----------------------------------------------------
+    function validateForm() {
+        if (attempts >= MAX_ATTEMPTS) {
+            loginBtn.disabled = true;
+            return;
+        }
+        const emailValid = emailPattern.test(emailInput.value);
+        const passwordValid = passwordInput.value.length >= 8;
+        loginBtn.disabled = !(emailValid && passwordValid);
+    }
 
+    function increaseAttempts() {
+        attempts++;
+        localStorage.setItem("attempts", attempts);
+
+        if (attempts >= MAX_ATTEMPTS) {
+            localStorage.setItem("lockUntil", Date.now() + LOCK_TIME);
+
+            loginBtn.disabled = true;
+            loginBtn.textContent = "Try Again in 5 Minutes";
+        }
+    }
+
+    if (attempts >= MAX_ATTEMPTS) {
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Try Again in 5 Minutes";
+    }
+    validateForm();
+
+    // ----------------------------------------------------
+    // Feature: Form Handling (Submit, Spinner, Success, Redirect, Shake)
+    // ----------------------------------------------------
+    function attemptLogin() {
+        if (isSubmitting || attempts >= MAX_ATTEMPTS) return;
+
+        const email = emailInput.value;
+        const password = passwordInput.value;
+
+        // Custom validation check example to showcase the shake animation
+        if (!emailPattern.test(email) || password.length < 8) {
+            loginCard.classList.add("shake");
+            setTimeout(() => loginCard.classList.remove("shake"), 400);
+            return;
+        }
+
+        // Feature: Real Login Simulation Using Users Array
+        const user = users.find(u => u.email === email && u.password === password);
+        if (!user) {
+            increaseAttempts();
+            showToast("Invalid credentials", "error");
+            loginCard.classList.add("shake");
+            setTimeout(() => loginCard.classList.remove("shake"), 400);
+            return;
+        }
+
+        isSubmitting = true;
+
+        // Save email / name if "Keep me signed in" is checked
+        if (rememberCheckbox.checked) {
+            localStorage.setItem("savedEmail", email);
+            const namePart = email.split('@')[0];
+            if (namePart) {
+                localStorage.setItem("userName", namePart);
+            }
+        } else {
+            localStorage.removeItem("savedEmail");
+            localStorage.removeItem("userName");
+        }
+
+        // Loading spinner state
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Signing In...';
+
+        setTimeout(() => {
+            // Success animation
+            loginBtn.classList.add("success");
+            loginBtn.innerHTML = '<i class="fa-solid fa-check"></i> Success';
+            showToast("Login Successful", "success");
+
+            // Persist session info
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("lastLogin", new Date().toISOString());
+            localStorage.setItem("loginTime", Date.now());
+            localStorage.removeItem("attempts");
+            localStorage.removeItem("lockUntil");
+
+            // Redirect to dashboard
+            setTimeout(() => {
+                window.location.href = "dashboard.html";
+            }, 900);
+        }, 1600);
+    }
+
+    loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        attemptLogin();
+    });
+
+    // Feature: Press Enter Anywhere To Login
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !isSubmitting) {
+            loginForm.requestSubmit();
+        }
+    });
+
+    // ----------------------------------------------------
+    // Feature: Continue as Guest
+    // ----------------------------------------------------
+    guestBtn.addEventListener("click", () => {
+        if (isSubmitting) return;
+        isSubmitting = true;
+        guestBtn.disabled = true;
+        guestBtn.textContent = "Entering as Guest...";
+        localStorage.setItem("isGuest", "true");
+        localStorage.setItem("loginTime", Date.now());
+        showToast("Continuing as Guest");
+        setTimeout(() => {
+            window.location.href = "dashboard.html";
+        }, 900);
+    });
+
+    // ----------------------------------------------------
+    // Feature: Network Status Detection
+    // ----------------------------------------------------
+    window.addEventListener("offline", () => showToast("You are offline", "error"));
+    window.addEventListener("online", () => showToast("Back online"));
+
+    // ----------------------------------------------------
+    // Feature: Session Timeout Simulation
+    // ----------------------------------------------------
+    setInterval(() => {
+        const loginTime = Number(localStorage.getItem("loginTime"));
+        if (loginTime && Date.now() - loginTime > SESSION_LIMIT_MS) {
+            showToast("Session expired", "error");
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("isGuest");
+            localStorage.removeItem("loginTime");
+            setTimeout(() => window.location.reload(), 1200);
+        }
+    }, 60000);
+});
