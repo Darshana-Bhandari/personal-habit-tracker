@@ -20,13 +20,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Demo user store — replace with a real auth check on a live backend
     const users = [
-        { email: "demo@habit.com", password: "Demo123!" }
+        { email: "demo@habit.com", password: "Demo123!" },
+        { email: "darsu@gmail.com", password: "Darsu123!" },
+        { email: "admin@gamil.com", password: "Admin123!" },
+        { email: "test@gamil.com", password: "Test123!" }
     ];
 
     const MAX_ATTEMPTS = 5;
+    const LOCK_TIME = 5 * 60 * 1000; // 5 minutes
     const SESSION_LIMIT_MS = 3600000; // 1 hour
     let isSubmitting = false;
     let attempts = Number(localStorage.getItem("attempts")) || 0;
+
+    // Feature: Lockout Check (5 minutes after MAX_ATTEMPTS)
+    const lockUntil = Number(localStorage.getItem("lockUntil"));
+    if (lockUntil && Date.now() < lockUntil) {
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Try Again Later";
+    } else {
+        localStorage.removeItem("lockUntil");
+        localStorage.removeItem("attempts");
+        attempts = 0;
+    }
 
     // ----------------------------------------------------
     // Feature: Toast Notifications (replaces alert())
@@ -258,15 +273,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function increaseAttempts() {
         attempts++;
         localStorage.setItem("attempts", attempts);
+
         if (attempts >= MAX_ATTEMPTS) {
+            localStorage.setItem("lockUntil", Date.now() + LOCK_TIME);
+
             loginBtn.disabled = true;
-            loginBtn.textContent = "Too Many Attempts";
+            loginBtn.textContent = "Try Again in 5 Minutes";
         }
     }
 
     if (attempts >= MAX_ATTEMPTS) {
         loginBtn.disabled = true;
-        loginBtn.textContent = "Too Many Attempts";
+        loginBtn.textContent = "Try Again in 5 Minutes";
     }
     validateForm();
 
@@ -280,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = passwordInput.value;
 
         // Custom validation check example to showcase the shake animation
-        if (!emailPattern.test(email) || password.length < 6) {
+        if (!emailPattern.test(email) || password.length < 8) {
             loginCard.classList.add("shake");
             setTimeout(() => loginCard.classList.remove("shake"), 400);
             return;
@@ -325,6 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem("lastLogin", new Date().toISOString());
             localStorage.setItem("loginTime", Date.now());
             localStorage.removeItem("attempts");
+            localStorage.removeItem("lockUntil");
 
             // Redirect to dashboard
             setTimeout(() => {
@@ -361,23 +380,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 900);
     });
 
-    // ----------------------------------------------------
-    // Feature: Network Status Detection
-    // ----------------------------------------------------
-    window.addEventListener("offline", () => showToast("You are offline", "error"));
-    window.addEventListener("online", () => showToast("Back online"));
-
-    // ----------------------------------------------------
-    // Feature: Session Timeout Simulation
-    // ----------------------------------------------------
-    setInterval(() => {
-        const loginTime = Number(localStorage.getItem("loginTime"));
-        if (loginTime && Date.now() - loginTime > SESSION_LIMIT_MS) {
-            showToast("Session expired", "error");
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("isGuest");
-            localStorage.removeItem("loginTime");
-            setTimeout(() => window.location.reload(), 1200);
-        }
-    }, 60000);
-});
