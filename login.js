@@ -338,45 +338,5 @@ document.addEventListener('DOMContentLoaded', () => {
             loginBtn.innerHTML = '<i class="fa-solid fa-check"></i> Success';
             showToast("Login Successful", "success");
 
-            // Persist session info
-            localStorage.setItem("isLoggedIn", "true");
-            localStorage.setItem("lastLogin", new Date().toISOString());
-            localStorage.setItem("loginTime", Date.now());
-            localStorage.removeItem("attempts");
-            localStorage.removeItem("lockUntil");
-
-            // Redirect to dashboard
-            setTimeout(() => {
-                window.location.href = "dashboard.html";
-            }, 900);
-        }, 1600);
-    }
-
-    loginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        attemptLogin();
-    });
-
-    // Feature: Press Enter Anywhere To Login
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" && !isSubmitting) {
-            loginForm.requestSubmit();
-        }
-    });
-
-    // ----------------------------------------------------
-    // Feature: Continue as Guest
-    // ----------------------------------------------------
-    guestBtn.addEventListener("click", () => {
-        if (isSubmitting) return;
-        isSubmitting = true;
-        guestBtn.disabled = true;
-        guestBtn.textContent = "Entering as Guest...";
-        localStorage.setItem("isGuest", "true");
-        localStorage.setItem("loginTime", Date.now());
-        showToast("Continuing as Guest");
-        setTimeout(() => {
-            window.location.href = "dashboard.html";
-        }, 900);
-    });
+        
 
