@@ -10,13 +10,6 @@
     <i class="fa-solid fa-circle-check"></i>
     <h1>Welcome to your Dashboard</h1>
     <button id="logoutBtn">Logout</button>
-    <script>
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('isGuest');
-            localStorage.removeItem('loginTime');
-            window.location.href = 'login.html';
-        });
-    </script>
+    <script src="Dashboard.js" defer></script>
 </body>
 </html>
