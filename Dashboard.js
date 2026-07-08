@@ -44,3 +44,50 @@ const quotes = [
     "Your habits shape your future self."
 ];
 document.getElementById("quote").textContent = quotes[Math.floor(Math.random() * quotes.length)];
+
+// ===== 6. Progress ring (Completion Rate) =====
+const ring = document.getElementById("completionRing");
+if (ring) {
+    const radius = ring.r.baseVal.value;
+    const circumference = 2 * Math.PI * radius;
+    const percent = parseFloat(ring.closest(".progress-ring").dataset.percent) || 0;
+ 
+    ring.style.strokeDasharray = `${circumference} ${circumference}`;
+    ring.style.strokeDashoffset = circumference;
+ 
+    requestAnimationFrame(() => {
+        ring.style.strokeDashoffset = circumference - (percent / 100) * circumference;
+    });
+}
+ 
+// ===== Progress bars (Goals + Weekly Goal) driven by data-value =====
+document.querySelectorAll(".progress-bar-fill[data-value]").forEach((bar) => {
+    const value = bar.dataset.value;
+    requestAnimationFrame(() => {
+        bar.style.width = `${value}%`;
+    });
+});
+ 
+// ===== 11. Notification dropdown =====
+const notifBox = document.getElementById("notifBox");
+const notifDropdown = document.getElementById("notifDropdown");
+ 
+notifBox.addEventListener("click", (e) => {
+    e.stopPropagation();
+    notifDropdown.classList.toggle("show");
+});
+ 
+document.addEventListener("click", (e) => {
+    if (!notifBox.contains(e.target)) {
+        notifDropdown.classList.remove("show");
+    }
+});
+ 
+// ===== 16. Mobile sidebar toggle =====
+const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.getElementById("sidebar");
+ 
+menuToggle.addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+});
+ 
