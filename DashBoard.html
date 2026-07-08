@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Habit Tracker - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="Dashboard.css">
 </head>
 <body>
-    <aside>
+    <button id="menuToggle" class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
+
+    <aside id="sidebar">
         <div>
             <div class="logo">
                 <i class="fa-solid fa-circle-check"></i>
@@ -47,27 +50,59 @@
 
         <a href="#" class="settings-btn">
             <span><i class="fa-solid fa-gear"></i> Settings</span>
-            <i class="fa-solid fa-chevron-right" style="font-size: 12px;"></i>
+            <i class="fa-solid fa-chevron-right chevron-sm"></i>
         </a>
     </aside>
 
     <main>
         <header>
             <div class="welcome-text">
-                <h1>Good Evening, Darshana! 👋</h1>
-                <p>Stay consistent, stay productive.</p>
+                <h1 id="greeting">Good Evening, Darshana! 👋</h1>
+                <p id="quote">Stay consistent, stay productive.</p>
             </div>
             <div class="header-actions">
+                <div class="weather-widget">
+                    <i class="fa-solid fa-cloud-sun"></i>
+                    <span class="weather-city">Kathmandu</span>
+                    <span class="weather-temp">28°C</span>
+                </div>
+
+                <div class="date-widget">
+                    <div class="date-day" id="dateDay">Wednesday</div>
+                    <div class="date-full" id="dateFull">8 July 2026</div>
+                </div>
+
                 <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i></div>
-                <div class="notif-box">
+
+                <div class="notif-box" id="notifBox">
                     <i class="fa-regular fa-bell"></i>
                     <span class="notif-badge">3</span>
+                    <div class="notif-dropdown" id="notifDropdown">
+                        <h5>🔔 Notifications</h5>
+                        <ul>
+                            <li><i class="fa-solid fa-check"></i> Exercise completed</li>
+                            <li><i class="fa-solid fa-check"></i> New achievement unlocked</li>
+                            <li><i class="fa-solid fa-check"></i> 5 habits due today</li>
+                        </ul>
+                    </div>
                 </div>
+
                 <div class="theme-toggle">
                     <div class="theme-btn"><i class="fa-regular fa-sun"></i></div>
                     <div class="theme-btn active"><i class="fa-solid fa-moon"></i></div>
                 </div>
-                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Profile" class="profile-img">
+
+                <div class="profile-section">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Profile" class="profile-img">
+                    <div class="profile-info">
+                        <h4>Darshana</h4>
+                        <span>Frontend Developer</span>
+                    </div>
+                    <button id="logoutBtn" class="logout-btn">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -83,7 +118,7 @@
             <div class="stat-card">
                 <div class="stat-info">
                     <p>Current Streak</p>
-                    <h2>12 <span style="font-size: 16px; font-weight: normal; color: var(--text-secondary);">days</span></h2>
+                    <h2>12 <span class="unit-label">days</span></h2>
                     <span class="stat-subtext neu">Keep it up! 🔥</span>
                 </div>
                 <div class="stat-icon purple"><i class="fa-solid fa-fire-flame-curved"></i></div>
@@ -91,15 +126,20 @@
             <div class="stat-card">
                 <div class="stat-info">
                     <p>Completion Rate</p>
-                    <h2>72%</h2>
                     <span class="stat-subtext pos">+8% from last month</span>
                 </div>
-                <div class="stat-icon blue"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="progress-ring" data-percent="72">
+                    <svg viewBox="0 0 100 100">
+                        <circle class="ring-bg" cx="50" cy="50" r="42"></circle>
+                        <circle class="ring-fill" id="completionRing" cx="50" cy="50" r="42"></circle>
+                    </svg>
+                    <span class="ring-label">72%</span>
+                </div>
             </div>
             <div class="stat-card">
                 <div class="stat-info">
                     <p>Best Streak</p>
-                    <h2>45 <span style="font-size: 16px; font-weight: normal; color: var(--text-secondary);">days</span></h2>
+                    <h2>45 <span class="unit-label">days</span></h2>
                 </div>
                 <div class="stat-icon orange"><i class="fa-solid fa-trophy"></i></div>
             </div>
@@ -115,11 +155,11 @@
                         <i class="fa-solid fa-chevron-right"></i>
                     </div>
                 </div>
-                
+
                 <div class="habit-list">
                     <div class="habit-item">
                         <div class="habit-details">
-                            <div class="habit-icon" style="background-color: rgba(46, 204, 113, 0.2); color: var(--color-green);">
+                            <div class="habit-icon green-bg">
                                 <i class="fa-solid fa-person-running"></i>
                             </div>
                             <div class="habit-meta">
@@ -133,13 +173,13 @@
                                 <input type="checkbox" checked>
                                 <span class="custom-checkbox"></span>
                             </label>
-                            <i class="fa-solid fa-ellipsis-vertical" style="color: var(--text-secondary); cursor: pointer;"></i>
+                            <i class="fa-solid fa-ellipsis-vertical icon-muted"></i>
                         </div>
                     </div>
 
                     <div class="habit-item">
                         <div class="habit-details">
-                            <div class="habit-icon" style="background-color: rgba(165, 94, 234, 0.2); color: var(--color-purple);">
+                            <div class="habit-icon purple-bg">
                                 <i class="fa-solid fa-book-open"></i>
                             </div>
                             <div class="habit-meta">
@@ -153,13 +193,13 @@
                                 <input type="checkbox" checked>
                                 <span class="custom-checkbox"></span>
                             </label>
-                            <i class="fa-solid fa-ellipsis-vertical" style="color: var(--text-secondary); cursor: pointer;"></i>
+                            <i class="fa-solid fa-ellipsis-vertical icon-muted"></i>
                         </div>
                     </div>
 
                     <div class="habit-item">
                         <div class="habit-details">
-                            <div class="habit-icon" style="background-color: rgba(52, 152, 219, 0.2); color: var(--color-blue);">
+                            <div class="habit-icon blue-bg">
                                 <i class="fa-solid fa-droplet"></i>
                             </div>
                             <div class="habit-meta">
@@ -173,13 +213,13 @@
                                 <input type="checkbox">
                                 <span class="custom-checkbox"></span>
                             </label>
-                            <i class="fa-solid fa-ellipsis-vertical" style="color: var(--text-secondary); cursor: pointer;"></i>
+                            <i class="fa-solid fa-ellipsis-vertical icon-muted"></i>
                         </div>
                     </div>
 
                     <div class="habit-item">
                         <div class="habit-details">
-                            <div class="habit-icon" style="background-color: rgba(230, 126, 34, 0.2); color: var(--color-orange);">
+                            <div class="habit-icon orange-bg">
                                 <i class="fa-solid fa-code"></i>
                             </div>
                             <div class="habit-meta">
@@ -193,13 +233,13 @@
                                 <input type="checkbox" checked>
                                 <span class="custom-checkbox"></span>
                             </label>
-                            <i class="fa-solid fa-ellipsis-vertical" style="color: var(--text-secondary); cursor: pointer;"></i>
+                            <i class="fa-solid fa-ellipsis-vertical icon-muted"></i>
                         </div>
                     </div>
 
                     <div class="habit-item">
                         <div class="habit-details">
-                            <div class="habit-icon" style="background-color: rgba(231, 76, 60, 0.2); color: var(--color-red);">
+                            <div class="habit-icon red-bg">
                                 <i class="fa-regular fa-sun"></i>
                             </div>
                             <div class="habit-meta">
@@ -213,7 +253,7 @@
                                 <input type="checkbox">
                                 <span class="custom-checkbox"></span>
                             </label>
-                            <i class="fa-solid fa-ellipsis-vertical" style="color: var(--text-secondary); cursor: pointer;"></i>
+                            <i class="fa-solid fa-ellipsis-vertical icon-muted"></i>
                         </div>
                     </div>
                 </div>
@@ -226,7 +266,7 @@
             <div class="section-card calendar-widget">
                 <div class="section-header">
                     <h3 class="section-title">July 2024</h3>
-                    <div style="display: flex; gap: 10px; color: var(--text-secondary); cursor: pointer;">
+                    <div class="calendar-nav">
                         <i class="fa-solid fa-chevron-left"></i>
                         <i class="fa-solid fa-chevron-right"></i>
                     </div>
@@ -234,18 +274,18 @@
 
                 <div class="calendar-grid">
                     <div class="day-label">Mon</div><div class="day-label">Tue</div><div class="day-label">Wed</div><div class="day-label">Thu</div><div class="day-label">Fri</div><div class="day-label">Sat</div><div class="day-label">Sun</div>
-                    
+
                     <div class="day-number dot-completed">1</div><div class="day-number dot-completed">2</div><div class="day-number dot-missed">3</div><div class="day-number dot-completed">4</div><div class="day-number dot-completed">5</div><div class="day-number completed">6</div><div class="day-number dot-completed">7</div>
                     <div class="day-number dot-completed">8</div><div class="day-number dot-completed">9</div><div class="day-number dot-missed">10</div><div class="day-number dot-completed">11</div><div class="day-number dot-completed">12</div><div class="day-number dot-completed">13</div><div class="day-number dot-missed">14</div>
                     <div class="day-number dot-completed">15</div><div class="day-number dot-completed">16</div><div class="day-number dot-completed">17</div><div class="day-number dot-completed">18</div><div class="day-number dot-missed">19</div><div class="day-number dot-completed">20</div><div class="day-number dot-missed">21</div>
                     <div class="day-number dot-completed">22</div><div class="day-number dot-completed">23</div><div class="day-number dot-completed">24</div><div class="day-number dot-completed">25</div><div class="day-number dot-missed">26</div><div class="day-number dot-completed">27</div><div class="day-number dot-missed">28</div>
-                    <div class="day-number dot-completed">29</div><div class="day-number dot-completed">30</div><div class="day-number dot-completed">31</div><div class="day-number" style="color:#3a4454">1</div><div class="day-number" style="color:#3a4454">2</div><div class="day-number" style="color:#3a4454">3</div><div class="day-number" style="color:#3a4454">4</div>
+                    <div class="day-number dot-completed">29</div><div class="day-number dot-completed">30</div><div class="day-number dot-completed">31</div><div class="day-number day-faded">1</div><div class="day-number day-faded">2</div><div class="day-number day-faded">3</div><div class="day-number day-faded">4</div>
                 </div>
 
                 <div class="calendar-legend">
-                    <div class="legend-item"><div class="legend-dot" style="background-color: var(--color-green)"></div> Completed</div>
-                    <div class="legend-item"><div class="legend-dot" style="background-color: var(--color-red)"></div> Missed</div>
-                    <div class="legend-item"><div class="legend-dot" style="background-color: var(--text-secondary)"></div> No Data</div>
+                    <div class="legend-item"><div class="legend-dot legend-green"></div> Completed</div>
+                    <div class="legend-item"><div class="legend-dot legend-red"></div> Missed</div>
+                    <div class="legend-item"><div class="legend-dot legend-neutral"></div> No Data</div>
                 </div>
             </div>
         </div>
@@ -259,48 +299,35 @@
                     </select>
                 </div>
                 <div class="trend-chart-container">
-                    <svg class="trend-svg" viewBox="0 0 300 120" preserveAspectRatio="none">
-                        <defs>
-                            <linearGradient id="chart-grad" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="rgba(46, 204, 113, 0.3)"/>
-                                <stop offset="100%" stop-color="rgba(46, 204, 113, 0)"/>
-                            </linearGradient>
-                        </defs>
-                        <path class="trend-gradient" d="M 0 100 L 0 80 Q 37.5 50, 75 70 T 150 40 T 225 60 T 300 30 L 300 120 L 0 120 Z"/>
-                        <path class="trend-path" d="M 0 80 Q 37.5 50, 75 70 T 150 40 T 225 60 T 300 30"/>
-                        <circle cx="250" cy="45" r="5" fill="var(--color-green)" />
-                    </svg>
-                    <div style="position: absolute; bottom: 0; left: 0; width: 100%; display: flex; justify-content: space-between; font-size: 10px; color: var(--text-secondary);">
-                        <span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span>
-                    </div>
+                    <canvas id="trendChart"></canvas>
                 </div>
             </div>
 
             <div class="section-card">
                 <div class="section-header">
                     <h3 class="section-title">Goals</h3>
-                    <a href="#" style="color: var(--color-green); font-size: 12px; text-decoration: none;">View All</a>
+                    <a href="#" class="link-green">View All</a>
                 </div>
                 <div class="goals-list">
                     <div class="goal-item">
                         <div class="goal-meta">
-                            <span class="goal-title"><i class="fa-solid fa-book" style="color: var(--color-green)"></i> Read 20 Books</span>
+                            <span class="goal-title"><i class="fa-solid fa-book icon-green"></i> Read 20 Books</span>
                             <span>8 / 20</span>
                         </div>
                         <div class="progress-bar-container">
-                            <div class="progress-bar-fill" style="width: 40%; background-color: var(--color-green);"></div>
+                            <div class="progress-bar-fill green" data-value="40"></div>
                         </div>
-                        <span style="font-size: 11px; color: var(--text-secondary); text-align: right; display: block;">40% completed</span>
+                        <span class="goal-percent-label">40% completed</span>
                     </div>
                     <div class="goal-item">
                         <div class="goal-meta">
-                            <span class="goal-title"><i class="fa-solid fa-dumbbell" style="color: var(--color-purple)"></i> Exercise 50 Days</span>
+                            <span class="goal-title"><i class="fa-solid fa-dumbbell icon-purple"></i> Exercise 50 Days</span>
                             <span>32 / 50</span>
                         </div>
                         <div class="progress-bar-container">
-                            <div class="progress-bar-fill" style="width: 64%; background-color: var(--color-purple);"></div>
+                            <div class="progress-bar-fill purple" data-value="64"></div>
                         </div>
-                        <span style="font-size: 11px; color: var(--text-secondary); text-align: right; display: block;">64% completed</span>
+                        <span class="goal-percent-label">64% completed</span>
                     </div>
                 </div>
             </div>
@@ -314,21 +341,21 @@
                 </div>
                 <div class="inner-stats-grid">
                     <div class="inner-stat-box">
-                        <div class="inner-stat-icon" style="background-color: rgba(165, 94, 234, 0.1); color: var(--color-purple);"><i class="fa-regular fa-calendar-days"></i></div>
+                        <div class="inner-stat-icon bg-purple-soft"><i class="fa-regular fa-calendar-days"></i></div>
                         <div class="inner-stat-info">
                             <p>Days Active</p>
-                            <h4>18 <span style="font-size:11px; font-weight:normal; color:var(--text-secondary)">days</span></h4>
+                            <h4>18 <span class="unit-label-sm">days</span></h4>
                         </div>
                     </div>
                     <div class="inner-stat-box">
-                        <div class="inner-stat-icon" style="background-color: rgba(46, 204, 113, 0.1); color: var(--color-green);"><i class="fa-regular fa-circle-check"></i></div>
+                        <div class="inner-stat-icon bg-green-soft"><i class="fa-regular fa-circle-check"></i></div>
                         <div class="inner-stat-info">
                             <p>Habits Completed</p>
-                            <h4>123 <span style="font-size:11px; font-weight:normal; color:var(--text-secondary)">times</span></h4>
+                            <h4>123 <span class="unit-label-sm">times</span></h4>
                         </div>
                     </div>
                     <div class="inner-stat-box">
-                        <div class="inner-stat-icon" style="background-color: rgba(52, 152, 219, 0.1); color: var(--color-blue);"><i class="fa-solid fa-chart-pie"></i></div>
+                        <div class="inner-stat-icon bg-blue-soft"><i class="fa-solid fa-chart-pie"></i></div>
                         <div class="inner-stat-info">
                             <p>Completion Rate</p>
                             <h4>72%</h4>
@@ -336,17 +363,60 @@
                         </div>
                     </div>
                     <div class="inner-stat-box">
-                        <div class="inner-stat-icon" style="background-color: rgba(231, 76, 60, 0.1); color: var(--color-red);"><i class="fa-regular fa-clock"></i></div>
+                        <div class="inner-stat-icon bg-red-soft"><i class="fa-regular fa-clock"></i></div>
                         <div class="inner-stat-info">
                             <p>Total Time Saved</p>
                             <h4>14h 30m</h4>
-                            <span style="color: var(--text-secondary)">approx.</span>
+                            <span class="unit-label-sm">approx.</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="extra-layout">
+            <div class="section-card">
+                <div class="section-header">
+                    <h3 class="section-title">Weekly Goal</h3>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill green" data-value="72"></div>
+                </div>
+                <div class="weekly-goal-percent">72%</div>
+                <div class="weekly-goal-sub">18 / 25 habits completed this week</div>
+            </div>
+
+            <div class="section-card">
+                <div class="section-header">
+                    <h3 class="section-title">Recent Activity</h3>
+                </div>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Completed Exercise</span>
+                        <span class="activity-time">2h ago</span>
+                    </div>
+                    <div class="activity-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Added Reading Habit</span>
+                        <span class="activity-time">5h ago</span>
+                    </div>
+                    <div class="activity-item missed">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                        <span>Missed Wake Up</span>
+                        <span class="activity-time">1d ago</span>
+                    </div>
+                    <div class="activity-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Completed Coding</span>
+                        <span class="activity-time">1d ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
     <script src="Dashboard.js" defer></script>
 </body>
 </html>
