@@ -5,12 +5,12 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
     localStorage.removeItem("loginTime");
     window.location.href = "login.html";
 });
- 
+
 // ===== 2. Greeting based on time =====
 const greeting = document.getElementById("greeting");
 let hour = new Date().getHours();
 let message = "";
- 
+
 if (hour < 12) {
     message = "Good Morning";
 } else if (hour < 17) {
@@ -20,7 +20,7 @@ if (hour < 12) {
 } else {
     message = "Good Night";
 }
- 
+
 greeting.innerHTML = `${message}, Darshana 👋`;
 
 // ===== 8. Today's date, auto update =====
@@ -33,7 +33,7 @@ function updateDate() {
 }
 updateDate();
 setInterval(updateDate, 60 * 1000);
- 
+
 // ===== 9. Motivational quote =====
 const quotes = [
     "Success is built from daily habits.",
@@ -51,15 +51,15 @@ if (ring) {
     const radius = ring.r.baseVal.value;
     const circumference = 2 * Math.PI * radius;
     const percent = parseFloat(ring.closest(".progress-ring").dataset.percent) || 0;
- 
+
     ring.style.strokeDasharray = `${circumference} ${circumference}`;
     ring.style.strokeDashoffset = circumference;
- 
+
     requestAnimationFrame(() => {
         ring.style.strokeDashoffset = circumference - (percent / 100) * circumference;
     });
 }
- 
+
 // ===== Progress bars (Goals + Weekly Goal) driven by data-value =====
 document.querySelectorAll(".progress-bar-fill[data-value]").forEach((bar) => {
     const value = bar.dataset.value;
@@ -67,37 +67,38 @@ document.querySelectorAll(".progress-bar-fill[data-value]").forEach((bar) => {
         bar.style.width = `${value}%`;
     });
 });
- 
+
 // ===== 11. Notification dropdown =====
 const notifBox = document.getElementById("notifBox");
 const notifDropdown = document.getElementById("notifDropdown");
- 
+
 notifBox.addEventListener("click", (e) => {
     e.stopPropagation();
     notifDropdown.classList.toggle("show");
 });
- 
+
 document.addEventListener("click", (e) => {
     if (!notifBox.contains(e.target)) {
         notifDropdown.classList.remove("show");
     }
 });
- 
+
 // ===== 16. Mobile sidebar toggle =====
 const menuToggle = document.getElementById("menuToggle");
 const sidebar = document.getElementById("sidebar");
- 
+
 menuToggle.addEventListener("click", () => {
     sidebar.classList.toggle("open");
 });
- // ===== 10. Chart.js trend chart (replaces fake SVG graph) =====
+
+// ===== 10. Chart.js trend chart (replaces fake SVG graph) =====
 const trendCanvas = document.getElementById("trendChart");
 if (trendCanvas && window.Chart) {
     const ctx = trendCanvas.getContext("2d");
     const gradient = ctx.createLinearGradient(0, 0, 0, 200);
     gradient.addColorStop(0, "rgba(46, 204, 113, 0.35)");
     gradient.addColorStop(1, "rgba(46, 204, 113, 0)");
- 
+
     new Chart(ctx, {
         type: "line",
         data: {
@@ -136,3 +137,4 @@ if (trendCanvas && window.Chart) {
             }
         }
     });
+}
