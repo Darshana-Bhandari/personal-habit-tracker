@@ -90,4 +90,29 @@ const sidebar = document.getElementById("sidebar");
 menuToggle.addEventListener("click", () => {
     sidebar.classList.toggle("open");
 });
+ // ===== 10. Chart.js trend chart (replaces fake SVG graph) =====
+const trendCanvas = document.getElementById("trendChart");
+if (trendCanvas && window.Chart) {
+    const ctx = trendCanvas.getContext("2d");
+    const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+    gradient.addColorStop(0, "rgba(46, 204, 113, 0.35)");
+    gradient.addColorStop(1, "rgba(46, 204, 113, 0)");
  
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+            datasets: [{
+                label: "Completion %",
+                data: [55, 68, 60, 82],
+                borderColor: "#2ecc71",
+                backgroundColor: gradient,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: "#2ecc71",
+                pointBorderColor: "#0b0e14",
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                borderWidth: 3
+            }]
+        },
