@@ -1,133 +1,346 @@
 # Habit Tracker
 
-A modern and responsive Habit Tracker web application designed to help users build positive habits, maintain daily streaks, and monitor personal growth.
+A modern and responsive Habit Tracker web application designed to help users build positive habits, maintain daily streaks, track progress, and improve productivity through an intuitive and interactive dashboard.
 
-## Project Status
+> **Project Status:** 🚧 Currently Under Development
 
-🚧 Currently Under Development
-
-The authentication system and login experience have been completed. Dashboard and habit management features are currently being developed.
+The authentication system has been completed, and the dashboard is actively being developed with habit management, progress tracking, statistics, and interactive user interface components.
 
 ---
 
-## Features Completed
+# Features
 
-### Login System
+## Authentication
 
-* Email and password authentication
-* Real-time email validation
-* Password strength meter
-* Password requirements checklist
-* Caps Lock detection
-* Show/Hide password functionality
-* Remember Me feature
-* Guest login option
-* Login attempt limiter (5 attempts)
-* Temporary account lockout protection
-* Session timeout handling
-* Loading and success animations
-* Toast notifications
-* Enter key login support
+- Email and Password Login
+- Guest Login
+- Remember Me
+- Show/Hide Password
+- Real-time Email Validation
+- Password Strength Indicator
+- Password Requirements Checklist
+- Caps Lock Detection
+- Login Attempt Limiter (Maximum 5 Attempts)
+- Temporary Account Lock Protection
+- Session Management using Local Storage
+- Login State Persistence
+- Automatic Redirect for Logged-in Users
+- Logout Functionality
+- Enter Key Login Support
+- Loading Animation
+- Success Animation
+- Toast Notifications
+
+---
+
+## Dashboard
 
 ### User Experience
 
-* Dark and Light mode toggle
-* Responsive design for desktop and mobile
-* Animated UI components
-* Modern glassmorphism-inspired design
-* Interactive dashboard preview
-* Personalized greetings based on time of day
+- Modern Glassmorphism UI Design
+- Responsive Layout
+- Animated Components
+- Smooth Hover Effects
+- Personalized Greeting Based on Time
+- Random Motivational Quotes
+- Dynamic Date Display
+- Mobile-Friendly Sidebar Navigation
 
-### Security Simulation
+### Header
 
-* Session management using Local Storage
-* Login state persistence
-* Auto redirect for authenticated users
-* Logout functionality
+- Personalized User Greeting
+- Current Date Widget
+- Weather Widget (UI)
+- Notification Dropdown
+- Theme Toggle Interface
+- User Profile Section
+- Logout Button
 
----
+### Statistics Overview
 
-## Technologies Used
+- Total Habits
+- Current Streak
+- Best Streak
+- Completion Rate with Animated Progress Ring
 
-* HTML5
-* CSS3
-* JavaScript (Vanilla JS)
-* Font Awesome Icons
-* Local Storage API
+### Habit Management
 
----
+- Today's Habit List
+- Habit Categories
+- Habit Icons
+- Habit Completion Checkboxes
+- Daily Streak Counter
+- Add New Habit Button (UI)
+- Interactive Hover Effects
 
-## Demo Accounts
+### Calendar
 
-Use any of the following credentials:
+- Monthly Habit Calendar
+- Completed Day Indicators
+- Missed Day Indicators
+- Calendar Legend
 
-Email: [demo@habit.com](mailto:demo@habit.com)
-Password: Demo123!
+### Goals
 
-Email: [darsu@gmail.com](mailto:darsu@gmail.com)
-Password: Darsu123!
+- Goal Progress Bars
+- Weekly Goal Progress
+- Goal Completion Percentage
 
-Email: [admin@gamil.com](mailto:admin@gamil.com)
-Password: Admin123!
+### Statistics & Analytics
 
-Email: [test@gamil.com](mailto:test@gamil.com)
-Password: Test123!
+- Habit Completion Trend Chart (Chart.js)
+- Monthly Statistics
+- Completion Percentage
+- Active Days
+- Total Habits Completed
+- Time Saved
 
----
+### Recent Activity
 
-## Current Pages
-
-### Login Page
-
-* Authentication UI
-* Validation system
-* Theme switching
-* Guest access
-
-### Dashboard Page
-
-* Welcome screen
-* Logout functionality
-
----
-
-## Upcoming Features
-
-* Habit Creation
-* Habit Editing
-* Habit Deletion
-* Daily Habit Tracking
-* Streak Counter
-* Progress Statistics
-* Goal Management
-* Calendar View
-* Habit Categories
-* User Profile Page
-* Settings Page
-* Progress Charts
-* Weekly Reports
-* Achievement Badges
-* Notifications & Reminders
-* Backend Authentication
-* Database Integration
+- Activity Timeline
+- Completed Habits
+- Missed Habits
+- Recent Updates
 
 ---
 
-## Future Improvements
+# Technologies Used
 
-* Firebase Authentication
-* Google Sign-In
-* GitHub Sign-In
-* Cloud Database Storage
-* Real User Accounts
-* Data Synchronization
-* Progressive Web App (PWA)
-* Mobile App Version
+- HTML5
+- CSS3
+- JavaScript (Vanilla JS)
+- Chart.js
+- Font Awesome
+- Local Storage API
 
 ---
 
-## Author
+# Project Structure
 
-Darshana Bhandari
+```text
+Habit-Tracker/
+│
+├── login.html
+├── login.css
+├── login.js
+│
+├── Dashboard.html
+├── Dashboard.css
+├── Dashboard.js
+│
+├── assets/
+│
+└── README.md
+```
 
-Building this project to improve frontend development skills while creating a practical productivity application that can be used in real-world scenarios.
+---
+
+# Demo Accounts
+
+### Demo User
+
+**Email**
+
+```
+demo@habit.com
+```
+
+**Password**
+
+```
+Demo123!
+```
+
+---
+
+### User
+
+**Email**
+
+```
+darsu@gmail.com
+```
+
+**Password**
+
+```
+Darsu123!
+```
+
+---
+
+### Admin
+
+**Email**
+
+```
+admin@gmail.com
+```
+
+**Password**
+
+```
+Admin123!
+```
+
+---
+
+### Test User
+
+**Email**
+
+```
+test@gmail.com
+```
+
+**Password**
+
+```
+Test123!
+```
+
+---
+
+# Current Pages
+
+## Login Page
+
+- Secure Login
+- Guest Login
+- Remember Me
+- Password Validation
+- Password Strength Meter
+- Theme Toggle
+- Session Management
+
+## Dashboard
+
+- Welcome Section
+- Dashboard Statistics
+- Habit Overview
+- Calendar Widget
+- Goal Tracking
+- Progress Analytics
+- Weekly Goal
+- Recent Activity
+- Notifications
+- Logout
+
+---
+
+# Current Progress
+
+### Completed
+
+- Authentication System
+- Login Validation
+- Session Management
+- Responsive Login Page
+- Dashboard UI
+- Sidebar Navigation
+- Statistics Cards
+- Habit List
+- Calendar Widget
+- Goal Section
+- Statistics Section
+- Weekly Goal Section
+- Recent Activity
+- Progress Ring Animation
+- Progress Bar Animation
+- Greeting Based on Time
+- Dynamic Date
+- Motivational Quotes
+- Notification Dropdown
+- Mobile Sidebar
+- Logout Functionality
+- Chart.js Integration
+
+---
+
+# Upcoming Features
+
+- Add Habit
+- Edit Habit
+- Delete Habit
+- Habit Categories
+- Habit Search
+- Habit Filters
+- Habit Notes
+- Daily Habit Tracking
+- Calendar Interaction
+- User Profile
+- Settings Page
+- Achievement Badges
+- Habit Reminders
+- Notification System
+- Weekly Reports
+- Monthly Reports
+- Data Export
+- Light Mode
+- Backend Integration
+- Database Storage
+
+---
+
+# Future Improvements
+
+- Firebase Authentication
+- Node.js Backend
+- Express.js API
+- MongoDB Database
+- Google Login
+- GitHub Login
+- Email Verification
+- Password Reset
+- Cloud Data Synchronization
+- Progressive Web App (PWA)
+- Mobile Application
+- AI Habit Suggestions
+- Push Notifications
+
+---
+
+# Installation
+
+Clone the repository
+
+```bash
+git clone https://github.com/Darshana-Bhandari/Habit-Tracker.git
+```
+
+Open the project folder.
+
+Run **login.html** in your browser.
+
+No additional dependencies are required.
+
+---
+
+# Learning Objectives
+
+This project is being built to strengthen practical frontend development skills by implementing:
+
+- Responsive Web Design
+- Modern UI/UX Design
+- JavaScript DOM Manipulation
+- Authentication Flow
+- Local Storage
+- Dashboard Design
+- Data Visualization
+- Interactive Components
+- CSS Animations
+- Mobile Responsive Design
+
+---
+
+# Author
+
+**Darshana Bhandari**
+
+This project is part of my frontend development learning journey and focuses on building a modern productivity application while improving my HTML, CSS, JavaScript, UI/UX, and dashboard development skills.
+
+---
+
+## ⭐ Support
+
+If you like this project, consider giving it a **Star** on GitHub.
