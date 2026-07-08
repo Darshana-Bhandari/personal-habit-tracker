@@ -116,3 +116,23 @@ if (trendCanvas && window.Chart) {
                 borderWidth: 3
             }]
         },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    min: 0,
+                    max: 100,
+                    grid: { color: "rgba(255,255,255,0.05)" },
+                    ticks: { color: "#7e8b9b" }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: "#7e8b9b" }
+                }
+            }
+        }
+    });
