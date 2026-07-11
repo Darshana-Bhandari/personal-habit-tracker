@@ -4,11 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Habit Tracker - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="Dashboard.css">
 </head>
 <body>
+    <div id="skeletonOverlay" class="skeleton-overlay">
+        <div class="skeleton-inner">
+            <div class="skeleton-line" style="width:220px;height:26px;"></div>
+            <div class="skeleton-row">
+                <div class="skeleton-card"></div><div class="skeleton-card"></div>
+                <div class="skeleton-card"></div><div class="skeleton-card"></div>
+            </div>
+            <div class="skeleton-card" style="height:260px;"></div>
+        </div>
+    </div>
+ 
     <button id="menuToggle" class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
-
+ 
     <aside id="sidebar">
         <div>
             <div class="logo">
@@ -16,108 +28,96 @@
                 <span>Habit Tracker</span>
             </div>
             <ul class="nav-links">
-                <li class="nav-item active">
-                    <a href="#"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#"><i class="fa-solid fa-list-check"></i> Habits</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#"><i class="fa-regular fa-calendar"></i> Calendar</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#"><i class="fa-solid fa-chart-simple"></i> Statistics</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#"><i class="fa-solid fa-bullseye"></i> Goals</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#"><i class="fa-solid fa-trophy"></i> Achievements</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#"><i class="fa-regular fa-file-lines"></i> Notes</a>
-                </li>
+                <li class="nav-item active" data-target="topStats"><a href="#"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li class="nav-item" data-target="habitsSection"><a href="#"><i class="fa-solid fa-list-check"></i> Habits</a></li>
+                <li class="nav-item" data-target="calendarSection"><a href="#"><i class="fa-regular fa-calendar"></i> Calendar</a></li>
+                <li class="nav-item" data-target="statsSection"><a href="#"><i class="fa-solid fa-chart-simple"></i> Statistics</a></li>
+                <li class="nav-item" data-target="goalsSection"><a href="#"><i class="fa-solid fa-bullseye"></i> Goals</a></li>
+                <li class="nav-item" data-target="achievementsSection"><a href="#"><i class="fa-solid fa-trophy"></i> Achievements</a></li>
+                <li class="nav-item" data-open="settingsModal"><a href="#"><i class="fa-regular fa-file-lines"></i> Notes</a></li>
             </ul>
         </div>
-
+ 
         <div class="upgrade-card">
             <i class="fa-solid fa-crown"></i>
-            <h4>Upgrade to Pro</h4>
-            <p>Unlock unlimited habits, advanced statistics and reminders.</p>
-            <button class="upgrade-btn">Upgrade Now</button>
+            <h4>Level <span id="sidebarLevel">1</span></h4>
+            <p id="sidebarXpText">0 / 500 XP</p>
+            <div class="progress-bar-container"><div class="progress-bar-fill purple" id="sidebarXpBar" data-value="0"></div></div>
         </div>
-
-        <a href="#" class="settings-btn">
+ 
+        <a href="#" class="settings-btn" id="openSettingsBtn">
             <span><i class="fa-solid fa-gear"></i> Settings</span>
             <i class="fa-solid fa-chevron-right chevron-sm"></i>
         </a>
     </aside>
-
+ 
     <main>
         <header>
             <div class="welcome-text">
                 <h1 id="greeting">Good Evening, Darshana! 👋</h1>
                 <p id="quote">Stay consistent, stay productive.</p>
+                <p class="last-login" id="lastLoginText"></p>
             </div>
             <div class="header-actions">
-                <div class="weather-widget">
+                <div class="clock-widget" id="liveClock">🕒 --:--:--</div>
+ 
+                <div class="weather-widget" id="weatherWidget">
                     <i class="fa-solid fa-cloud-sun"></i>
                     <span class="weather-city">Kathmandu</span>
-                    <span class="weather-temp">28°C</span>
+                    <span class="weather-temp">--°C</span>
                 </div>
-
+ 
                 <div class="date-widget">
                     <div class="date-day" id="dateDay">Wednesday</div>
                     <div class="date-full" id="dateFull">8 July 2026</div>
                 </div>
-
-                <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i></div>
-
+ 
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="habitSearch" placeholder="Search habits..." class="search-input">
+                </div>
+ 
                 <div class="notif-box" id="notifBox">
                     <i class="fa-regular fa-bell"></i>
-                    <span class="notif-badge">3</span>
+                    <span class="notif-badge" id="notifBadge">0</span>
                     <div class="notif-dropdown" id="notifDropdown">
                         <h5>🔔 Notifications</h5>
-                        <ul>
-                            <li><i class="fa-solid fa-check"></i> Exercise completed</li>
-                            <li><i class="fa-solid fa-check"></i> New achievement unlocked</li>
-                            <li><i class="fa-solid fa-check"></i> 5 habits due today</li>
-                        </ul>
+                        <ul id="notifList"></ul>
                     </div>
                 </div>
-
-                <div class="theme-toggle">
-                    <div class="theme-btn"><i class="fa-regular fa-sun"></i></div>
-                    <div class="theme-btn active"><i class="fa-solid fa-moon"></i></div>
+ 
+                <div class="theme-toggle" id="themeToggle">
+                    <div class="theme-btn" data-theme="light" title="Light"><i class="fa-regular fa-sun"></i></div>
+                    <div class="theme-btn active" data-theme="dark" title="Dark"><i class="fa-solid fa-moon"></i></div>
+                    <div class="theme-btn" data-theme="green" title="Green"><i class="fa-solid fa-leaf"></i></div>
+                    <div class="theme-btn" data-theme="blue" title="Blue"><i class="fa-solid fa-water"></i></div>
+                    <div class="theme-btn" data-theme="purple" title="Purple"><i class="fa-solid fa-gem"></i></div>
                 </div>
-
-                <div class="profile-section">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Profile" class="profile-img">
+ 
+                <div class="profile-section" id="profileSection">
+                    <img id="profileImg" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Profile" class="profile-img">
                     <div class="profile-info">
-                        <h4>Darshana</h4>
-                        <span>Frontend Developer</span>
+                        <h4 id="profileName">Darshana</h4>
+                        <span id="profileRole">Frontend Developer</span>
                     </div>
-                    <button id="logoutBtn" class="logout-btn">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        Logout
-                    </button>
+                    <button id="logoutBtn" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
                 </div>
             </div>
         </header>
-
-        <div class="top-stats-grid">
+ 
+        <div class="top-stats-grid" id="topStats">
             <div class="stat-card">
                 <div class="stat-info">
                     <p>Total Habits</p>
-                    <h2>8</h2>
-                    <span class="stat-subtext pos">+2 this month</span>
+                    <h2 id="statTotalHabits">0</h2>
+                    <span class="stat-subtext pos" id="statTotalHabitsSub">+0 this month</span>
                 </div>
                 <div class="stat-icon green"><i class="fa-regular fa-clipboard"></i></div>
             </div>
             <div class="stat-card">
                 <div class="stat-info">
                     <p>Current Streak</p>
-                    <h2>12 <span class="unit-label">days</span></h2>
+                    <h2 id="statCurrentStreak">0 <span class="unit-label">days</span></h2>
                     <span class="stat-subtext neu">Keep it up! 🔥</span>
                 </div>
                 <div class="stat-icon purple"><i class="fa-solid fa-fire-flame-curved"></i></div>
@@ -125,295 +125,143 @@
             <div class="stat-card">
                 <div class="stat-info">
                     <p>Completion Rate</p>
-                    <span class="stat-subtext pos">+8% from last month</span>
+                    <span class="stat-subtext pos" id="statCompletionSub">+0% from last month</span>
                 </div>
-                <div class="progress-ring" data-percent="72">
+                <div class="progress-ring" data-percent="0" id="ringWrapper">
                     <svg viewBox="0 0 100 100">
                         <circle class="ring-bg" cx="50" cy="50" r="42"></circle>
                         <circle class="ring-fill" id="completionRing" cx="50" cy="50" r="42"></circle>
                     </svg>
-                    <span class="ring-label">72%</span>
+                    <span class="ring-label" id="ringLabel">0%</span>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-info">
                     <p>Best Streak</p>
-                    <h2>45 <span class="unit-label">days</span></h2>
+                    <h2 id="statBestStreak">0 <span class="unit-label">days</span></h2>
                 </div>
                 <div class="stat-icon orange"><i class="fa-solid fa-trophy"></i></div>
             </div>
         </div>
-
-        <div class="dashboard-layout">
+ 
+        <div class="dashboard-layout" id="habitsSection">
             <div class="section-card">
                 <div class="section-header">
                     <h3 class="section-title">Today's Habits</h3>
-                    <div class="date-switcher">
-                        <i class="fa-solid fa-chevron-left"></i>
-                        <span>July 6, 2024</span>
-                        <i class="fa-solid fa-chevron-right"></i>
+                    <div class="filter-chips" id="filterChips">
+                        <span class="chip active" data-filter="all">All</span>
+                        <span class="chip" data-filter="completed">Completed</span>
+                        <span class="chip" data-filter="incomplete">Incomplete</span>
+                        <span class="chip" data-filter="favorite">⭐ Favorites</span>
                     </div>
                 </div>
-
-                <div class="habit-list">
-                    <div class="habit-item">
-                        <div class="habit-details">
-                            <div class="habit-icon green-bg">
-                                <i class="fa-solid fa-person-running"></i>
-                            </div>
-                            <div class="habit-meta">
-                                <h4>Exercise</h4>
-                                <p>Fitness</p>
-                            </div>
-                        </div>
-                        <div class="habit-streak-status">
-                            <span class="streak-count">12 🔥 day streak</span>
-                            <label class="checkbox-wrapper">
-                                <input type="checkbox" checked>
-                                <span class="custom-checkbox"></span>
-                            </label>
-                            <i class="fa-solid fa-ellipsis-vertical icon-muted"></i>
-                        </div>
-                    </div>
-
-                    <div class="habit-item">
-                        <div class="habit-details">
-                            <div class="habit-icon purple-bg">
-                                <i class="fa-solid fa-book-open"></i>
-                            </div>
-                            <div class="habit-meta">
-                                <h4>Read 20 Pages</h4>
-                                <p>Learning</p>
-                            </div>
-                        </div>
-                        <div class="habit-streak-status">
-                            <span class="streak-count">8 🔥 day streak</span>
-                            <label class="checkbox-wrapper">
-                                <input type="checkbox" checked>
-                                <span class="custom-checkbox"></span>
-                            </label>
-                            <i class="fa-solid fa-ellipsis-vertical icon-muted"></i>
-                        </div>
-                    </div>
-
-                    <div class="habit-item">
-                        <div class="habit-details">
-                            <div class="habit-icon blue-bg">
-                                <i class="fa-solid fa-droplet"></i>
-                            </div>
-                            <div class="habit-meta">
-                                <h4>Drink 3L Water</h4>
-                                <p>Health</p>
-                            </div>
-                        </div>
-                        <div class="habit-streak-status">
-                            <span class="streak-count">4 🔥 day streak</span>
-                            <label class="checkbox-wrapper">
-                                <input type="checkbox">
-                                <span class="custom-checkbox"></span>
-                            </label>
-                            <i class="fa-solid fa-ellipsis-vertical icon-muted"></i>
-                        </div>
-                    </div>
-
-                    <div class="habit-item">
-                        <div class="habit-details">
-                            <div class="habit-icon orange-bg">
-                                <i class="fa-solid fa-code"></i>
-                            </div>
-                            <div class="habit-meta">
-                                <h4>Study JavaScript</h4>
-                                <p>Learning</p>
-                            </div>
-                        </div>
-                        <div class="habit-streak-status">
-                            <span class="streak-count">15 🔥 day streak</span>
-                            <label class="checkbox-wrapper">
-                                <input type="checkbox" checked>
-                                <span class="custom-checkbox"></span>
-                            </label>
-                            <i class="fa-solid fa-ellipsis-vertical icon-muted"></i>
-                        </div>
-                    </div>
-
-                    <div class="habit-item">
-                        <div class="habit-details">
-                            <div class="habit-icon red-bg">
-                                <i class="fa-regular fa-sun"></i>
-                            </div>
-                            <div class="habit-meta">
-                                <h4>Wake Up Before 7 AM</h4>
-                                <p>Lifestyle</p>
-                            </div>
-                        </div>
-                        <div class="habit-streak-status">
-                            <span class="streak-count">6 🔥 day streak</span>
-                            <label class="checkbox-wrapper">
-                                <input type="checkbox">
-                                <span class="custom-checkbox"></span>
-                            </label>
-                            <i class="fa-solid fa-ellipsis-vertical icon-muted"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="add-habit-btn">
+ 
+                <div class="habit-list" id="habitList"></div>
+                <p class="empty-state" id="habitEmptyState" style="display:none;">No habits match your search. Try a different term or filter.</p>
+ 
+                <button class="add-habit-btn" id="addHabitBtn">
                     <i class="fa-solid fa-plus"></i> Add New Habit
                 </button>
             </div>
-
-            <div class="section-card calendar-widget">
+ 
+            <div class="section-card calendar-widget" id="calendarSection">
                 <div class="section-header">
-                    <h3 class="section-title">July 2024</h3>
+                    <h3 class="section-title" id="calendarMonthLabel">July 2026</h3>
                     <div class="calendar-nav">
-                        <i class="fa-solid fa-chevron-left"></i>
-                        <i class="fa-solid fa-chevron-right"></i>
+                        <i class="fa-solid fa-chevron-left" id="calPrev"></i>
+                        <i class="fa-solid fa-chevron-right" id="calNext"></i>
                     </div>
                 </div>
-
-                <div class="calendar-grid">
+ 
+                <div class="calendar-grid" id="calendarGrid">
                     <div class="day-label">Mon</div><div class="day-label">Tue</div><div class="day-label">Wed</div><div class="day-label">Thu</div><div class="day-label">Fri</div><div class="day-label">Sat</div><div class="day-label">Sun</div>
-
-                    <div class="day-number dot-completed">1</div><div class="day-number dot-completed">2</div><div class="day-number dot-missed">3</div><div class="day-number dot-completed">4</div><div class="day-number dot-completed">5</div><div class="day-number completed">6</div><div class="day-number dot-completed">7</div>
-                    <div class="day-number dot-completed">8</div><div class="day-number dot-completed">9</div><div class="day-number dot-missed">10</div><div class="day-number dot-completed">11</div><div class="day-number dot-completed">12</div><div class="day-number dot-completed">13</div><div class="day-number dot-missed">14</div>
-                    <div class="day-number dot-completed">15</div><div class="day-number dot-completed">16</div><div class="day-number dot-completed">17</div><div class="day-number dot-completed">18</div><div class="day-number dot-missed">19</div><div class="day-number dot-completed">20</div><div class="day-number dot-missed">21</div>
-                    <div class="day-number dot-completed">22</div><div class="day-number dot-completed">23</div><div class="day-number dot-completed">24</div><div class="day-number dot-completed">25</div><div class="day-number dot-missed">26</div><div class="day-number dot-completed">27</div><div class="day-number dot-missed">28</div>
-                    <div class="day-number dot-completed">29</div><div class="day-number dot-completed">30</div><div class="day-number dot-completed">31</div><div class="day-number day-faded">1</div><div class="day-number day-faded">2</div><div class="day-number day-faded">3</div><div class="day-number day-faded">4</div>
                 </div>
-
+ 
                 <div class="calendar-legend">
                     <div class="legend-item"><div class="legend-dot legend-green"></div> Completed</div>
                     <div class="legend-item"><div class="legend-dot legend-red"></div> Missed</div>
                     <div class="legend-item"><div class="legend-dot legend-neutral"></div> No Data</div>
                 </div>
+ 
+                <div class="day-detail" id="dayDetail"></div>
+ 
+                <div class="heatmap-wrap">
+                    <p class="heatmap-title">Last 90 days</p>
+                    <div class="heatmap-grid" id="heatmapGrid"></div>
+                </div>
             </div>
         </div>
-
-        <div class="bottom-layout">
+ 
+        <div class="bottom-layout" id="statsSection">
             <div class="section-card">
                 <div class="section-header">
                     <h3 class="section-title">Habit Completion Trend</h3>
-                    <select class="select-dropdown">
-                        <option>Last 4 Weeks</option>
-                    </select>
+                    <div class="stat-controls">
+                        <select class="select-dropdown" id="chartTypeSelect">
+                            <option value="line">Line</option>
+                            <option value="bar">Bar</option>
+                            <option value="pie">Pie</option>
+                            <option value="doughnut">Doughnut</option>
+                            <option value="radar">Radar</option>
+                        </select>
+                        <select class="select-dropdown" id="periodSelect">
+                            <option value="week">Last 4 Weeks</option>
+                            <option value="daily">Last 7 Days</option>
+                            <option value="month">Last 6 Months</option>
+                            <option value="year">This Year</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="trend-chart-container">
                     <canvas id="trendChart"></canvas>
                 </div>
             </div>
-
+ 
             <div class="section-card">
                 <div class="section-header">
                     <h3 class="section-title">Goals</h3>
-                    <a href="#" class="link-green">View All</a>
+                    <a href="#" class="link-green" id="viewAllGoals">View All</a>
                 </div>
-                <div class="goals-list">
-                    <div class="goal-item">
-                        <div class="goal-meta">
-                            <span class="goal-title"><i class="fa-solid fa-book icon-green"></i> Read 20 Books</span>
-                            <span>8 / 20</span>
-                        </div>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar-fill green" data-value="40"></div>
-                        </div>
-                        <span class="goal-percent-label">40% completed</span>
-                    </div>
-                    <div class="goal-item">
-                        <div class="goal-meta">
-                            <span class="goal-title"><i class="fa-solid fa-dumbbell icon-purple"></i> Exercise 50 Days</span>
-                            <span>32 / 50</span>
-                        </div>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar-fill purple" data-value="64"></div>
-                        </div>
-                        <span class="goal-percent-label">64% completed</span>
-                    </div>
-                </div>
+                <div class="goals-list" id="goalsList" style="max-height:220px;overflow-y:auto;"></div>
+                <button class="add-habit-btn" id="addGoalBtnSmall"><i class="fa-solid fa-plus"></i> Add Goal</button>
             </div>
-
+ 
             <div class="section-card">
                 <div class="section-header">
                     <h3 class="section-title">Statistics</h3>
-                    <select class="select-dropdown">
-                        <option>This Month</option>
+                    <select class="select-dropdown" id="statsPeriodSelect">
+                        <option value="month">This Month</option>
+                        <option value="week">This Week</option>
+                        <option value="year">This Year</option>
                     </select>
                 </div>
-                <div class="inner-stats-grid">
-                    <div class="inner-stat-box">
-                        <div class="inner-stat-icon bg-purple-soft"><i class="fa-regular fa-calendar-days"></i></div>
-                        <div class="inner-stat-info">
-                            <p>Days Active</p>
-                            <h4>18 <span class="unit-label-sm">days</span></h4>
-                        </div>
-                    </div>
-                    <div class="inner-stat-box">
-                        <div class="inner-stat-icon bg-green-soft"><i class="fa-regular fa-circle-check"></i></div>
-                        <div class="inner-stat-info">
-                            <p>Habits Completed</p>
-                            <h4>123 <span class="unit-label-sm">times</span></h4>
-                        </div>
-                    </div>
-                    <div class="inner-stat-box">
-                        <div class="inner-stat-icon bg-blue-soft"><i class="fa-solid fa-chart-pie"></i></div>
-                        <div class="inner-stat-info">
-                            <p>Completion Rate</p>
-                            <h4>72%</h4>
-                            <span>+8%</span>
-                        </div>
-                    </div>
-                    <div class="inner-stat-box">
-                        <div class="inner-stat-icon bg-red-soft"><i class="fa-regular fa-clock"></i></div>
-                        <div class="inner-stat-info">
-                            <p>Total Time Saved</p>
-                            <h4>14h 30m</h4>
-                            <span class="unit-label-sm">approx.</span>
-                        </div>
-                    </div>
-                </div>
+                <div class="inner-stats-grid" id="innerStatsGrid"></div>
             </div>
         </div>
-
+ 
         <div class="extra-layout">
             <div class="section-card">
-                <div class="section-header">
-                    <h3 class="section-title">Weekly Goal</h3>
-                </div>
-                <div class="progress-bar-container">
-                    <div class="progress-bar-fill green" data-value="72"></div>
-                </div>
-                <div class="weekly-goal-percent">72%</div>
-                <div class="weekly-goal-sub">18 / 25 habits completed this week</div>
+                <div class="section-header"><h3 class="section-title">Weekly Report</h3></div>
+                <div class="progress-bar-container"><div class="progress-bar-fill green" id="weeklyGoalBar" data-value="0"></div></div>
+                <div class="weekly-goal-percent" id="weeklyGoalPercent">0%</div>
+                <div class="weekly-goal-sub" id="weeklyGoalSub">0 / 0 habits completed this week</div>
+                <div class="weekly-report-mini" id="weeklyReportMini"></div>
+                <div class="productivity-score" id="productivityScore"></div>
             </div>
-
+ 
             <div class="section-card">
-                <div class="section-header">
-                    <h3 class="section-title">Recent Activity</h3>
-                </div>
-                <div class="activity-list">
-                    <div class="activity-item">
-                        <i class="fa-solid fa-circle-check"></i>
-                        <span>Completed Exercise</span>
-                        <span class="activity-time">2h ago</span>
-                    </div>
-                    <div class="activity-item">
-                        <i class="fa-solid fa-circle-check"></i>
-                        <span>Added Reading Habit</span>
-                        <span class="activity-time">5h ago</span>
-                    </div>
-                    <div class="activity-item missed">
-                        <i class="fa-solid fa-circle-xmark"></i>
-                        <span>Missed Wake Up</span>
-                        <span class="activity-time">1d ago</span>
-                    </div>
-                    <div class="activity-item">
-                        <i class="fa-solid fa-circle-check"></i>
-                        <span>Completed Coding</span>
-                        <span class="activity-time">1d ago</span>
-                    </div>
-                </div>
+                <div class="section-header"><h3 class="section-title">Recent Activity</h3></div>
+                <div class="activity-list" id="activityList"></div>
             </div>
         </div>
-    </main>
-    <script src="Dashboard.js" defer></script>
-</body>
-</html>
+ 
+        <div class="section-card" id="goalsSection" style="display:none;">
+            <div class="section-header">
+                <h3 class="section-title">All Goals</h3>
+                <button class="add-habit-btn" id="addGoalBtn" style="width:auto;margin:0;padding:10px 16px;"><i class="fa-solid fa-plus"></i> Add Goal</button>
+            </div>
+            <div class="goals-list" id="goalsListFull"></div>
+        </div>
+ 
+        <div class="section-card" id="achievementsSection">
+            <div class="section-header"><h3 class="section-title">🏆 Achievements</h3></div>
