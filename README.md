@@ -4,7 +4,7 @@ A modern and responsive Habit Tracker web application designed to help users bui
 
 > **Project Status:** 🚧 Currently Under Development
 
-The authentication system has been completed, and the dashboard is actively being developed with habit management, progress tracking, statistics, and interactive user interface components.
+The authentication system is complete, and the dashboard now has full habit management, goal tracking, statistics, achievements, and interactive UI components working end-to-end.
 
 ---
 
@@ -38,27 +38,30 @@ The authentication system has been completed, and the dashboard is actively bein
 ### User Experience
 
 - Modern Glassmorphism UI Design
-- Responsive Layout
+- Responsive Layout (desktop, tablet, mobile)
 - Animated Components
 - Smooth Hover Effects
-- Personalized Greeting Based on Time
-- Random Motivational Quotes
+- Personalized Greeting Based on Time + Today's Completion
+- Dynamic Motivational Message (performance-based)
 - Dynamic Date Display
-- Mobile-Friendly Sidebar Navigation
+- Mobile-Friendly Sidebar + Bottom Nav
 
 ### Header
 
 - Personalized User Greeting
+- Last Login Timestamp
+- Live Clock
+- Live Weather Widget (Open-Meteo, geolocation-based)
 - Current Date Widget
-- Weather Widget (UI)
-- Notification Dropdown
-- Theme Toggle Interface
+- Habit Search
+- Notification Dropdown (live activity feed)
+- Theme Toggle (Light / Dark / Green / Blue / Purple)
 - User Profile Section
 - Logout Button
 
 ### Statistics Overview
 
-- Total Habits
+- Total Habits (+ added this month)
 - Current Streak
 - Best Streak
 - Completion Rate with Animated Progress Ring
@@ -66,51 +69,75 @@ The authentication system has been completed, and the dashboard is actively bein
 ### Habit Management
 
 - Today's Habit List
-- Habit Categories
-- Habit Icons
+- Add / Edit / Delete Habit
+- Habit Categories, Icons, and Colors
+- Daily Goal per Habit
 - Habit Completion Checkboxes
-- Daily Streak Counter
-- Add New Habit Button (UI)
+- Favorites (star pinning)
+- Search + Filter Chips (All / Completed / Incomplete / Favorites)
 - Interactive Hover Effects
 
 ### Calendar
 
-- Monthly Habit Calendar
-- Completed Day Indicators
-- Missed Day Indicators
+- Monthly Habit Calendar with Navigation
+- Completed / Missed / Partial Day Indicators
+- Click a Day for Full Detail Breakdown
+- 90-Day Heatmap
 - Calendar Legend
 
 ### Goals
 
+- Add / Edit / Delete Goals
 - Goal Progress Bars
+- Priority Tags (Low / Medium / High)
+- Deadlines
 - Weekly Goal Progress
-- Goal Completion Percentage
 
 ### Statistics & Analytics
 
-- Habit Completion Trend Chart (Chart.js)
-- Monthly Statistics
-- Completion Percentage
-- Active Days
-- Total Habits Completed
-- Time Saved
+- Habit Completion Trend Chart (Chart.js) — Line / Bar / Pie / Doughnut / Radar
+- Selectable Time Ranges (7 Days / 4 Weeks / 6 Months / Year)
+- Category Breakdown
+- Active Days, Habits Completed, Time Saved
+- Most / Least Productive Day
+- Total Missed
+
+### Achievements
+
+- 7 Unlockable Achievements (streaks, completion rate, category-specific, totals)
+- Automatic Detection + Toast Celebration
+- XP Reward per Achievement
+
+### XP & Leveling
+
+- XP earned per habit completion and achievement
+- Level calculation and sidebar progress bar
 
 ### Recent Activity
 
 - Activity Timeline
-- Completed Habits
-- Missed Habits
-- Recent Updates
+- Completed / Missed Habits
+- Relative Timestamps ("2h ago")
+
+### Settings
+
+- Editable Display Name & Email
+- Notification Toggle (with browser permission request)
+- Daily Reminder Time
+- CSV Export
+- JSON Data Export
+- Delete Account
 
 ---
 
 # Technologies Used
 
 - HTML5
-- CSS3
+- CSS3 (CSS Variables, Glassmorphism, Animations)
 - JavaScript (Vanilla JS)
 - Chart.js
 - Font Awesome
+- Open-Meteo API (weather)
 - Local Storage API
 
 ---
@@ -217,14 +244,43 @@ Test123!
 
 - Welcome Section
 - Dashboard Statistics
-- Habit Overview
-- Calendar Widget
-- Goal Tracking
-- Progress Analytics
+- Habit Overview (Add / Edit / Delete / Search / Filter)
+- Calendar Widget (Interactive)
+- Goal Tracking (Add / Edit / Delete)
+- Progress Analytics (Charts)
 - Weekly Goal
 - Recent Activity
 - Notifications
+- Achievements
+- Settings (Export, Reminders, Account)
 - Logout
+
+---
+
+# 📅 Progress Log
+
+the dashboard moved from "UI only" to a fully functional app backed by `localStorage`. Highlights:
+
+- ✅ **Habit CRUD** — Add, Edit, and Delete habits now fully work (modal form with name, category, icon, color, daily goal)
+- ✅ **Daily Tracking** — Checkbox toggling marks habits complete/incomplete for today and updates streaks, XP, and activity feed live
+- ✅ **Search & Filters** — Habit search box and filter chips (All / Completed / Incomplete / Favorites) are functional
+- ✅ **Favorites** — Star toggle to pin favorite habits to the top of the list
+- ✅ **Calendar Interaction** — Month navigation, day click-to-view completion detail, and a 90-day heatmap
+- ✅ **Goals** — Add/Edit/Delete goals with progress bars, priority tags, and deadlines
+- ✅ **Statistics & Charts** — Chart.js trend chart with 5 chart types (line/bar/pie/doughnut/radar) and 4 time periods, plus an inner stats grid (active days, time saved, most/least productive day, etc.)
+- ✅ **Achievements System** — 7 unlockable achievements with automatic detection and toast celebration + XP reward
+- ✅ **XP & Leveling** — XP bar and level indicator in the sidebar, XP earned per completion/achievement
+- ✅ **Weekly Report** — Weekly goal progress bar, completed/missed breakdown, best day, and a productivity score
+- ✅ **Settings Page** — Editable name/email, notification toggle with permission request, reminder time, CSV export, JSON export, delete account
+- ✅ **Live Weather Widget** — Real-time weather via Open-Meteo (geolocation with Kathmandu fallback)
+- ✅ **Live Clock & Dynamic Greeting** — Updates every second, greeting changes by time of day + today's completion rate
+- ✅ **Light Mode + 3 Extra Themes** — Light, Dark, Green, Blue, Purple theme toggle, fully wired to CSS variables
+- ✅ **Notifications Dropdown** — Recent activity shown as notifications with a live badge count
+- ✅ **Mobile Responsive Nav** — Hamburger sidebar + bottom nav bar + floating action button for mobile
+- ✅ **Toast Notification System** — Success/achievement toasts across the app
+- ✅ **Skeleton Loading Screen** — Shimmer overlay on initial load
+
+**Next up:** backend integration is still the big remaining piece — everything currently lives in `localStorage`.
 
 ---
 
@@ -237,11 +293,15 @@ Test123!
 - Session Management
 - Responsive Login Page
 - Dashboard UI
-- Sidebar Navigation
+- Sidebar + Mobile Bottom Nav
 - Statistics Cards
-- Habit List
-- Calendar Widget
-- Goal Section
+- Add / Edit / Delete Habit
+- Habit Categories
+- Habit Search
+- Habit Filters
+- Daily Habit Tracking
+- Calendar Widget + Interaction
+- Goal Section (Add / Edit / Delete)
 - Statistics Section
 - Weekly Goal Section
 - Recent Activity
@@ -249,55 +309,30 @@ Test123!
 - Progress Bar Animation
 - Greeting Based on Time
 - Dynamic Date
-- Motivational Quotes
 - Notification Dropdown
 - Mobile Sidebar
 - Logout Functionality
-- Chart.js Integration
+- Chart.js Integration (5 chart types)
+- User Profile
+- Settings Page
+- Achievement Badges
+- Habit Reminders (browser notifications)
+- Weekly Reports
+- Data Export (CSV + JSON)
+- Light Mode + Extra Themes
+- Live Weather Widget
+- XP / Leveling System
 
 ---
 
 # Upcoming Features
 
-- Add Habit
-- Edit Habit
-- Delete Habit
-- Habit Categories
-- Habit Search
-- Habit Filters
 - Habit Notes
-- Daily Habit Tracking
-- Calendar Interaction
-- User Profile
-- Settings Page
-- Achievement Badges
-- Habit Reminders
-- Notification System
-- Weekly Reports
 - Monthly Reports
-- Data Export
-- Light Mode
 - Backend Integration
 - Database Storage
 
 ---
-
-# Future Improvements
-
-- Firebase Authentication
-- Node.js Backend
-- Express.js API
-- MongoDB Database
-- Google Login
-- GitHub Login
-- Email Verification
-- Password Reset
-- Cloud Data Synchronization
-- Progressive Web App (PWA)
-- Mobile Application
-- AI Habit Suggestions
-- Push Notifications
-
 ---
 
 # Installation
