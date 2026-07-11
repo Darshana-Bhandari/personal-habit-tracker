@@ -588,4 +588,49 @@ function renderInnerStats() {
         totalScheduled += days;
         totalMissed += days - Object.values(h.completions).filter(Boolean).length;
     });
+ const items = [
+        { icon: 'fa-regular fa-calendar-days', cls: 'bg-purple-soft', label: 'Days Active', val: `${activeDays.size} days` },
+        { icon: 'fa-regular fa-circle-check', cls: 'bg-green-soft', label: 'Habits Completed', val: `${totalDone} times` },
+        { icon: 'fa-solid fa-chart-pie', cls: 'bg-blue-soft', label: 'Completion Rate', val: `${rate}%` },
+        { icon: 'fa-regular fa-clock', cls: 'bg-red-soft', label: 'Time Saved (approx)', val: `${Math.floor(totalDone * 15 / 60)}h ${(totalDone * 15) % 60}m` },
+        { icon: 'fa-solid fa-fire', cls: 'bg-green-soft', label: 'Longest Streak', val: `${longest} days` },
+        { icon: 'fa-solid fa-thumbs-up', cls: 'bg-purple-soft', label: 'Most Productive Day', val: names[mostIdx] },
+        { icon: 'fa-solid fa-thumbs-down', cls: 'bg-red-soft', label: 'Least Productive Day', val: names[leastIdx] },
+        { icon: 'fa-solid fa-xmark', cls: 'bg-blue-soft', label: 'Total Missed', val: `${Math.max(0, totalMissed)}` },
+    ];
+    grid.innerHTML = items.map(it => `
+        <div class="inner-stat-box">
+            <div class="inner-stat-icon ${it.cls}"><i class="${it.icon}"></i></div>
+            <div class="inner-stat-info"><p>${it.label}</p><h4>${it.val}</h4></div>
+        </div>`).join('');
+}
  
+function buildTimeSeries(period) {
+    const now = new Date();
+    let labels = [], values = [];
+    if (period === 'daily') {
+        for (let i = 6; i >= 0; i--) {
+            const d = new Date(now.getTime() - i * DAY_MS);
+            labels.push(d.toLocaleDateString('en-US', { weekday: 'short' }));
+            values.push(dayCompletionRate(d));
+        }
+    } else if (period === 'week') {
+        for (let w = 3; w >= 0; w--) {
+            let sum = 0, cnt = 0;
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(now.getTime() - (w * 7 + i) * DAY_MS);
+                sum += dayCompletionRate(d); cnt++;
+            }
+            labels.push(`Week ${4 - w}`);
+            values.push(Math.round(sum / cnt));
+        }
+    } else if (period === 'month') {
+        for (let m = 5; m >= 0; m--) {
+            const d = new Date(now.getFullYear(), now.getMonth() - m, 1);
+            const daysInM = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+            let sum = 0, cnt = 0;
+            for (let day = 1; day <= daysInM; day++) {
+                const dd = new Date(d.getFullYear(), d.getMonth(), day);
+                if (dd > now) break;
+                sum += dayCompletionRate(dd); cnt++;
+            }
