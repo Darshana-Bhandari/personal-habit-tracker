@@ -18,9 +18,9 @@
             <div class="skeleton-card" style="height:260px;"></div>
         </div>
     </div>
- 
+
     <button id="menuToggle" class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
- 
+
     <aside id="sidebar">
         <div>
             <div class="logo">
@@ -37,20 +37,20 @@
                 <li class="nav-item" data-open="settingsModal"><a href="#"><i class="fa-regular fa-file-lines"></i> Notes</a></li>
             </ul>
         </div>
- 
+
         <div class="upgrade-card">
             <i class="fa-solid fa-crown"></i>
             <h4>Level <span id="sidebarLevel">1</span></h4>
             <p id="sidebarXpText">0 / 500 XP</p>
             <div class="progress-bar-container"><div class="progress-bar-fill purple" id="sidebarXpBar" data-value="0"></div></div>
         </div>
- 
+
         <a href="#" class="settings-btn" id="openSettingsBtn">
             <span><i class="fa-solid fa-gear"></i> Settings</span>
             <i class="fa-solid fa-chevron-right chevron-sm"></i>
         </a>
     </aside>
- 
+
     <main>
         <header>
             <div class="welcome-text">
@@ -60,23 +60,23 @@
             </div>
             <div class="header-actions">
                 <div class="clock-widget" id="liveClock">🕒 --:--:--</div>
- 
+
                 <div class="weather-widget" id="weatherWidget">
                     <i class="fa-solid fa-cloud-sun"></i>
                     <span class="weather-city">Kathmandu</span>
                     <span class="weather-temp">--°C</span>
                 </div>
- 
+
                 <div class="date-widget">
                     <div class="date-day" id="dateDay">Wednesday</div>
                     <div class="date-full" id="dateFull">8 July 2026</div>
                 </div>
- 
+
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" id="habitSearch" placeholder="Search habits..." class="search-input">
                 </div>
- 
+
                 <div class="notif-box" id="notifBox">
                     <i class="fa-regular fa-bell"></i>
                     <span class="notif-badge" id="notifBadge">0</span>
@@ -85,7 +85,7 @@
                         <ul id="notifList"></ul>
                     </div>
                 </div>
- 
+
                 <div class="theme-toggle" id="themeToggle">
                     <div class="theme-btn" data-theme="light" title="Light"><i class="fa-regular fa-sun"></i></div>
                     <div class="theme-btn active" data-theme="dark" title="Dark"><i class="fa-solid fa-moon"></i></div>
@@ -93,7 +93,7 @@
                     <div class="theme-btn" data-theme="blue" title="Blue"><i class="fa-solid fa-water"></i></div>
                     <div class="theme-btn" data-theme="purple" title="Purple"><i class="fa-solid fa-gem"></i></div>
                 </div>
- 
+
                 <div class="profile-section" id="profileSection">
                     <img id="profileImg" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Profile" class="profile-img">
                     <div class="profile-info">
@@ -104,7 +104,7 @@
                 </div>
             </div>
         </header>
- 
+
         <div class="top-stats-grid" id="topStats">
             <div class="stat-card">
                 <div class="stat-info">
@@ -143,7 +143,7 @@
                 <div class="stat-icon orange"><i class="fa-solid fa-trophy"></i></div>
             </div>
         </div>
- 
+
         <div class="dashboard-layout" id="habitsSection">
             <div class="section-card">
                 <div class="section-header">
@@ -155,15 +155,15 @@
                         <span class="chip" data-filter="favorite">⭐ Favorites</span>
                     </div>
                 </div>
- 
+
                 <div class="habit-list" id="habitList"></div>
                 <p class="empty-state" id="habitEmptyState" style="display:none;">No habits match your search. Try a different term or filter.</p>
- 
+
                 <button class="add-habit-btn" id="addHabitBtn">
                     <i class="fa-solid fa-plus"></i> Add New Habit
                 </button>
             </div>
- 
+
             <div class="section-card calendar-widget" id="calendarSection">
                 <div class="section-header">
                     <h3 class="section-title" id="calendarMonthLabel">July 2026</h3>
@@ -172,26 +172,26 @@
                         <i class="fa-solid fa-chevron-right" id="calNext"></i>
                     </div>
                 </div>
- 
+
                 <div class="calendar-grid" id="calendarGrid">
                     <div class="day-label">Mon</div><div class="day-label">Tue</div><div class="day-label">Wed</div><div class="day-label">Thu</div><div class="day-label">Fri</div><div class="day-label">Sat</div><div class="day-label">Sun</div>
                 </div>
- 
+
                 <div class="calendar-legend">
                     <div class="legend-item"><div class="legend-dot legend-green"></div> Completed</div>
                     <div class="legend-item"><div class="legend-dot legend-red"></div> Missed</div>
                     <div class="legend-item"><div class="legend-dot legend-neutral"></div> No Data</div>
                 </div>
- 
+
                 <div class="day-detail" id="dayDetail"></div>
- 
+
                 <div class="heatmap-wrap">
                     <p class="heatmap-title">Last 90 days</p>
                     <div class="heatmap-grid" id="heatmapGrid"></div>
                 </div>
             </div>
         </div>
- 
+
         <div class="bottom-layout" id="statsSection">
             <div class="section-card">
                 <div class="section-header">
@@ -216,7 +216,7 @@
                     <canvas id="trendChart"></canvas>
                 </div>
             </div>
- 
+
             <div class="section-card">
                 <div class="section-header">
                     <h3 class="section-title">Goals</h3>
@@ -225,7 +225,7 @@
                 <div class="goals-list" id="goalsList" style="max-height:220px;overflow-y:auto;"></div>
                 <button class="add-habit-btn" id="addGoalBtnSmall"><i class="fa-solid fa-plus"></i> Add Goal</button>
             </div>
- 
+
             <div class="section-card">
                 <div class="section-header">
                     <h3 class="section-title">Statistics</h3>
@@ -238,7 +238,7 @@
                 <div class="inner-stats-grid" id="innerStatsGrid"></div>
             </div>
         </div>
- 
+
         <div class="extra-layout">
             <div class="section-card">
                 <div class="section-header"><h3 class="section-title">Weekly Report</h3></div>
@@ -248,13 +248,13 @@
                 <div class="weekly-report-mini" id="weeklyReportMini"></div>
                 <div class="productivity-score" id="productivityScore"></div>
             </div>
- 
+
             <div class="section-card">
                 <div class="section-header"><h3 class="section-title">Recent Activity</h3></div>
                 <div class="activity-list" id="activityList"></div>
             </div>
         </div>
- 
+
         <div class="section-card" id="goalsSection" style="display:none;">
             <div class="section-header">
                 <h3 class="section-title">All Goals</h3>
@@ -262,15 +262,15 @@
             </div>
             <div class="goals-list" id="goalsListFull"></div>
         </div>
- 
+
         <div class="section-card" id="achievementsSection">
             <div class="section-header"><h3 class="section-title">🏆 Achievements</h3></div>
-             <div class="achievements-grid" id="achievementsGrid"></div>
+            <div class="achievements-grid" id="achievementsGrid"></div>
         </div>
     </main>
- 
+
     <button class="fab" id="fabAddHabit" title="Add habit"><i class="fa-solid fa-plus"></i></button>
- 
+
     <nav class="bottom-nav" id="bottomNav">
         <a href="#" data-target="topStats"><i class="fa-solid fa-house"></i></a>
         <a href="#" data-target="calendarSection"><i class="fa-regular fa-calendar"></i></a>
@@ -278,7 +278,7 @@
         <a href="#" data-target="statsSection"><i class="fa-solid fa-chart-simple"></i></a>
         <a href="#" id="bottomNavProfile"><i class="fa-regular fa-user"></i></a>
     </nav>
- 
+
     <!-- Add / Edit Habit Modal -->
     <div class="modal-overlay" id="habitModal">
         <div class="modal">
@@ -319,7 +319,7 @@
             </div>
         </div>
     </div>
- 
+
     <!-- Add / Edit Goal Modal -->
     <div class="modal-overlay" id="goalModal">
         <div class="modal">
@@ -341,7 +341,7 @@
             </div>
         </div>
     </div>
- 
+
     <!-- Settings Modal -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal">
@@ -363,3 +363,10 @@
             </div>
         </div>
     </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="Dashboard.js" defer></script>
+</body>
+</html>
