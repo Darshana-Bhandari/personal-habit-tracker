@@ -265,3 +265,101 @@
  
         <div class="section-card" id="achievementsSection">
             <div class="section-header"><h3 class="section-title">🏆 Achievements</h3></div>
+             <div class="achievements-grid" id="achievementsGrid"></div>
+        </div>
+    </main>
+ 
+    <button class="fab" id="fabAddHabit" title="Add habit"><i class="fa-solid fa-plus"></i></button>
+ 
+    <nav class="bottom-nav" id="bottomNav">
+        <a href="#" data-target="topStats"><i class="fa-solid fa-house"></i></a>
+        <a href="#" data-target="calendarSection"><i class="fa-regular fa-calendar"></i></a>
+        <a href="#" id="bottomNavAdd" class="bottom-nav-add"><i class="fa-solid fa-plus"></i></a>
+        <a href="#" data-target="statsSection"><i class="fa-solid fa-chart-simple"></i></a>
+        <a href="#" id="bottomNavProfile"><i class="fa-regular fa-user"></i></a>
+    </nav>
+ 
+    <!-- Add / Edit Habit Modal -->
+    <div class="modal-overlay" id="habitModal">
+        <div class="modal">
+            <div class="modal-header"><h3 id="habitModalTitle">Add Habit</h3><i class="fa-solid fa-xmark modal-close" data-close="habitModal"></i></div>
+            <input type="hidden" id="habitId">
+            <label>Habit Name</label>
+            <input type="text" id="habitNameInput" placeholder="e.g. Meditate">
+            <label>Category</label>
+            <select id="habitCategoryInput">
+                <option>Health</option><option>Fitness</option><option>Learning</option><option>Lifestyle</option><option>Work</option>
+            </select>
+            <label>Icon</label>
+            <select id="habitIconInput">
+                <option value="fa-solid fa-person-running">🏃 Running</option>
+                <option value="fa-solid fa-book-open">📖 Reading</option>
+                <option value="fa-solid fa-droplet">💧 Water</option>
+                <option value="fa-solid fa-code">💻 Code</option>
+                <option value="fa-regular fa-sun">☀ Morning</option>
+                <option value="fa-solid fa-dumbbell">🏋 Gym</option>
+                <option value="fa-solid fa-brain">🧠 Mind</option>
+                <option value="fa-solid fa-utensils">🍽 Food</option>
+                <option value="fa-solid fa-bed">🛏 Sleep</option>
+                <option value="fa-solid fa-pen">✍ Journal</option>
+            </select>
+            <label>Color</label>
+            <div class="color-picker" id="habitColorInput">
+                <span class="color-dot green-bg" data-color="green"></span>
+                <span class="color-dot purple-bg" data-color="purple"></span>
+                <span class="color-dot blue-bg" data-color="blue"></span>
+                <span class="color-dot orange-bg" data-color="orange"></span>
+                <span class="color-dot red-bg" data-color="red"></span>
+            </div>
+            <label>Daily Goal (times per day)</label>
+            <input type="number" id="habitGoalInput" min="1" value="1">
+            <div class="modal-actions">
+                <button class="modal-btn cancel" data-close="habitModal">Cancel</button>
+                <button class="modal-btn confirm" id="saveHabitBtn">Save Habit</button>
+            </div>
+        </div>
+    </div>
+ 
+    <!-- Add / Edit Goal Modal -->
+    <div class="modal-overlay" id="goalModal">
+        <div class="modal">
+            <div class="modal-header"><h3 id="goalModalTitle">Add Goal</h3><i class="fa-solid fa-xmark modal-close" data-close="goalModal"></i></div>
+            <input type="hidden" id="goalId">
+            <label>Goal Title</label>
+            <input type="text" id="goalTitleInput" placeholder="e.g. Read 30 Books">
+            <label>Current Progress</label>
+            <input type="number" id="goalCurrentInput" min="0" value="0">
+            <label>Target</label>
+            <input type="number" id="goalTargetInput" min="1" value="10">
+            <label>Deadline</label>
+            <input type="date" id="goalDeadlineInput">
+            <label>Priority</label>
+            <select id="goalPriorityInput"><option>Low</option><option selected>Medium</option><option>High</option></select>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" data-close="goalModal">Cancel</button>
+                <button class="modal-btn confirm" id="saveGoalBtn">Save Goal</button>
+            </div>
+        </div>
+    </div>
+ 
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <div class="modal-header"><h3>Settings</h3><i class="fa-solid fa-xmark modal-close" data-close="settingsModal"></i></div>
+            <label>Display Name</label>
+            <input type="text" id="settingsName">
+            <label>Email</label>
+            <input type="email" id="settingsEmail">
+            <label class="switch-row"><span>Enable Notifications</span><input type="checkbox" id="settingsNotifToggle"></label>
+            <label>Daily Reminder Time</label>
+            <input type="time" id="settingsReminderTime">
+            <div class="modal-actions" style="flex-wrap:wrap;">
+                <button class="modal-btn cancel" id="exportCsvBtn"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
+                <button class="modal-btn cancel" id="exportJsonBtn"><i class="fa-solid fa-file-export"></i> Export Data</button>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn danger" id="deleteAccountBtn">Delete Account</button>
+                <button class="modal-btn confirm" id="saveSettingsBtn">Save Settings</button>
+            </div>
+        </div>
+    </div>
