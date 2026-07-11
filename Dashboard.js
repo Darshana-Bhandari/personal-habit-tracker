@@ -386,3 +386,206 @@ document.getElementById('filterChips').addEventListener('click', e => {
     document.querySelectorAll('#filterChips .chip').forEach(c => c.classList.toggle('active', c === chip));
     renderHabits();
 });
+* ---- Habit modal ---- */
+const habitModal = document.getElementById('habitModal');
+let editingHabitId = null;
+function openHabitModal(id) {
+    editingHabitId = id || null;
+    document.getElementById('habitModalTitle').textContent = id ? 'Edit Habit' : 'Add Habit';
+    if (id) {
+        const h = state.habits.find(x => x.id === id);
+        document.getElementById('habitNameInput').value = h.name;
+        document.getElementById('habitCategoryInput').value = h.category;
+        document.getElementById('habitIconInput').value = h.icon;
+        document.getElementById('habitGoalInput').value = h.dailyGoal;
+        selectColor(h.color);
+    } else {
+        document.getElementById('habitNameInput').value = '';
+        document.getElementById('habitCategoryInput').value = 'Health';
+        document.getElementById('habitIconInput').value = 'fa-solid fa-person-running';
+        document.getElementById('habitGoalInput').value = 1;
+        selectColor('green');
+    }
+    showModal('habitModal');
+}
+function selectColor(color) {
+    document.querySelectorAll('#habitColorInput .color-dot').forEach(d => d.classList.toggle('selected', d.dataset.color === color));
+}
+document.getElementById('habitColorInput').addEventListener('click', e => {
+    const dot = e.target.closest('.color-dot');
+    if (dot) selectColor(dot.dataset.color);
+});
+document.getElementById('addHabitBtn').addEventListener('click', () => openHabitModal(null));
+document.getElementById('fabAddHabit').addEventListener('click', () => openHabitModal(null));
+document.getElementById('bottomNavAdd').addEventListener('click', e => { e.preventDefault(); openHabitModal(null); });
+ 
+document.getElementById('saveHabitBtn').addEventListener('click', () => {
+    const name = document.getElementById('habitNameInput').value.trim();
+    if (!name) { toast('Please enter a habit name.'); return; }
+    const category = document.getElementById('habitCategoryInput').value;
+    const icon = document.getElementById('habitIconInput').value;
+    const color = document.querySelector('#habitColorInput .color-dot.selected')?.dataset.color || 'green';
+    const dailyGoal = parseInt(document.getElementById('habitGoalInput').value, 10) || 1;
+ 
+    if (editingHabitId) {
+        const h = state.habits.find(x => x.id === editingHabitId);
+        Object.assign(h, { name, category, icon, color, dailyGoal });
+        pushActivity('ok', `Edited ${name}`);
+    } else {
+        state.habits.push({
+            id: uid(), name, category, icon, color, dailyGoal, favorite: false,
+            order: state.habits.length, createdAt: Date.now(), completions: {}
+        });
+        pushActivity('ok', `Added ${name} habit`);
+    }
+    checkAchievements();
+    saveState(); closeModal('habitModal'); renderAll();
+    toast('Habit saved.');
+});
+ 
+/* =========================================================
+   CALENDAR
+   ========================================================= */
+function renderCalendar() {
+    const { year, month } = state.calendarView;
+    const grid = document.getElementById('calendarGrid');
+    document.querySelectorAll('#calendarGrid .day-number').forEach(n => n.remove());
+    const label = new Date(year, month, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    document.getElementById('calendarMonthLabel').textContent = label;
+ 
+    const firstDay = new Date(year, month, 1);
+    let startOffset = (firstDay.getDay() + 6) % 7; // Monday-first
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const prevDays = new Date(year, month, 0).getDate();
+    const todayStr = todayKey();
+ 
+    const cells = [];
+    for (let i = startOffset; i > 0; i--) cells.push({ day: prevDays - i + 1, faded: true, date: null });
+    for (let d = 1; d <= daysInMonth; d++) cells.push({ day: d, faded: false, date: new Date(year, month, d) });
+    while (cells.length % 7 !== 0) cells.push({ day: cells.length, faded: true, date: null });
+ 
+    cells.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'day-number';
+        div.textContent = c.day;
+        if (c.faded || !c.date) { div.classList.add('day-faded'); grid.appendChild(div); return; }
+        const key = dateKey(c.date);
+        if (key === todayStr) div.classList.add('today');
+        const applicable = state.habits.filter(h => h.createdAt <= c.date.getTime() + DAY_MS);
+        if (c.date.getTime() <= Date.now() && applicable.length) {
+            const completed = applicable.filter(h => h.completions[key]).length;
+            const ratio = completed / applicable.length;
+            if (ratio === 1) div.classList.add('dot-completed');
+            else if (ratio === 0) div.classList.add('dot-missed');
+            else div.classList.add('dot-partial');
+            div.addEventListener('click', () => showDayDetail(c.date, applicable));
+        } else if (c.date.getTime() > Date.now()) {
+            div.classList.add('day-faded');
+        }
+        grid.appendChild(div);
+    });
+}
+ 
+function showDayDetail(date, applicable) {
+    const key = dateKey(date);
+    const done = applicable.filter(h => h.completions[key]);
+    const missed = applicable.filter(h => !h.completions[key]);
+    const panel = document.getElementById('dayDetail');
+    panel.classList.add('show');
+    panel.innerHTML = `<strong>${date.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}</strong><br>` +
+        (done.length ? `<span class="dd-ok">✓ Completed:</span> ${done.map(h => h.name).join(', ')}<br>` : '') +
+        (missed.length ? `<span class="dd-miss">✗ Missed:</span> ${missed.map(h => h.name).join(', ')}` : (done.length ? '' : 'No habits existed yet on this day.'));
+}
+ 
+document.getElementById('calPrev').addEventListener('click', () => { shiftMonth(-1); });
+document.getElementById('calNext').addEventListener('click', () => { shiftMonth(1); });
+function shiftMonth(delta) {
+    let { year, month } = state.calendarView;
+    month += delta;
+    if (month < 0) { month = 11; year--; } else if (month > 11) { month = 0; year++; }
+    state.calendarView = { year, month };
+    saveState(); renderCalendar();
+}
+ 
+function renderHeatmap() {
+    const grid = document.getElementById('heatmapGrid');
+    grid.innerHTML = '';
+    const now = new Date();
+    for (let i = 89; i >= 0; i--) {
+        const d = new Date(now.getTime() - i * DAY_MS);
+        const key = dateKey(d);
+        const applicable = state.habits.filter(h => h.createdAt <= d.getTime() + DAY_MS);
+        const cell = document.createElement('div');
+        cell.className = 'heat-cell';
+        cell.title = key;
+        if (applicable.length) {
+            const ratio = applicable.filter(h => h.completions[key]).length / applicable.length;
+            cell.style.backgroundColor = ratio === 0 ? 'var(--bg-sidebar)' : `rgba(46, 204, 113, ${clamp(0.15 + ratio * 0.75, 0.15, 0.9)})`;
+        }
+        grid.appendChild(cell);
+    }
+}
+ 
+/* =========================================================
+   STATS + CHART
+   ========================================================= */
+let trendChart = null;
+ 
+function overallCompletionRate() {
+    let total = 0, done = 0;
+    const now = Date.now();
+    state.habits.forEach(h => {
+        const days = Math.max(1, Math.floor((now - h.createdAt) / DAY_MS));
+        total += days;
+        done += Object.values(h.completions).filter(Boolean).length;
+    });
+    return total ? Math.round((done / total) * 100) : 0;
+}
+ 
+function renderTopStats() {
+    document.getElementById('statTotalHabits').textContent = state.habits.length;
+    const thisMonth = new Date().getMonth();
+    const addedThisMonth = state.habits.filter(h => new Date(h.createdAt).getMonth() === thisMonth).length;
+    document.getElementById('statTotalHabitsSub').textContent = `+${addedThisMonth} this month`;
+ 
+    const bestCurrent = Math.max(0, ...state.habits.map(computeStreak));
+    document.getElementById('statCurrentStreak').innerHTML = `${bestCurrent} <span class="unit-label">days</span>`;
+ 
+    const bestAllTime = Math.max(0, ...state.habits.map(computeBestStreak), bestCurrent);
+    document.getElementById('statBestStreak').innerHTML = `${bestAllTime} <span class="unit-label">days</span>`;
+ 
+    const rate = overallCompletionRate();
+    const ring = document.getElementById('completionRing');
+    const radius = ring.r.baseVal.value;
+    const circumference = 2 * Math.PI * radius;
+    ring.style.strokeDasharray = `${circumference} ${circumference}`;
+    ring.style.strokeDashoffset = circumference - (rate / 100) * circumference;
+    document.getElementById('ringLabel').textContent = rate + '%';
+    document.getElementById('ringWrapper').dataset.percent = rate;
+}
+ 
+function renderInnerStats() {
+    const grid = document.getElementById('innerStatsGrid');
+    const now = new Date();
+    const activeDays = new Set();
+    state.habits.forEach(h => Object.keys(h.completions).forEach(k => { if (h.completions[k]) activeDays.add(k); }));
+    const totalDone = totalCompletions(state);
+    const rate = overallCompletionRate();
+    const longest = Math.max(0, ...state.habits.map(computeBestStreak));
+    const dayTally = [0, 0, 0, 0, 0, 0, 0];
+    const dayCount = [0, 0, 0, 0, 0, 0, 0];
+    state.habits.forEach(h => Object.keys(h.completions).forEach(k => {
+        if (!h.completions[k]) return;
+        const dow = (new Date(k).getDay() + 6) % 7;
+        dayTally[dow]++;
+    }));
+    const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    let mostIdx = 0, leastIdx = 0;
+    dayTally.forEach((v, i) => { if (v > dayTally[mostIdx]) mostIdx = i; if (v < dayTally[leastIdx]) leastIdx = i; });
+    let totalMissed = 0, totalScheduled = 0;
+    state.habits.forEach(h => {
+        const days = Math.max(1, Math.floor((Date.now() - h.createdAt) / DAY_MS));
+        totalScheduled += days;
+        totalMissed += days - Object.values(h.completions).filter(Boolean).length;
+    });
+ 
