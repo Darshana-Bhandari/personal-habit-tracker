@@ -2,10 +2,10 @@
    Habit Tracker Dashboard — full app logic
    Data persists in localStorage under STORAGE_KEY.
    ========================================================= */
- 
+
 const STORAGE_KEY = 'habitTrackerState_v1';
 const DAY_MS = 24 * 60 * 60 * 1000;
- 
+
 /* ---------- date helpers ---------- */
 function dateKey(d) {
     const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
@@ -24,7 +24,7 @@ function timeAgo(ts) {
     const d = Math.floor(h / 24);
     return `${d}d ago`;
 }
- 
+
 /* ---------- default data ---------- */
 function seedState() {
     const habitsSeed = [
@@ -49,7 +49,7 @@ function seedState() {
             createdAt: now.getTime() - 46 * DAY_MS, completions
         };
     });
- 
+
     return {
         profile: {
             name: 'Darshana', email: 'darshana@example.com',
@@ -74,9 +74,9 @@ function seedState() {
         lastReminderDate: null,
     };
 }
- 
+
 let state = loadState();
- 
+
 function loadState() {
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
@@ -85,7 +85,7 @@ function loadState() {
     } catch (e) { const s = seedState(); localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); return s; }
 }
 function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
- 
+
 /* ---------- achievement definitions ---------- */
 const ACHIEVEMENTS = [
     { id: 'first_habit', icon: '🏅', name: 'First Habit', desc: 'Create your first habit', check: s => s.habits.length >= 1 },
@@ -96,11 +96,11 @@ const ACHIEVEMENTS = [
     { id: 'fitness_hero', icon: '💪', name: 'Fitness Hero', desc: '14 day streak on a Fitness habit', check: s => s.habits.some(h => h.category === 'Fitness' && computeStreak(h) >= 14) },
     { id: 'century', icon: '⭐', name: '100 Habits Completed', desc: 'Complete habits 100 times total', check: s => totalCompletions(s) >= 100 },
 ];
- 
+
 function totalCompletions(s) {
     return s.habits.reduce((sum, h) => sum + Object.values(h.completions).filter(Boolean).length, 0);
 }
- 
+
 function computeStreak(habit) {
     let streak = 0;
     let d = new Date();
@@ -119,7 +119,7 @@ function computeBestStreak(habit) {
     }
     return best;
 }
- 
+
 function computeWeeklyReport(s) {
     const now = new Date();
     const dow = (now.getDay() + 6) % 7; // Monday=0
@@ -147,7 +147,7 @@ function computeWeeklyReport(s) {
     const names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     return { completed, total, missed: total - completed, percent, bestDay: total ? names[bestIdx] : '—' };
 }
- 
+
 /* ---------- XP / Level ---------- */
 const XP_PER_LEVEL = 500;
 function levelInfo(xp) {
@@ -155,7 +155,7 @@ function levelInfo(xp) {
     const into = xp % XP_PER_LEVEL;
     return { level, into, pct: Math.round((into / XP_PER_LEVEL) * 100) };
 }
- 
+
 /* ---------- toasts ---------- */
 function toast(msg, type = '') {
     const c = document.getElementById('toastContainer');
@@ -165,7 +165,7 @@ function toast(msg, type = '') {
     c.appendChild(el);
     setTimeout(() => el.remove(), 4000);
 }
- 
+
 function checkAchievements() {
     ACHIEVEMENTS.forEach(a => {
         if (!state.achievementsUnlocked.includes(a.id) && a.check(state)) {
@@ -176,11 +176,13 @@ function checkAchievements() {
         }
     });
 }
- 
+
 function pushActivity(type, text) {
     state.activity.unshift({ type, text, time: Date.now() });
     state.activity = state.activity.slice(0, 20);
-    /* =========================================================
+}
+
+/* =========================================================
    AUTH
    ========================================================= */
 function handleAuth() {
@@ -199,14 +201,14 @@ function handleAuth() {
     }
     localStorage.setItem('loginTime', String(Date.now()));
 }
- 
+
 document.getElementById('logoutBtn').addEventListener('click', () => {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('isGuest');
     localStorage.removeItem('loginTime');
     window.location.href = 'login.html';
 });
- 
+
 /* =========================================================
    CLOCK / GREETING / DATE / QUOTE
    ========================================================= */
@@ -214,13 +216,13 @@ function updateClock() {
     const now = new Date();
     document.getElementById('liveClock').textContent = '🕒 ' + now.toLocaleTimeString('en-US', { hour12: true });
 }
- 
+
 function updateDate() {
     const now = new Date();
     document.getElementById('dateDay').textContent = now.toLocaleDateString('en-US', { weekday: 'long' });
     document.getElementById('dateFull').textContent = now.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
 }
- 
+
 function updateGreeting() {
     const hour = new Date().getHours();
     let msg = hour < 12 ? '🌞 Good Morning' : hour < 17 ? '🌤 Good Afternoon' : hour < 21 ? '🌇 Good Evening' : '🌙 Good Night';
@@ -230,7 +232,7 @@ function updateGreeting() {
     const sub = total ? `You completed ${done} of ${total} habits today.` : 'Add your first habit to get started.';
     document.getElementById('quote').textContent = performanceQuote(done, total) + ' ' + sub;
 }
- 
+
 function performanceQuote(done, total) {
     if (total === 0) return 'Stay consistent, stay productive.';
     const rate = done / total;
@@ -239,7 +241,7 @@ function performanceQuote(done, total) {
     if (rate > 0) return "A start is a start. Finish strong today.";
     return "Don't give up. Tomorrow is another chance.";
 }
- 
+
 /* =========================================================
    WEATHER (Open-Meteo, no API key)
    ========================================================= */
@@ -249,7 +251,7 @@ const WEATHER_ICONS = {
     65: ['🌧️', 'Heavy rain'], 71: ['🌨️', 'Snow'], 80: ['🌧️', 'Showers'], 95: ['⛈️', 'Thunderstorm']
 };
 function weatherLabel(code) { return WEATHER_ICONS[code] || ['🌡️', 'Weather']; }
- 
+
 async function loadWeather(lat, lon, cityName) {
     try {
         const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code`;
@@ -276,7 +278,7 @@ function initWeather() {
         );
     } else fallback();
 }
- 
+
 /* =========================================================
    THEME
    ========================================================= */
@@ -290,13 +292,13 @@ document.getElementById('themeToggle').addEventListener('click', e => {
     state.theme = btn.dataset.theme;
     saveState(); applyTheme();
 });
- 
+
 /* =========================================================
    HABITS
    ========================================================= */
 let currentFilter = 'all';
 let searchTerm = '';
- 
+
 function filteredHabits() {
     let list = [...state.habits].sort((a, b) => (b.favorite - a.favorite) || (a.order - b.order));
     if (searchTerm) list = list.filter(h => h.name.toLowerCase().includes(searchTerm.toLowerCase()) || h.category.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -305,7 +307,7 @@ function filteredHabits() {
     else if (currentFilter === 'favorite') list = list.filter(h => h.favorite);
     return list;
 }
- 
+
 function renderHabits() {
     const list = filteredHabits();
     const container = document.getElementById('habitList');
@@ -337,9 +339,9 @@ function renderHabits() {
         container.appendChild(el);
     });
 }
- 
+
 function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
- 
+
 document.getElementById('habitList').addEventListener('click', e => {
     const fav = e.target.closest('[data-fav]');
     const edit = e.target.closest('[data-edit]');
@@ -352,14 +354,14 @@ document.getElementById('habitList').addEventListener('change', e => {
     const t = e.target.closest('[data-toggle]');
     if (t) toggleComplete(t.dataset.toggle);
 });
- 
+
 function toggleFavorite(id) {
     const h = state.habits.find(x => x.id === id);
     if (!h) return;
     h.favorite = !h.favorite;
     saveState(); renderHabits();
 }
- 
+
 function toggleComplete(id) {
     const h = state.habits.find(x => x.id === id);
     if (!h) return;
@@ -371,14 +373,14 @@ function toggleComplete(id) {
     saveState();
     renderAll();
 }
- 
+
 function deleteHabit(id) {
     if (!confirm('Delete this habit? This cannot be undone.')) return;
     state.habits = state.habits.filter(h => h.id !== id);
     saveState(); renderAll();
     toast('Habit deleted.');
 }
- 
+
 document.getElementById('filterChips').addEventListener('click', e => {
     const chip = e.target.closest('.chip');
     if (!chip) return;
@@ -386,7 +388,9 @@ document.getElementById('filterChips').addEventListener('click', e => {
     document.querySelectorAll('#filterChips .chip').forEach(c => c.classList.toggle('active', c === chip));
     renderHabits();
 });
-* ---- Habit modal ---- */
+document.getElementById('habitSearch').addEventListener('input', e => { searchTerm = e.target.value; renderHabits(); });
+
+/* ---- Habit modal ---- */
 const habitModal = document.getElementById('habitModal');
 let editingHabitId = null;
 function openHabitModal(id) {
@@ -418,7 +422,7 @@ document.getElementById('habitColorInput').addEventListener('click', e => {
 document.getElementById('addHabitBtn').addEventListener('click', () => openHabitModal(null));
 document.getElementById('fabAddHabit').addEventListener('click', () => openHabitModal(null));
 document.getElementById('bottomNavAdd').addEventListener('click', e => { e.preventDefault(); openHabitModal(null); });
- 
+
 document.getElementById('saveHabitBtn').addEventListener('click', () => {
     const name = document.getElementById('habitNameInput').value.trim();
     if (!name) { toast('Please enter a habit name.'); return; }
@@ -426,7 +430,7 @@ document.getElementById('saveHabitBtn').addEventListener('click', () => {
     const icon = document.getElementById('habitIconInput').value;
     const color = document.querySelector('#habitColorInput .color-dot.selected')?.dataset.color || 'green';
     const dailyGoal = parseInt(document.getElementById('habitGoalInput').value, 10) || 1;
- 
+
     if (editingHabitId) {
         const h = state.habits.find(x => x.id === editingHabitId);
         Object.assign(h, { name, category, icon, color, dailyGoal });
@@ -442,7 +446,7 @@ document.getElementById('saveHabitBtn').addEventListener('click', () => {
     saveState(); closeModal('habitModal'); renderAll();
     toast('Habit saved.');
 });
- 
+
 /* =========================================================
    CALENDAR
    ========================================================= */
@@ -452,18 +456,18 @@ function renderCalendar() {
     document.querySelectorAll('#calendarGrid .day-number').forEach(n => n.remove());
     const label = new Date(year, month, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     document.getElementById('calendarMonthLabel').textContent = label;
- 
+
     const firstDay = new Date(year, month, 1);
     let startOffset = (firstDay.getDay() + 6) % 7; // Monday-first
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const prevDays = new Date(year, month, 0).getDate();
     const todayStr = todayKey();
- 
+
     const cells = [];
     for (let i = startOffset; i > 0; i--) cells.push({ day: prevDays - i + 1, faded: true, date: null });
     for (let d = 1; d <= daysInMonth; d++) cells.push({ day: d, faded: false, date: new Date(year, month, d) });
     while (cells.length % 7 !== 0) cells.push({ day: cells.length, faded: true, date: null });
- 
+
     cells.forEach(c => {
         const div = document.createElement('div');
         div.className = 'day-number';
@@ -485,7 +489,7 @@ function renderCalendar() {
         grid.appendChild(div);
     });
 }
- 
+
 function showDayDetail(date, applicable) {
     const key = dateKey(date);
     const done = applicable.filter(h => h.completions[key]);
@@ -496,7 +500,7 @@ function showDayDetail(date, applicable) {
         (done.length ? `<span class="dd-ok">✓ Completed:</span> ${done.map(h => h.name).join(', ')}<br>` : '') +
         (missed.length ? `<span class="dd-miss">✗ Missed:</span> ${missed.map(h => h.name).join(', ')}` : (done.length ? '' : 'No habits existed yet on this day.'));
 }
- 
+
 document.getElementById('calPrev').addEventListener('click', () => { shiftMonth(-1); });
 document.getElementById('calNext').addEventListener('click', () => { shiftMonth(1); });
 function shiftMonth(delta) {
@@ -506,7 +510,7 @@ function shiftMonth(delta) {
     state.calendarView = { year, month };
     saveState(); renderCalendar();
 }
- 
+
 function renderHeatmap() {
     const grid = document.getElementById('heatmapGrid');
     grid.innerHTML = '';
@@ -525,12 +529,12 @@ function renderHeatmap() {
         grid.appendChild(cell);
     }
 }
- 
+
 /* =========================================================
    STATS + CHART
    ========================================================= */
 let trendChart = null;
- 
+
 function overallCompletionRate() {
     let total = 0, done = 0;
     const now = Date.now();
@@ -541,19 +545,19 @@ function overallCompletionRate() {
     });
     return total ? Math.round((done / total) * 100) : 0;
 }
- 
+
 function renderTopStats() {
     document.getElementById('statTotalHabits').textContent = state.habits.length;
     const thisMonth = new Date().getMonth();
     const addedThisMonth = state.habits.filter(h => new Date(h.createdAt).getMonth() === thisMonth).length;
     document.getElementById('statTotalHabitsSub').textContent = `+${addedThisMonth} this month`;
- 
+
     const bestCurrent = Math.max(0, ...state.habits.map(computeStreak));
     document.getElementById('statCurrentStreak').innerHTML = `${bestCurrent} <span class="unit-label">days</span>`;
- 
+
     const bestAllTime = Math.max(0, ...state.habits.map(computeBestStreak), bestCurrent);
     document.getElementById('statBestStreak').innerHTML = `${bestAllTime} <span class="unit-label">days</span>`;
- 
+
     const rate = overallCompletionRate();
     const ring = document.getElementById('completionRing');
     const radius = ring.r.baseVal.value;
@@ -563,7 +567,7 @@ function renderTopStats() {
     document.getElementById('ringLabel').textContent = rate + '%';
     document.getElementById('ringWrapper').dataset.percent = rate;
 }
- 
+
 function renderInnerStats() {
     const grid = document.getElementById('innerStatsGrid');
     const now = new Date();
@@ -588,7 +592,8 @@ function renderInnerStats() {
         totalScheduled += days;
         totalMissed += days - Object.values(h.completions).filter(Boolean).length;
     });
- const items = [
+
+    const items = [
         { icon: 'fa-regular fa-calendar-days', cls: 'bg-purple-soft', label: 'Days Active', val: `${activeDays.size} days` },
         { icon: 'fa-regular fa-circle-check', cls: 'bg-green-soft', label: 'Habits Completed', val: `${totalDone} times` },
         { icon: 'fa-solid fa-chart-pie', cls: 'bg-blue-soft', label: 'Completion Rate', val: `${rate}%` },
@@ -604,7 +609,7 @@ function renderInnerStats() {
             <div class="inner-stat-info"><p>${it.label}</p><h4>${it.val}</h4></div>
         </div>`).join('');
 }
- 
+
 function buildTimeSeries(period) {
     const now = new Date();
     let labels = [], values = [];
@@ -634,3 +639,367 @@ function buildTimeSeries(period) {
                 if (dd > now) break;
                 sum += dayCompletionRate(dd); cnt++;
             }
+            labels.push(d.toLocaleDateString('en-US', { month: 'short' }));
+            values.push(cnt ? Math.round(sum / cnt) : 0);
+        }
+    } else if (period === 'year') {
+        for (let m = 0; m < 12; m++) {
+            const d = new Date(now.getFullYear(), m, 1);
+            if (d > now) { labels.push(d.toLocaleDateString('en-US', { month: 'short' })); values.push(0); continue; }
+            const daysInM = Math.min(new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate(), now.getMonth() === m ? now.getDate() : 31);
+            let sum = 0, cnt = 0;
+            for (let day = 1; day <= daysInM; day++) {
+                sum += dayCompletionRate(new Date(d.getFullYear(), d.getMonth(), day)); cnt++;
+            }
+            labels.push(d.toLocaleDateString('en-US', { month: 'short' }));
+            values.push(cnt ? Math.round(sum / cnt) : 0);
+        }
+    }
+    return { labels, values };
+}
+function dayCompletionRate(date) {
+    const key = dateKey(date);
+    const applicable = state.habits.filter(h => h.createdAt <= date.getTime() + DAY_MS);
+    if (!applicable.length) return 0;
+    return Math.round((applicable.filter(h => h.completions[key]).length / applicable.length) * 100);
+}
+
+function categoryBreakdown() {
+    const map = {};
+    state.habits.forEach(h => {
+        const c = Object.values(h.completions).filter(Boolean).length;
+        map[h.category] = (map[h.category] || 0) + c;
+    });
+    return { labels: Object.keys(map), values: Object.values(map) };
+}
+
+function updateTrendChart() {
+    const type = document.getElementById('chartTypeSelect').value;
+    const period = document.getElementById('periodSelect').value;
+    const ctx = document.getElementById('trendChart').getContext('2d');
+    if (trendChart) trendChart.destroy();
+
+    let cfg;
+    if (type === 'pie' || type === 'doughnut') {
+        const { labels, values } = categoryBreakdown();
+        cfg = {
+            type, data: { labels, datasets: [{ data: values, backgroundColor: ['#2ecc71', '#a55eea', '#3498db', '#e67e22', '#e74c3c'] }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#7e8b9b' } } } }
+        };
+    } else if (type === 'radar') {
+        const labels = state.habits.map(h => h.name);
+        const values = state.habits.map(h => {
+            const days = Math.max(1, Math.floor((Date.now() - h.createdAt) / DAY_MS));
+            return Math.round((Object.values(h.completions).filter(Boolean).length / Math.min(days, 30)) * 100);
+        });
+        cfg = {
+            type: 'radar',
+            data: { labels, datasets: [{ label: 'Completion %', data: values, backgroundColor: 'rgba(46,204,113,.25)', borderColor: '#2ecc71', pointBackgroundColor: '#2ecc71' }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { r: { angleLines: { color: 'rgba(255,255,255,.1)' }, grid: { color: 'rgba(255,255,255,.1)' }, pointLabels: { color: '#7e8b9b', font: { size: 10 } }, ticks: { display: false }, suggestedMin: 0, suggestedMax: 100 } } }
+        };
+    } else {
+        const { labels, values } = buildTimeSeries(period);
+        const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+        gradient.addColorStop(0, 'rgba(46, 204, 113, 0.35)');
+        gradient.addColorStop(1, 'rgba(46, 204, 113, 0)');
+        cfg = {
+            type,
+            data: { labels, datasets: [{ label: 'Completion %', data: values, borderColor: '#2ecc71', backgroundColor: type === 'bar' ? '#2ecc71' : gradient, fill: type === 'line', tension: 0.4, pointBackgroundColor: '#2ecc71', pointBorderColor: '#0b0e14', pointRadius: 4, borderWidth: 3, borderRadius: type === 'bar' ? 6 : 0 }] },
+            options: {
+                responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                scales: { y: { min: 0, max: 100, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#7e8b9b' } }, x: { grid: { display: false }, ticks: { color: '#7e8b9b' } } }
+            }
+        };
+    }
+    trendChart = new Chart(ctx, cfg);
+}
+document.getElementById('chartTypeSelect').addEventListener('change', updateTrendChart);
+document.getElementById('periodSelect').addEventListener('change', updateTrendChart);
+
+/* =========================================================
+   GOALS
+   ========================================================= */
+function renderGoals() {
+    [document.getElementById('goalsList'), document.getElementById('goalsListFull')].forEach(container => {
+        container.innerHTML = state.goals.map(g => {
+            const pct = clamp(Math.round((g.current / g.target) * 100), 0, 100);
+            const colorCls = g.color === 'purple' ? 'purple' : 'green';
+            return `
+            <div class="goal-item">
+                <div class="goal-actions"><i class="fa-solid fa-pen" data-editgoal="${g.id}"></i><i class="fa-solid fa-trash" data-delgoal="${g.id}"></i></div>
+                <div class="goal-meta">
+                    <span class="goal-title"><i class="${g.icon} icon-${colorCls === 'purple' ? 'purple' : 'green'}"></i> ${escapeHtml(g.title)} <span class="goal-priority ${g.priority.toLowerCase()}">${g.priority}</span></span>
+                    <span>${g.current} / ${g.target}</span>
+                </div>
+                <div class="progress-bar-container"><div class="progress-bar-fill ${colorCls}" data-value="${pct}"></div></div>
+                <span class="goal-percent-label">${pct}% completed ${g.deadline ? '· due ' + new Date(g.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : ''}</span>
+            </div>`;
+        }).join('') || '<p class="empty-state">No goals yet — add one to start tracking.</p>';
+    });
+    document.querySelectorAll('.progress-bar-fill[data-value]').forEach(bar => {
+        const v = bar.dataset.value;
+        requestAnimationFrame(() => { bar.style.width = `${v}%`; });
+    });
+}
+document.querySelectorAll('#goalsList, #goalsListFull').forEach(c => {
+    c.addEventListener('click', e => {
+        const edit = e.target.closest('[data-editgoal]');
+        const del = e.target.closest('[data-delgoal]');
+        if (edit) openGoalModal(edit.dataset.editgoal);
+        if (del) deleteGoal(del.dataset.delgoal);
+    });
+});
+function deleteGoal(id) {
+    if (!confirm('Delete this goal?')) return;
+    state.goals = state.goals.filter(g => g.id !== id);
+    saveState(); renderGoals();
+}
+let editingGoalId = null;
+function openGoalModal(id) {
+    editingGoalId = id || null;
+    document.getElementById('goalModalTitle').textContent = id ? 'Edit Goal' : 'Add Goal';
+    if (id) {
+        const g = state.goals.find(x => x.id === id);
+        document.getElementById('goalTitleInput').value = g.title;
+        document.getElementById('goalCurrentInput').value = g.current;
+        document.getElementById('goalTargetInput').value = g.target;
+        document.getElementById('goalDeadlineInput').value = g.deadline || '';
+        document.getElementById('goalPriorityInput').value = g.priority;
+    } else {
+        document.getElementById('goalTitleInput').value = '';
+        document.getElementById('goalCurrentInput').value = 0;
+        document.getElementById('goalTargetInput').value = 10;
+        document.getElementById('goalDeadlineInput').value = '';
+        document.getElementById('goalPriorityInput').value = 'Medium';
+    }
+    showModal('goalModal');
+}
+document.getElementById('addGoalBtn').addEventListener('click', () => openGoalModal(null));
+document.getElementById('addGoalBtnSmall').addEventListener('click', () => openGoalModal(null));
+document.getElementById('viewAllGoals').addEventListener('click', e => { e.preventDefault(); scrollToSection('goalsSection', true); });
+document.getElementById('saveGoalBtn').addEventListener('click', () => {
+    const title = document.getElementById('goalTitleInput').value.trim();
+    if (!title) { toast('Please enter a goal title.'); return; }
+    const current = parseInt(document.getElementById('goalCurrentInput').value, 10) || 0;
+    const target = parseInt(document.getElementById('goalTargetInput').value, 10) || 1;
+    const deadline = document.getElementById('goalDeadlineInput').value;
+    const priority = document.getElementById('goalPriorityInput').value;
+    if (editingGoalId) {
+        const g = state.goals.find(x => x.id === editingGoalId);
+        Object.assign(g, { title, current, target, deadline, priority });
+    } else {
+        state.goals.push({ id: uid(), title, current, target, deadline, priority, icon: 'fa-solid fa-bullseye', color: 'green' });
+    }
+    saveState(); closeModal('goalModal'); renderGoals();
+    toast('Goal saved.');
+});
+
+/* =========================================================
+   ACHIEVEMENTS
+   ========================================================= */
+function renderAchievements() {
+    const grid = document.getElementById('achievementsGrid');
+    grid.innerHTML = ACHIEVEMENTS.map(a => {
+        const unlocked = state.achievementsUnlocked.includes(a.id);
+        return `<div class="achievement-card ${unlocked ? 'unlocked' : ''}">
+            <div class="ach-icon">${a.icon}</div><h5>${a.name}</h5><p>${a.desc}</p>
+        </div>`;
+    }).join('');
+}
+
+/* =========================================================
+   WEEKLY REPORT / PRODUCTIVITY SCORE / ACTIVITY FEED / NOTIFICATIONS
+   ========================================================= */
+function renderWeeklyReport() {
+    const r = computeWeeklyReport(state);
+    document.getElementById('weeklyGoalPercent').textContent = r.percent + '%';
+    document.getElementById('weeklyGoalSub').textContent = `${r.completed} / ${r.total} habits completed this week`;
+    const bar = document.getElementById('weeklyGoalBar');
+    bar.dataset.value = r.percent;
+    requestAnimationFrame(() => { bar.style.width = r.percent + '%'; });
+    document.getElementById('weeklyReportMini').innerHTML = `
+        <span>Completed<b>${r.completed}</b></span>
+        <span>Missed<b>${r.missed}</b></span>
+        <span>Best Day<b>${r.bestDay}</b></span>`;
+    const score = clamp(Math.round(r.percent * 0.6 + Math.min(Math.max(0, ...state.habits.map(computeStreak)), 30) / 30 * 100 * 0.4), 0, 100);
+    document.getElementById('productivityScore').innerHTML = `Productivity Score: <b>${score} / 100</b>`;
+}
+
+function renderActivity() {
+    const list = document.getElementById('activityList');
+    list.innerHTML = state.activity.slice(0, 8).map(a => `
+        <div class="activity-item ${a.type === 'miss' ? 'missed' : ''}">
+            <i class="fa-solid ${a.type === 'miss' ? 'fa-circle-xmark' : 'fa-circle-check'}"></i>
+            <span>${escapeHtml(a.text)}</span>
+            <span class="activity-time">${timeAgo(a.time)}</span>
+        </div>`).join('') || '<p class="empty-state">No activity yet.</p>';
+}
+
+function renderNotifications() {
+    const list = document.getElementById('notifList');
+    const recent = state.activity.slice(0, 6);
+    list.innerHTML = recent.map(a => `<li><i class="fa-solid ${a.type === 'miss' ? 'fa-circle-xmark' : 'fa-check'}"></i> ${escapeHtml(a.text)}</li>`).join('') || '<li class="empty">No notifications</li>';
+    document.getElementById('notifBadge').textContent = recent.length;
+}
+
+/* =========================================================
+   BROWSER NOTIFICATIONS / REMINDER
+   ========================================================= */
+function maybeFireReminder() {
+    if (!state.settings.notificationsEnabled) return;
+    if (Notification.permission !== 'granted') return;
+    const now = new Date();
+    const hhmm = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    if (hhmm === state.settings.reminderTime && state.lastReminderDate !== todayKey()) {
+        new Notification('Habit Tracker Reminder', { body: "Don't forget to complete your habits today!" });
+        state.lastReminderDate = todayKey();
+        saveState();
+    }
+}
+setInterval(maybeFireReminder, 20000);
+
+/* =========================================================
+   MODALS (generic)
+   ========================================================= */
+function showModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.modal-close, [data-close]').forEach(el => {
+    el.addEventListener('click', () => closeModal(el.dataset.close));
+});
+document.querySelectorAll('.modal-overlay').forEach(ov => {
+    ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('show'); });
+});
+
+/* =========================================================
+   SETTINGS
+   ========================================================= */
+document.getElementById('openSettingsBtn').addEventListener('click', e => { e.preventDefault(); openSettings(); });
+function openSettings() {
+    document.getElementById('settingsName').value = state.profile.name;
+    document.getElementById('settingsEmail').value = state.profile.email;
+    document.getElementById('settingsNotifToggle').checked = state.settings.notificationsEnabled;
+    document.getElementById('settingsReminderTime').value = state.settings.reminderTime;
+    showModal('settingsModal');
+}
+document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+    state.profile.name = document.getElementById('settingsName').value.trim() || state.profile.name;
+    state.profile.email = document.getElementById('settingsEmail').value.trim();
+    const wantNotif = document.getElementById('settingsNotifToggle').checked;
+    if (wantNotif && Notification.permission !== 'granted' && 'Notification' in window) {
+        Notification.requestPermission().then(perm => {
+            state.settings.notificationsEnabled = perm === 'granted';
+            saveState();
+            if (perm !== 'granted') toast('Notifications permission was not granted.');
+        });
+    } else {
+        state.settings.notificationsEnabled = wantNotif;
+    }
+    state.settings.reminderTime = document.getElementById('settingsReminderTime').value || '19:00';
+    saveState(); closeModal('settingsModal'); renderProfileHeader();
+    toast('Settings saved.');
+});
+document.getElementById('deleteAccountBtn').addEventListener('click', () => {
+    if (!confirm('This will permanently delete all local data. Continue?')) return;
+    localStorage.clear();
+    window.location.href = 'login.html';
+});
+
+/* ---- Export ---- */
+document.getElementById('exportCsvBtn').addEventListener('click', () => {
+    let rows = ['Habit,Category,Date,Completed'];
+    state.habits.forEach(h => {
+        Object.keys(h.completions).sort().forEach(k => {
+            rows.push(`${h.name},${h.category},${k},${h.completions[k] ? 'Yes' : 'No'}`);
+        });
+    });
+    downloadFile('habit-tracker-export.csv', rows.join('\n'), 'text/csv');
+});
+document.getElementById('exportJsonBtn').addEventListener('click', () => {
+    downloadFile('habit-tracker-data.json', JSON.stringify(state, null, 2), 'application/json');
+});
+function downloadFile(name, content, mime) {
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = name; a.click();
+    URL.revokeObjectURL(url);
+}
+
+/* =========================================================
+   PROFILE HEADER
+   ========================================================= */
+function renderProfileHeader() {
+    document.getElementById('profileName').textContent = state.profile.name;
+    document.getElementById('profileImg').src = state.profile.photo;
+    const { level, into, pct } = levelInfo(state.xp);
+    document.getElementById('sidebarLevel').textContent = level;
+    document.getElementById('sidebarXpText').textContent = `${into} / ${XP_PER_LEVEL} XP`;
+    document.getElementById('sidebarXpBar').dataset.value = pct;
+    const bar = document.getElementById('sidebarXpBar');
+    requestAnimationFrame(() => { bar.style.width = pct + '%'; });
+}
+
+/* =========================================================
+   NAV / MOBILE
+   ========================================================= */
+function scrollToSection(id, forceShow) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (forceShow) el.style.display = '';
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+document.querySelectorAll('.nav-item[data-target], .bottom-nav a[data-target]').forEach(el => {
+    el.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        el.closest('.nav-item')?.classList.add('active');
+        scrollToSection(el.dataset.target);
+        document.getElementById('sidebar').classList.remove('open');
+    });
+});
+document.querySelectorAll('.nav-item[data-open]').forEach(el => {
+    el.addEventListener('click', e => { e.preventDefault(); showModal(el.dataset.open); });
+});
+document.getElementById('bottomNavProfile').addEventListener('click', e => { e.preventDefault(); openSettings(); });
+
+document.getElementById('menuToggle').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('open'));
+
+/* ---- notification dropdown ---- */
+const notifBox = document.getElementById('notifBox');
+const notifDropdown = document.getElementById('notifDropdown');
+notifBox.addEventListener('click', e => { e.stopPropagation(); notifDropdown.classList.toggle('show'); });
+document.addEventListener('click', e => { if (!notifBox.contains(e.target)) notifDropdown.classList.remove('show'); });
+
+/* =========================================================
+   MASTER RENDER
+   ========================================================= */
+function renderAll() {
+    renderProfileHeader();
+    updateGreeting();
+    renderHabits();
+    renderCalendar();
+    renderHeatmap();
+    renderTopStats();
+    renderInnerStats();
+    updateTrendChart();
+    renderGoals();
+    renderAchievements();
+    renderWeeklyReport();
+    renderActivity();
+    renderNotifications();
+}
+
+/* =========================================================
+   INIT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+    handleAuth();
+    applyTheme();
+    updateClock(); setInterval(updateClock, 1000);
+    updateDate(); setInterval(updateDate, 60000);
+    initWeather();
+    renderAll();
+    checkAchievements(); saveState();
+
+    setTimeout(() => document.getElementById('skeletonOverlay').classList.add('hide'), 500);
+});
