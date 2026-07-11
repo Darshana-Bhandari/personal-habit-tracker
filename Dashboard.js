@@ -180,3 +180,209 @@ function checkAchievements() {
 function pushActivity(type, text) {
     state.activity.unshift({ type, text, time: Date.now() });
     state.activity = state.activity.slice(0, 20);
+    /* =========================================================
+   AUTH
+   ========================================================= */
+function handleAuth() {
+    const loggedIn = localStorage.getItem('isLoggedIn');
+    const guest = localStorage.getItem('isGuest');
+    if (!loggedIn && !guest) {
+        localStorage.setItem('isGuest', 'true');
+    }
+    const prevLogin = localStorage.getItem('loginTime');
+    const lastLoginEl = document.getElementById('lastLoginText');
+    if (prevLogin) {
+        const d = new Date(parseInt(prevLogin, 10));
+        lastLoginEl.textContent = `Last login: ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}, ${d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+    } else {
+        lastLoginEl.textContent = 'Welcome — this is your first login.';
+    }
+    localStorage.setItem('loginTime', String(Date.now()));
+}
+ 
+document.getElementById('logoutBtn').addEventListener('click', () => {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('isGuest');
+    localStorage.removeItem('loginTime');
+    window.location.href = 'login.html';
+});
+ 
+/* =========================================================
+   CLOCK / GREETING / DATE / QUOTE
+   ========================================================= */
+function updateClock() {
+    const now = new Date();
+    document.getElementById('liveClock').textContent = '🕒 ' + now.toLocaleTimeString('en-US', { hour12: true });
+}
+ 
+function updateDate() {
+    const now = new Date();
+    document.getElementById('dateDay').textContent = now.toLocaleDateString('en-US', { weekday: 'long' });
+    document.getElementById('dateFull').textContent = now.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+ 
+function updateGreeting() {
+    const hour = new Date().getHours();
+    let msg = hour < 12 ? '🌞 Good Morning' : hour < 17 ? '🌤 Good Afternoon' : hour < 21 ? '🌇 Good Evening' : '🌙 Good Night';
+    const total = state.habits.length;
+    const done = state.habits.filter(h => h.completions[todayKey()]).length;
+    document.getElementById('greeting').innerHTML = `${msg}, ${state.profile.name}! 👋`;
+    const sub = total ? `You completed ${done} of ${total} habits today.` : 'Add your first habit to get started.';
+    document.getElementById('quote').textContent = performanceQuote(done, total) + ' ' + sub;
+}
+ 
+function performanceQuote(done, total) {
+    if (total === 0) return 'Stay consistent, stay productive.';
+    const rate = done / total;
+    if (rate === 1) return 'Excellent! You crushed every habit today. 🎉';
+    if (rate >= 0.5) return "Solid progress — keep the momentum going.";
+    if (rate > 0) return "A start is a start. Finish strong today.";
+    return "Don't give up. Tomorrow is another chance.";
+}
+ 
+/* =========================================================
+   WEATHER (Open-Meteo, no API key)
+   ========================================================= */
+const WEATHER_ICONS = {
+    0: ['☀️', 'Clear sky'], 1: ['🌤️', 'Mainly clear'], 2: ['⛅', 'Partly cloudy'], 3: ['☁️', 'Overcast'],
+    45: ['🌫️', 'Fog'], 48: ['🌫️', 'Fog'], 51: ['🌦️', 'Drizzle'], 61: ['🌧️', 'Rain'], 63: ['🌧️', 'Rain'],
+    65: ['🌧️', 'Heavy rain'], 71: ['🌨️', 'Snow'], 80: ['🌧️', 'Showers'], 95: ['⛈️', 'Thunderstorm']
+};
+function weatherLabel(code) { return WEATHER_ICONS[code] || ['🌡️', 'Weather']; }
+ 
+async function loadWeather(lat, lon, cityName) {
+    try {
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const c = data.current;
+        const [icon] = weatherLabel(c.weather_code);
+        const widget = document.getElementById('weatherWidget');
+        widget.innerHTML = `
+            <span>${icon}</span>
+            <span class="weather-city">${cityName}</span>
+            <span class="weather-temp">${Math.round(c.temperature_2m)}°C</span>`;
+        widget.title = `Feels like ${Math.round(c.apparent_temperature)}°C · Humidity ${c.relative_humidity_2m}% · Wind ${Math.round(c.wind_speed_10m)} km/h`;
+    } catch (e) {
+        document.getElementById('weatherWidget').innerHTML = `<i class="fa-solid fa-cloud-sun"></i><span class="weather-city">${cityName}</span><span class="weather-temp">--°C</span>`;
+    }
+}
+function initWeather() {
+    const fallback = () => loadWeather(27.7172, 85.3240, 'Kathmandu');
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            pos => loadWeather(pos.coords.latitude.toFixed(2), pos.coords.longitude.toFixed(2), 'Your area'),
+            fallback, { timeout: 4000 }
+        );
+    } else fallback();
+}
+ 
+/* =========================================================
+   THEME
+   ========================================================= */
+function applyTheme() {
+    document.body.setAttribute('data-theme', state.theme);
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === state.theme));
+}
+document.getElementById('themeToggle').addEventListener('click', e => {
+    const btn = e.target.closest('.theme-btn');
+    if (!btn) return;
+    state.theme = btn.dataset.theme;
+    saveState(); applyTheme();
+});
+ 
+/* =========================================================
+   HABITS
+   ========================================================= */
+let currentFilter = 'all';
+let searchTerm = '';
+ 
+function filteredHabits() {
+    let list = [...state.habits].sort((a, b) => (b.favorite - a.favorite) || (a.order - b.order));
+    if (searchTerm) list = list.filter(h => h.name.toLowerCase().includes(searchTerm.toLowerCase()) || h.category.toLowerCase().includes(searchTerm.toLowerCase()));
+    if (currentFilter === 'completed') list = list.filter(h => h.completions[todayKey()]);
+    else if (currentFilter === 'incomplete') list = list.filter(h => !h.completions[todayKey()]);
+    else if (currentFilter === 'favorite') list = list.filter(h => h.favorite);
+    return list;
+}
+ 
+function renderHabits() {
+    const list = filteredHabits();
+    const container = document.getElementById('habitList');
+    const empty = document.getElementById('habitEmptyState');
+    container.innerHTML = '';
+    empty.style.display = list.length ? 'none' : 'block';
+    list.forEach(h => {
+        const streak = computeStreak(h);
+        const checked = !!h.completions[todayKey()];
+        const el = document.createElement('div');
+        el.className = 'habit-item';
+        el.innerHTML = `
+            <div class="habit-details">
+                <div class="habit-icon ${h.color}-bg"><i class="${h.icon}"></i></div>
+                <div class="habit-meta"><h4>${escapeHtml(h.name)}</h4><p>${escapeHtml(h.category)}</p></div>
+            </div>
+            <div class="habit-streak-status">
+                <i class="fa-solid fa-star fav-star ${h.favorite ? 'active' : ''}" data-fav="${h.id}"></i>
+                <span class="streak-count">${streak} <i class="fa-solid fa-fire"></i> day streak</span>
+                <label class="checkbox-wrapper">
+                    <input type="checkbox" data-toggle="${h.id}" ${checked ? 'checked' : ''}>
+                    <span class="custom-checkbox"></span>
+                </label>
+                <div class="habit-actions">
+                    <i class="fa-solid fa-pen" data-edit="${h.id}"></i>
+                    <i class="fa-solid fa-trash" data-del="${h.id}"></i>
+                </div>
+            </div>`;
+        container.appendChild(el);
+    });
+}
+ 
+function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+ 
+document.getElementById('habitList').addEventListener('click', e => {
+    const fav = e.target.closest('[data-fav]');
+    const edit = e.target.closest('[data-edit]');
+    const del = e.target.closest('[data-del]');
+    if (fav) { toggleFavorite(fav.dataset.fav); return; }
+    if (edit) { openHabitModal(edit.dataset.edit); return; }
+    if (del) { deleteHabit(del.dataset.del); return; }
+});
+document.getElementById('habitList').addEventListener('change', e => {
+    const t = e.target.closest('[data-toggle]');
+    if (t) toggleComplete(t.dataset.toggle);
+});
+ 
+function toggleFavorite(id) {
+    const h = state.habits.find(x => x.id === id);
+    if (!h) return;
+    h.favorite = !h.favorite;
+    saveState(); renderHabits();
+}
+ 
+function toggleComplete(id) {
+    const h = state.habits.find(x => x.id === id);
+    if (!h) return;
+    const key = todayKey();
+    const nowDone = !h.completions[key];
+    if (nowDone) { h.completions[key] = true; state.xp += 15; pushActivity('ok', `Completed ${h.name}`); }
+    else { delete h.completions[key]; state.xp = Math.max(0, state.xp - 15); pushActivity('miss', `Unmarked ${h.name}`); }
+    checkAchievements();
+    saveState();
+    renderAll();
+}
+ 
+function deleteHabit(id) {
+    if (!confirm('Delete this habit? This cannot be undone.')) return;
+    state.habits = state.habits.filter(h => h.id !== id);
+    saveState(); renderAll();
+    toast('Habit deleted.');
+}
+ 
+document.getElementById('filterChips').addEventListener('click', e => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    currentFilter = chip.dataset.filter;
+    document.querySelectorAll('#filterChips .chip').forEach(c => c.classList.toggle('active', c === chip));
+    renderHabits();
+});
