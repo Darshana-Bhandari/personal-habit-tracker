@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Tracker - Notes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="Dashboard.css">
+    <link rel="stylesheet" href="pages.css">
+</head>
+<body>
+    <button id="menuToggle" class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
+
+    <aside id="sidebar">
+        <div>
+            <div class="logo">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>Habit Tracker</span>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item "><a href="Dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li class="nav-item "><a href="Habits.html"><i class="fa-solid fa-list-check"></i> Habits</a></li>
+                <li class="nav-item "><a href="Calendar.html"><i class="fa-regular fa-calendar"></i> Calendar</a></li>
+                <li class="nav-item "><a href="Statistics.html"><i class="fa-solid fa-chart-simple"></i> Statistics</a></li>
+                <li class="nav-item "><a href="Goals.html"><i class="fa-solid fa-bullseye"></i> Goals</a></li>
+                <li class="nav-item "><a href="Achievements.html"><i class="fa-solid fa-trophy"></i> Achievements</a></li>
+                <li class="nav-item active"><a href="Notes.html"><i class="fa-regular fa-file-lines"></i> Notes</a></li>
+            </ul>
+        </div>
+
+        <div class="upgrade-card">
+            <i class="fa-solid fa-crown"></i>
+            <h4>Upgrade to Pro</h4>
+            <p>Unlock unlimited habits, advanced statistics and reminders.</p>
+            <button class="upgrade-btn">Upgrade Now</button>
+        </div>
+
+        <a href="#" class="settings-btn">
+            <span><i class="fa-solid fa-gear"></i> Settings</span>
+            <i class="fa-solid fa-chevron-right chevron-sm"></i>
+        </a>
+    </aside>
+
+    <main>
+        <header>
+            <div class="welcome-text">
+                <h1 id="greeting">Notes 📝</h1>
+                <p id="quote">A journal for the moments behind the checkmarks</p>
+            </div>
+            <div class="header-actions">
+                <div class="weather-widget">
+                    <i class="fa-solid fa-cloud-sun"></i>
+                    <span class="weather-city">Kathmandu</span>
+                    <span class="weather-temp">28°C</span>
+                </div>
+                <div class="date-widget">
+                    <div class="date-day">Wednesday</div>
+                    <div class="date-full">8 July 2026</div>
+                </div>
+                <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i></div>
+                <div class="notif-box" id="notifBox">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notif-badge">3</span>
+                </div>
+                <div class="theme-toggle">
+                    <div class="theme-btn"><i class="fa-regular fa-sun"></i></div>
+                    <div class="theme-btn active"><i class="fa-solid fa-moon"></i></div>
+                </div>
+                <div class="profile-section">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Profile" class="profile-img">
+                    <div class="profile-info">
+                        <h4>Darshana</h4>
+                        <span>Frontend Developer</span>
+                    </div>
+                    <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                </div>
+            </div>
+        </header>
+
+
+        <div class="notes-layout">
+            <div class="section-card" style="display:flex;flex-direction:column;gap:14px">
+                <div class="search-pill"><i class="fa-solid fa-magnifying-glass"></i><input type="text" placeholder="Search notes..."></div>
+                <div class="notes-list">
+                <div class="note-item active">
+                    <h5>Great workout today</h5>
+                    <p>Legs day went really well, hit a new PR on squats. Feeling strong goin...</p>
+                    <div class="note-meta"><span><span class="mood-dot" style="background:#2ecc71"></span>Jul 8</span><span><i class="fa-regular fa-star"></i></span></div>
+                </div>
+                <div class="note-item">
+                    <h5>Struggled to focus</h5>
+                    <p>Couldn't get through the reading. Might need to change my study enviro...</p>
+                    <div class="note-meta"><span><span class="mood-dot" style="background:#e74c3c"></span>Jul 7</span><span><i class="fa-regular fa-star"></i></span></div>
+                </div>
+                <div class="note-item">
+                    <h5>Meditation reflections</h5>
+                    <p>10 minutes felt longer than usual today, in a good way. Mind was calme...</p>
+                    <div class="note-meta"><span><span class="mood-dot" style="background:#3498db"></span>Jul 6</span><span><i class="fa-regular fa-star"></i></span></div>
+                </div>
+                <div class="note-item">
+                    <h5>Weekly review</h5>
+                    <p>72% completion this week. Water intake is still the weak spot — need a...</p>
+                    <div class="note-meta"><span><span class="mood-dot" style="background:#a55eea"></span>Jul 5</span><span><i class="fa-regular fa-star"></i></span></div>
+                </div></div>
+                <button class="btn-primary" style="justify-content:center"><i class="fa-solid fa-plus"></i> New Note</button>
+            </div>
+            <div class="section-card note-editor">
+                <input class="note-editor-title" value="Great workout today" placeholder="Note title...">
+                <p style="font-size:11px;color:var(--text-secondary);margin-top:-12px">July 8, 2026 · linked to Exercise</p>
+                <textarea class="note-editor-body" placeholder="Write your thoughts...">Legs day went really well, hit a new PR on squats. Feeling strong going into the weekend. Planning to keep this pace up and maybe add an extra rest day next week to recover properly.</textarea>
+                <div class="note-toolbar">
+                    <i class="fa-solid fa-bold"></i>
+                    <i class="fa-solid fa-italic"></i>
+                    <i class="fa-solid fa-list"></i>
+                    <i class="fa-solid fa-link"></i>
+                    <i class="fa-regular fa-image"></i>
+                    <span style="margin-left:auto;font-size:11px;color:var(--text-secondary)">Saved a moment ago</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="pages.js" defer></script>
+</body>
+</html>
