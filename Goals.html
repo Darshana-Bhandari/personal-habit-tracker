@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Tracker - Goals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="Dashboard.css">
+    <link rel="stylesheet" href="pages.css">
+</head>
+<body>
+    <button id="menuToggle" class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
+
+    <aside id="sidebar">
+        <div>
+            <div class="logo">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>Habit Tracker</span>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item "><a href="Dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li class="nav-item "><a href="Habits.html"><i class="fa-solid fa-list-check"></i> Habits</a></li>
+                <li class="nav-item "><a href="Calendar.html"><i class="fa-regular fa-calendar"></i> Calendar</a></li>
+                <li class="nav-item "><a href="Statistics.html"><i class="fa-solid fa-chart-simple"></i> Statistics</a></li>
+                <li class="nav-item active"><a href="Goals.html"><i class="fa-solid fa-bullseye"></i> Goals</a></li>
+                <li class="nav-item "><a href="Achievements.html"><i class="fa-solid fa-trophy"></i> Achievements</a></li>
+                <li class="nav-item "><a href="Notes.html"><i class="fa-regular fa-file-lines"></i> Notes</a></li>
+            </ul>
+        </div>
+
+        <div class="upgrade-card">
+            <i class="fa-solid fa-crown"></i>
+            <h4>Upgrade to Pro</h4>
+            <p>Unlock unlimited habits, advanced statistics and reminders.</p>
+            <button class="upgrade-btn">Upgrade Now</button>
+        </div>
+
+        <a href="#" class="settings-btn">
+            <span><i class="fa-solid fa-gear"></i> Settings</span>
+            <i class="fa-solid fa-chevron-right chevron-sm"></i>
+        </a>
+    </aside>
+
+    <main>
+        <header>
+            <div class="welcome-text">
+                <h1 id="greeting">Goals 🎯</h1>
+                <p id="quote">Long-term targets, broken into daily wins</p>
+            </div>
+            <div class="header-actions">
+                <div class="weather-widget">
+                    <i class="fa-solid fa-cloud-sun"></i>
+                    <span class="weather-city">Kathmandu</span>
+                    <span class="weather-temp">28°C</span>
+                </div>
+                <div class="date-widget">
+                    <div class="date-day">Wednesday</div>
+                    <div class="date-full">8 July 2026</div>
+                </div>
+                <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i></div>
+                <div class="notif-box" id="notifBox">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notif-badge">3</span>
+                </div>
+                <div class="theme-toggle">
+                    <div class="theme-btn"><i class="fa-regular fa-sun"></i></div>
+                    <div class="theme-btn active"><i class="fa-solid fa-moon"></i></div>
+                </div>
+                <div class="profile-section">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Profile" class="profile-img">
+                    <div class="profile-info">
+                        <h4>Darshana</h4>
+                        <span>Frontend Developer</span>
+                    </div>
+                    <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                </div>
+            </div>
+        </header>
+
+
+        <div class="page-toolbar">
+            <div class="chip-row">
+                <div class="chip active">All Goals</div>
+                <div class="chip">In Progress</div>
+                <div class="chip">Completed</div>
+                <div class="chip">Overdue</div>
+            </div>
+            <button class="btn-primary"><i class="fa-solid fa-plus"></i> New Goal</button>
+        </div>
+        <div class="goals-page-grid">
+            <div class="goal-card-lg" style="--accent:#2ecc71">
+                <div class="goal-card-top">
+                    <div style="display:flex;gap:12px;align-items:center">
+                        <div class="goal-icon-lg" style="background:#2ecc7126;color:#2ecc71"><i class="fa-solid fa-book"></i></div>
+                        <div><h4 style="font-size:15px">Read 20 Books</h4><span style="font-size:11px;color:var(--text-secondary)">8 / 20</span></div>
+                    </div>
+                    <span class="goal-deadline"><i class="fa-regular fa-clock"></i> Dec 31, 2026</span>
+                </div>
+                <div class="progress-bar-container"><div class="progress-bar-fill green" data-value="40"></div></div>
+                <span class="goal-percent-label" style="text-align:left">40% complete</span>
+                <div class="milestone-track"><div class="ms on"></div><div class="ms on"></div><div class="ms "></div><div class="ms "></div><div class="ms "></div></div>
+            </div>
+            <div class="goal-card-lg" style="--accent:#a55eea">
+                <div class="goal-card-top">
+                    <div style="display:flex;gap:12px;align-items:center">
+                        <div class="goal-icon-lg" style="background:#a55eea26;color:#a55eea"><i class="fa-solid fa-dumbbell"></i></div>
+                        <div><h4 style="font-size:15px">Exercise 50 Days</h4><span style="font-size:11px;color:var(--text-secondary)">32 / 50</span></div>
+                    </div>
+                    <span class="goal-deadline"><i class="fa-regular fa-clock"></i> Sep 15, 2026</span>
+                </div>
+                <div class="progress-bar-container"><div class="progress-bar-fill green" data-value="64"></div></div>
+                <span class="goal-percent-label" style="text-align:left">64% complete</span>
+                <div class="milestone-track"><div class="ms on"></div><div class="ms on"></div><div class="ms on"></div><div class="ms "></div><div class="ms "></div></div>
+            </div>
+            <div class="goal-card-lg" style="--accent:#3498db">
+                <div class="goal-card-top">
+                    <div style="display:flex;gap:12px;align-items:center">
+                        <div class="goal-icon-lg" style="background:#3498db26;color:#3498db"><i class="fa-solid fa-person-running"></i></div>
+                        <div><h4 style="font-size:15px">Run a 10K</h4><span style="font-size:11px;color:var(--text-secondary)">6 / 10</span></div>
+                    </div>
+                    <span class="goal-deadline"><i class="fa-regular fa-clock"></i> Aug 20, 2026</span>
+                </div>
+                <div class="progress-bar-container"><div class="progress-bar-fill green" data-value="60"></div></div>
+                <span class="goal-percent-label" style="text-align:left">60% complete</span>
+                <div class="milestone-track"><div class="ms on"></div><div class="ms on"></div><div class="ms on"></div><div class="ms "></div><div class="ms "></div></div>
+            </div>
+            <div class="goal-card-lg" style="--accent:#e67e22">
+                <div class="goal-card-top">
+                    <div style="display:flex;gap:12px;align-items:center">
+                        <div class="goal-icon-lg" style="background:#e67e2226;color:#e67e22"><i class="fa-solid fa-spa"></i></div>
+                        <div><h4 style="font-size:15px">Meditate 100 Sessions</h4><span style="font-size:11px;color:var(--text-secondary)">21 / 100</span></div>
+                    </div>
+                    <span class="goal-deadline"><i class="fa-regular fa-clock"></i> Feb 1, 2027</span>
+                </div>
+                <div class="progress-bar-container"><div class="progress-bar-fill green" data-value="21"></div></div>
+                <span class="goal-percent-label" style="text-align:left">21% complete</span>
+                <div class="milestone-track"><div class="ms on"></div><div class="ms "></div><div class="ms "></div><div class="ms "></div><div class="ms "></div></div>
+            </div>
+            <div class="goal-card-lg" style="--accent:#e74c3c">
+                <div class="goal-card-top">
+                    <div style="display:flex;gap:12px;align-items:center">
+                        <div class="goal-icon-lg" style="background:#e74c3c26;color:#e74c3c"><i class="fa-solid fa-language"></i></div>
+                        <div><h4 style="font-size:15px">Learn 500 Words (Spanish)</h4><span style="font-size:11px;color:var(--text-secondary)">260 / 500</span></div>
+                    </div>
+                    <span class="goal-deadline"><i class="fa-regular fa-clock"></i> Nov 1, 2026</span>
+                </div>
+                <div class="progress-bar-container"><div class="progress-bar-fill green" data-value="52"></div></div>
+                <span class="goal-percent-label" style="text-align:left">52% complete</span>
+                <div class="milestone-track"><div class="ms on"></div><div class="ms on"></div><div class="ms "></div><div class="ms "></div><div class="ms "></div></div>
+            </div>
+            <div class="goal-card-lg" style="--accent:#2ecc71">
+                <div class="goal-card-top">
+                    <div style="display:flex;gap:12px;align-items:center">
+                        <div class="goal-icon-lg" style="background:#2ecc7126;color:#2ecc71"><i class="fa-solid fa-piggy-bank"></i></div>
+                        <div><h4 style="font-size:15px">Save Rs. 100,000</h4><span style="font-size:11px;color:var(--text-secondary)">45,000 / 100,000</span></div>
+                    </div>
+                    <span class="goal-deadline"><i class="fa-regular fa-clock"></i> Jan 1, 2027</span>
+                </div>
+                <div class="progress-bar-container"><div class="progress-bar-fill green" data-value="45"></div></div>
+                <span class="goal-percent-label" style="text-align:left">45% complete</span>
+                <div class="milestone-track"><div class="ms on"></div><div class="ms on"></div><div class="ms "></div><div class="ms "></div><div class="ms "></div></div>
+            </div></div>
+
+    </main>
+
+    <script src="pages.js" defer></script>
+</body>
+</html>
