@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Tracker - Achievements</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="Dashboard.css">
+    <link rel="stylesheet" href="pages.css">
+</head>
+<body>
+    <button id="menuToggle" class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
+
+    <aside id="sidebar">
+        <div>
+            <div class="logo">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>Habit Tracker</span>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item "><a href="Dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li class="nav-item "><a href="Habits.html"><i class="fa-solid fa-list-check"></i> Habits</a></li>
+                <li class="nav-item "><a href="Calendar.html"><i class="fa-regular fa-calendar"></i> Calendar</a></li>
+                <li class="nav-item "><a href="Statistics.html"><i class="fa-solid fa-chart-simple"></i> Statistics</a></li>
+                <li class="nav-item "><a href="Goals.html"><i class="fa-solid fa-bullseye"></i> Goals</a></li>
+                <li class="nav-item active"><a href="Achievements.html"><i class="fa-solid fa-trophy"></i> Achievements</a></li>
+                <li class="nav-item "><a href="Notes.html"><i class="fa-regular fa-file-lines"></i> Notes</a></li>
+            </ul>
+        </div>
+
+        <div class="upgrade-card">
+            <i class="fa-solid fa-crown"></i>
+            <h4>Upgrade to Pro</h4>
+            <p>Unlock unlimited habits, advanced statistics and reminders.</p>
+            <button class="upgrade-btn">Upgrade Now</button>
+        </div>
+
+        <a href="#" class="settings-btn">
+            <span><i class="fa-solid fa-gear"></i> Settings</span>
+            <i class="fa-solid fa-chevron-right chevron-sm"></i>
+        </a>
+    </aside>
+
+    <main>
+        <header>
+            <div class="welcome-text">
+                <h1 id="greeting">Achievements 🏆</h1>
+                <p id="quote">Badges earned by showing up</p>
+            </div>
+            <div class="header-actions">
+                <div class="weather-widget">
+                    <i class="fa-solid fa-cloud-sun"></i>
+                    <span class="weather-city">Kathmandu</span>
+                    <span class="weather-temp">28°C</span>
+                </div>
+                <div class="date-widget">
+                    <div class="date-day">Wednesday</div>
+                    <div class="date-full">8 July 2026</div>
+                </div>
+                <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i></div>
+                <div class="notif-box" id="notifBox">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notif-badge">3</span>
+                </div>
+                <div class="theme-toggle">
+                    <div class="theme-btn"><i class="fa-regular fa-sun"></i></div>
+                    <div class="theme-btn active"><i class="fa-solid fa-moon"></i></div>
+                </div>
+                <div class="profile-section">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Profile" class="profile-img">
+                    <div class="profile-info">
+                        <h4>Darshana</h4>
+                        <span>Frontend Developer</span>
+                    </div>
+                    <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                </div>
+            </div>
+        </header>
+
+
+        <div class="tier-summary">
+            <div class="tier-pill"><div class="m-icon" style="background:#f1c40f26;color:#f1c40f"><i class="fa-solid fa-trophy"></i></div><div><h3 style="font-size:20px">5</h3><p style="font-size:11px;color:var(--text-secondary)">Unlocked</p></div></div>
+            <div class="tier-pill"><div class="m-icon" style="background:#a55eea26;color:#a55eea"><i class="fa-solid fa-lock-open"></i></div><div><h3 style="font-size:20px">1</h3><p style="font-size:11px;color:var(--text-secondary)">In Progress</p></div></div>
+            <div class="tier-pill"><div class="m-icon" style="background:#e74c3c26;color:#e74c3c"><i class="fa-solid fa-lock"></i></div><div><h3 style="font-size:20px">4</h3><p style="font-size:11px;color:var(--text-secondary)">Locked</p></div></div>
+        </div>
+        <div class="section-card">
+            <div class="section-header"><h3 class="section-title">All Achievements</h3><span class="link-green">10 total</span></div>
+            <div class="badge-grid">
+            <div class="badge-card">
+                <div class="badge-medal gold"><i class="fa-solid fa-shoe-prints"></i></div>
+                <h5>First Step</h5>
+                <p>Complete your first habit</p>
+                
+            </div>
+            <div class="badge-card">
+                <div class="badge-medal gold"><i class="fa-solid fa-fire"></i></div>
+                <h5>Week Warrior</h5>
+                <p>7-day streak on any habit</p>
+                
+            </div>
+            <div class="badge-card">
+                <div class="badge-medal silver"><i class="fa-solid fa-crown"></i></div>
+                <h5>Consistency King</h5>
+                <p>30-day streak</p>
+                
+            </div>
+            <div class="badge-card">
+                <div class="badge-medal silver"><i class="fa-solid fa-medal"></i></div>
+                <h5>Century Club</h5>
+                <p>100 total completions</p>
+                
+            </div>
+            <div class="badge-card">
+                <div class="badge-medal bronze"><i class="fa-solid fa-sun"></i></div>
+                <h5>Early Bird</h5>
+                <p>10 habits done before 7AM</p>
+                
+            </div>
+            <div class="badge-card locked">
+                <div class="badge-medal locked-medal"><i class="fa-solid fa-lock"></i></div>
+                <h5>Bookworm</h5>
+                <p>Finish 5 reading goals</p>
+                <div class="progress-bar-container" style="width:100%"><div class="progress-bar-fill green" data-value="60"></div></div><span style="font-size:10px;color:var(--text-secondary)">3/5</span>
+            </div>
+            <div class="badge-card locked">
+                <div class="badge-medal locked-medal"><i class="fa-solid fa-lock"></i></div>
+                <h5>Iron Will</h5>
+                <p>90-day streak</p>
+                
+            </div>
+            <div class="badge-card locked">
+                <div class="badge-medal locked-medal"><i class="fa-solid fa-lock"></i></div>
+                <h5>Perfectionist</h5>
+                <p>100% completion for a month</p>
+                
+            </div>
+            <div class="badge-card locked">
+                <div class="badge-medal locked-medal"><i class="fa-solid fa-lock"></i></div>
+                <h5>Marathoner</h5>
+                <p>365-day streak</p>
+                
+            </div>
+            <div class="badge-card locked">
+                <div class="badge-medal locked-medal"><i class="fa-solid fa-lock"></i></div>
+                <h5>Night Owl</h5>
+                <p>10 late-night journal entries</p>
+                <div class="progress-bar-container" style="width:100%"><div class="progress-bar-fill green" data-value="60"></div></div><span style="font-size:10px;color:var(--text-secondary)">3/5</span>
+            </div></div>
+        </div>
+
+    </main>
+
+    <script src="pages.js" defer></script>
+</body>
+</html>
