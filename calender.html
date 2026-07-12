@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Tracker - Calendar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="Dashboard.css">
+    <link rel="stylesheet" href="pages.css">
+</head>
+<body>
+    <button id="menuToggle" class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
+
+    <aside id="sidebar">
+        <div>
+            <div class="logo">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>Habit Tracker</span>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item "><a href="Dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li class="nav-item "><a href="Habits.html"><i class="fa-solid fa-list-check"></i> Habits</a></li>
+                <li class="nav-item active"><a href="Calendar.html"><i class="fa-regular fa-calendar"></i> Calendar</a></li>
+                <li class="nav-item "><a href="Statistics.html"><i class="fa-solid fa-chart-simple"></i> Statistics</a></li>
+                <li class="nav-item "><a href="Goals.html"><i class="fa-solid fa-bullseye"></i> Goals</a></li>
+                <li class="nav-item "><a href="Achievements.html"><i class="fa-solid fa-trophy"></i> Achievements</a></li>
+                <li class="nav-item "><a href="Notes.html"><i class="fa-regular fa-file-lines"></i> Notes</a></li>
+            </ul>
+        </div>
+
+        <div class="upgrade-card">
+            <i class="fa-solid fa-crown"></i>
+            <h4>Upgrade to Pro</h4>
+            <p>Unlock unlimited habits, advanced statistics and reminders.</p>
+            <button class="upgrade-btn">Upgrade Now</button>
+        </div>
+
+        <a href="#" class="settings-btn">
+            <span><i class="fa-solid fa-gear"></i> Settings</span>
+            <i class="fa-solid fa-chevron-right chevron-sm"></i>
+        </a>
+    </aside>
+
+    <main>
+        <header>
+            <div class="welcome-text">
+                <h1 id="greeting">Calendar 📅</h1>
+                <p id="quote">See your consistency laid out day by day</p>
+            </div>
+            <div class="header-actions">
+                <div class="weather-widget">
+                    <i class="fa-solid fa-cloud-sun"></i>
+                    <span class="weather-city">Kathmandu</span>
+                    <span class="weather-temp">28°C</span>
+                </div>
+                <div class="date-widget">
+                    <div class="date-day">Wednesday</div>
+                    <div class="date-full">8 July 2026</div>
+                </div>
+                <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i></div>
+                <div class="notif-box" id="notifBox">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notif-badge">3</span>
+                </div>
+                <div class="theme-toggle">
+                    <div class="theme-btn"><i class="fa-regular fa-sun"></i></div>
+                    <div class="theme-btn active"><i class="fa-solid fa-moon"></i></div>
+                </div>
+                <div class="profile-section">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Profile" class="profile-img">
+                    <div class="profile-info">
+                        <h4>Darshana</h4>
+                        <span>Frontend Developer</span>
+                    </div>
+                    <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                </div>
+            </div>
+        </header>
+
+
+        <div class="calendar-layout">
+            <div class="section-card">
+                <div class="section-header">
+                    <h3 class="section-title">July 2026</h3>
+                    <div class="calendar-nav"><i class="fa-solid fa-chevron-left"></i><i class="fa-solid fa-chevron-right"></i></div>
+                </div>
+                <div class="big-calendar-grid"><div class="day-label">Mon</div><div class="day-label">Tue</div><div class="day-label">Wed</div><div class="day-label">Thu</div><div class="day-label">Fri</div><div class="day-label">Sat</div><div class="day-label">Sun</div><div class="big-day faded">29</div><div class="big-day faded">30</div><div class="big-day">1<div class="heat"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div></div><div class="big-day">2<div class="heat"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></div></div><div class="big-day">3<div class="heat"><span class="on"></span><span class="on"></span><span class="on"></span><span class=""></span></div></div><div class="big-day">4<div class="heat"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></div></div><div class="big-day">5<div class="heat"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></div></div><div class="big-day">6<div class="heat"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div></div><div class="big-day">7<div class="heat"><span class="on"></span><span class="on"></span><span class=""></span><span class=""></span></div></div><div class="big-day selected">8<div class="heat"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div></div><div class="big-day">9<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">10<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">11<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">12<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">13<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">14<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">15<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">16<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">17<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">18<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">19<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">20<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">21<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">22<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">23<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">24<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">25<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">26<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">27<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">28<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">29<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">30<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day">31<div class="heat"><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div></div><div class="big-day faded">1</div><div class="big-day faded">2</div></div>
+                <div class="calendar-legend" style="margin-top:20px">
+                    <div class="legend-item"><div class="legend-dot legend-green"></div> Completed</div>
+                    <div class="legend-item"><div class="legend-dot legend-red"></div> Missed</div>
+                    <div class="legend-item"><div class="legend-dot legend-neutral"></div> No Data</div>
+                </div>
+            </div>
+
+            <div class="section-card day-detail-card">
+                <div>
+                    <div class="day-detail-date">Wednesday, 8</div>
+                    <p class="day-detail-sub">July 2026 · 4 of 5 habits completed</p>
+                </div>
+                <div class="dd-habit-row"><i class="fa-solid fa-circle-check status-ok"></i><span class="name">Exercise</span><span class="habit-tag">Fitness</span></div>
+                <div class="dd-habit-row"><i class="fa-solid fa-circle-check status-ok"></i><span class="name">Read 20 Pages</span><span class="habit-tag">Learning</span></div>
+                <div class="dd-habit-row"><i class="fa-solid fa-circle-check status-ok"></i><span class="name">Study JavaScript</span><span class="habit-tag">Learning</span></div>
+                <div class="dd-habit-row"><i class="fa-solid fa-circle-check status-ok"></i><span class="name">Journal</span><span class="habit-tag">Mindfulness</span></div>
+                <div class="dd-habit-row"><i class="fa-solid fa-circle-xmark status-no"></i><span class="name">Drink 3L Water</span><span class="habit-tag">Health</span></div>
+                <button class="btn-primary" style="justify-content:center"><i class="fa-solid fa-plus"></i> Log a habit for this day</button>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="pages.js" defer></script>
+</body>
+</html>
