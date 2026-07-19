@@ -77,79 +77,260 @@
             </div>
         </header>
 
-
+        <!-- Achievement Statistics -->
         <div class="tier-summary">
-            <div class="tier-pill"><div class="m-icon" style="background:#f1c40f26;color:#f1c40f"><i class="fa-solid fa-trophy"></i></div><div><h3 style="font-size:20px">5</h3><p style="font-size:11px;color:var(--text-secondary)">Unlocked</p></div></div>
-            <div class="tier-pill"><div class="m-icon" style="background:#a55eea26;color:#a55eea"><i class="fa-solid fa-lock-open"></i></div><div><h3 style="font-size:20px">1</h3><p style="font-size:11px;color:var(--text-secondary)">In Progress</p></div></div>
-            <div class="tier-pill"><div class="m-icon" style="background:#e74c3c26;color:#e74c3c"><i class="fa-solid fa-lock"></i></div><div><h3 style="font-size:20px">4</h3><p style="font-size:11px;color:var(--text-secondary)">Locked</p></div></div>
+            <div class="tier-pill" style="--pill-color:#f1c40f">
+                <div class="m-icon" style="background:#f1c40f26;color:#f1c40f"><i class="fa-solid fa-bolt"></i></div>
+                <div><h3>1250</h3><p>Total XP</p></div>
+            </div>
+            <div class="tier-pill" style="--pill-color:#2ecc71">
+                <div class="m-icon" style="background:#2ecc7126;color:#2ecc71"><i class="fa-solid fa-star"></i></div>
+                <div><h3>8</h3><p>Current Level</p></div>
+            </div>
+            <div class="tier-pill" style="--pill-color:#e74c3c">
+                <div class="m-icon" style="background:#e74c3c26;color:#e74c3c"><i class="fa-solid fa-fire"></i></div>
+                <div><h3>30</h3><p>Highest Streak</p></div>
+            </div>
+            <div class="tier-pill" style="--pill-color:#a55eea">
+                <div class="m-icon" style="background:#a55eea26;color:#a55eea"><i class="fa-solid fa-medal"></i></div>
+                <div><h3>50%</h3><p>Completion Rate</p></div>
+            </div>
         </div>
+
+        <div class="tier-summary" style="margin-bottom:24px">
+            <div class="tier-pill" style="--pill-color:#f1c40f">
+                <div class="m-icon" style="background:#f1c40f26;color:#f1c40f"><i class="fa-solid fa-trophy"></i></div>
+                <div><h3>5</h3><p>Unlocked</p></div>
+            </div>
+            <div class="tier-pill" style="--pill-color:#a55eea">
+                <div class="m-icon" style="background:#a55eea26;color:#a55eea"><i class="fa-solid fa-lock-open"></i></div>
+                <div><h3>2</h3><p>In Progress</p></div>
+            </div>
+            <div class="tier-pill" style="--pill-color:#e74c3c">
+                <div class="m-icon" style="background:#e74c3c26;color:#e74c3c"><i class="fa-solid fa-lock"></i></div>
+                <div><h3>3</h3><p>Locked</p></div>
+            </div>
+        </div>
+
+        <!-- Featured Achievement -->
+        <div class="featured-achievement">
+            <div class="featured-medal"><i class="fa-solid fa-fire"></i></div>
+            <div class="featured-info">
+                <div class="featured-label"><i class="fa-solid fa-star"></i> Achievement of the Week</div>
+                <h2>Week Warrior</h2>
+                <p>7-Day Streak on any habit</p>
+                <div class="featured-meta">
+                    <span class="featured-xp">+100 XP</span>
+                    <span class="featured-date"><i class="fa-regular fa-clock"></i> Unlocked yesterday</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toolbar: Search + Filters -->
+        <div class="achievement-toolbar">
+            <div class="filter-group" id="filterGroup">
+                <button class="filter-chip active" data-filter="all">All</button>
+                <button class="filter-chip" data-filter="unlocked">Unlocked</button>
+                <button class="filter-chip" data-filter="locked">Locked</button>
+                <button class="filter-chip" data-filter="in-progress">In Progress</button>
+                <button class="filter-chip" data-filter="bronze">Bronze</button>
+                <button class="filter-chip" data-filter="silver">Silver</button>
+                <button class="filter-chip" data-filter="gold">Gold</button>
+            </div>
+            <div class="achievement-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="achievementSearch" placeholder="Search achievements...">
+            </div>
+        </div>
+
         <div class="section-card">
             <div class="section-header"><h3 class="section-title">All Achievements</h3><span class="link-green">10 total</span></div>
-            <div class="badge-grid">
-            <div class="badge-card">
-                <div class="badge-medal gold"><i class="fa-solid fa-shoe-prints"></i></div>
-                <h5>First Step</h5>
-                <p>Complete your first habit</p>
-                
+
+            <!-- Streak category -->
+            <div class="category-group" data-category="streak">
+                <div class="category-heading"><i class="fa-solid fa-fire"></i> Streak</div>
+                <div class="badge-grid">
+
+                    <div class="badge-card tier-gold" data-status="unlocked" data-tier="gold" data-name="first step">
+                        <span class="badge-ribbon new">NEW</span>
+                        <div class="badge-medal gold"><i class="fa-solid fa-shoe-prints"></i></div>
+                        <span class="rarity-label gold">🥇 Gold Badge</span>
+                        <h5>First Step</h5>
+                        <p class="badge-desc">Complete your first habit</p>
+                        <span class="badge-xp">+50 XP</span>
+                        <span class="badge-unlock-date"><i class="fa-solid fa-check"></i> Unlocked 1 July 2026</span>
+                    </div>
+
+                    <div class="badge-card tier-gold" data-status="unlocked" data-tier="gold" data-name="week warrior">
+                        <div class="badge-medal gold"><i class="fa-solid fa-fire"></i></div>
+                        <span class="rarity-label gold">🥇 Gold Badge</span>
+                        <h5>Week Warrior</h5>
+                        <p class="badge-desc">7-day streak on any habit</p>
+                        <span class="badge-xp">+100 XP</span>
+                        <span class="badge-unlock-date"><i class="fa-solid fa-check"></i> Unlocked 7 July 2026</span>
+                    </div>
+
+                    <div class="badge-card tier-silver" data-status="unlocked" data-tier="silver" data-name="consistency king">
+                        <div class="badge-medal silver"><i class="fa-solid fa-crown"></i></div>
+                        <span class="rarity-label silver">🥈 Silver Badge</span>
+                        <h5>Consistency King</h5>
+                        <p class="badge-desc">30-day streak</p>
+                        <span class="badge-xp">+150 XP</span>
+                        <span class="badge-unlock-date"><i class="fa-solid fa-check"></i> Unlocked 3 July 2026</span>
+                    </div>
+
+                    <div class="badge-card locked tier-diamond" data-status="locked" data-tier="diamond" data-name="iron will">
+                        <span class="badge-ribbon epic">EPIC</span>
+                        <div class="locked-blur">
+                            <div class="badge-medal locked-medal"><i class="fa-solid fa-lock"></i></div>
+                            <span class="rarity-label diamond">💎 Diamond Badge</span>
+                            <h5>Iron Will</h5>
+                            <p class="badge-desc">90-day streak</p>
+                        </div>
+                        <div class="locked-overlay">
+                            <i class="fa-solid fa-lock"></i>
+                            <span class="locked-hint">Locked</span>
+                            <span class="locked-req">Reach a 90-day streak</span>
+                        </div>
+                    </div>
+
+                    <div class="badge-card locked tier-diamond" data-status="locked" data-tier="diamond" data-name="marathoner">
+                        <span class="badge-ribbon legendary">LEGENDARY</span>
+                        <div class="locked-blur">
+                            <div class="badge-medal locked-medal"><i class="fa-solid fa-lock"></i></div>
+                            <span class="rarity-label diamond">💎 Diamond Badge</span>
+                            <h5>Marathoner</h5>
+                            <p class="badge-desc">365-day streak</p>
+                        </div>
+                        <div class="locked-overlay">
+                            <i class="fa-solid fa-lock"></i>
+                            <span class="locked-hint">Keep going...</span>
+                            <span class="locked-req">Reach a 365-day streak</span>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            <div class="badge-card">
-                <div class="badge-medal gold"><i class="fa-solid fa-fire"></i></div>
-                <h5>Week Warrior</h5>
-                <p>7-day streak on any habit</p>
-                
+
+            <!-- Fitness category -->
+            <div class="category-group" data-category="fitness">
+                <div class="category-heading"><i class="fa-solid fa-dumbbell"></i> Fitness</div>
+                <div class="badge-grid">
+
+                    <div class="badge-card tier-silver" data-status="unlocked" data-tier="silver" data-name="century club">
+                        <div class="badge-medal silver"><i class="fa-solid fa-medal"></i></div>
+                        <span class="rarity-label silver">🥈 Silver Badge</span>
+                        <h5>Century Club</h5>
+                        <p class="badge-desc">100 total completions</p>
+                        <span class="badge-xp">+150 XP</span>
+                        <span class="badge-unlock-date"><i class="fa-solid fa-check"></i> Unlocked 28 June 2026</span>
+                    </div>
+
+                </div>
             </div>
-            <div class="badge-card">
-                <div class="badge-medal silver"><i class="fa-solid fa-crown"></i></div>
-                <h5>Consistency King</h5>
-                <p>30-day streak</p>
-                
+
+            <!-- Health category -->
+            <div class="category-group" data-category="health">
+                <div class="category-heading"><i class="fa-solid fa-heart-pulse"></i> Health</div>
+                <div class="badge-grid">
+
+                    <div class="badge-card tier-bronze" data-status="unlocked" data-tier="bronze" data-name="early bird">
+                        <div class="badge-medal bronze"><i class="fa-solid fa-sun"></i></div>
+                        <span class="rarity-label bronze">🥉 Bronze Badge</span>
+                        <h5>Early Bird</h5>
+                        <p class="badge-desc">10 habits done before 7AM</p>
+                        <span class="badge-xp">+50 XP</span>
+                        <span class="badge-unlock-date"><i class="fa-solid fa-check"></i> Unlocked 20 June 2026</span>
+                    </div>
+
+                    <div class="badge-card locked tier-diamond" data-status="locked" data-tier="diamond" data-name="perfectionist">
+                        <span class="badge-ribbon rare">RARE</span>
+                        <div class="locked-blur">
+                            <div class="badge-medal locked-medal"><i class="fa-solid fa-lock"></i></div>
+                            <span class="rarity-label diamond">💎 Diamond Badge</span>
+                            <h5>Perfectionist</h5>
+                            <p class="badge-desc">100% completion for a month</p>
+                        </div>
+                        <div class="locked-overlay">
+                            <i class="fa-solid fa-lock"></i>
+                            <span class="locked-hint">???</span>
+                            <span class="locked-req">Hit 100% completion for a month</span>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            <div class="badge-card">
-                <div class="badge-medal silver"><i class="fa-solid fa-medal"></i></div>
-                <h5>Century Club</h5>
-                <p>100 total completions</p>
-                
+
+            <!-- Reading category -->
+            <div class="category-group" data-category="reading">
+                <div class="category-heading"><i class="fa-solid fa-book"></i> Reading</div>
+                <div class="badge-grid">
+
+                    <div class="badge-card in-progress tier-bronze" data-status="in-progress" data-tier="bronze" data-name="bookworm">
+                        <div class="progress-ring-wrap">
+                            <svg viewBox="0 0 64 64">
+                                <circle class="progress-ring-track" cx="32" cy="32" r="26"></circle>
+                                <circle class="progress-ring-fill" cx="32" cy="32" r="26" data-progress="60"></circle>
+                            </svg>
+                            <span class="progress-ring-percent">60%</span>
+                        </div>
+                        <span class="rarity-label bronze">🥉 Bronze Badge</span>
+                        <h5>Bookworm</h5>
+                        <p class="badge-desc">Finish 5 reading goals</p>
+                        <span class="badge-xp">+50 XP</span>
+                        <span class="progress-caption">3 / 5 complete</span>
+                    </div>
+
+                </div>
             </div>
-            <div class="badge-card">
-                <div class="badge-medal bronze"><i class="fa-solid fa-sun"></i></div>
-                <h5>Early Bird</h5>
-                <p>10 habits done before 7AM</p>
-                
+
+            <!-- Journaling category -->
+            <div class="category-group" data-category="journaling">
+                <div class="category-heading"><i class="fa-solid fa-pen"></i> Journaling</div>
+                <div class="badge-grid">
+
+                    <div class="badge-card in-progress tier-bronze" data-status="in-progress" data-tier="bronze" data-name="night owl">
+                        <div class="progress-ring-wrap">
+                            <svg viewBox="0 0 64 64">
+                                <circle class="progress-ring-track" cx="32" cy="32" r="26"></circle>
+                                <circle class="progress-ring-fill" cx="32" cy="32" r="26" data-progress="60"></circle>
+                            </svg>
+                            <span class="progress-ring-percent">60%</span>
+                        </div>
+                        <span class="rarity-label bronze">🥉 Bronze Badge</span>
+                        <h5>Night Owl</h5>
+                        <p class="badge-desc">10 late-night journal entries</p>
+                        <span class="badge-xp">+50 XP</span>
+                        <span class="progress-caption">3 / 5 complete</span>
+                    </div>
+
+                </div>
             </div>
-            <div class="badge-card locked">
-                <div class="badge-medal locked-medal"><i class="fa-solid fa-lock"></i></div>
-                <h5>Bookworm</h5>
-                <p>Finish 5 reading goals</p>
-                <div class="progress-bar-container" style="width:100%"><div class="progress-bar-fill green" data-value="60"></div></div><span style="font-size:10px;color:var(--text-secondary)">3/5</span>
-            </div>
-            <div class="badge-card locked">
-                <div class="badge-medal locked-medal"><i class="fa-solid fa-lock"></i></div>
-                <h5>Iron Will</h5>
-                <p>90-day streak</p>
-                
-            </div>
-            <div class="badge-card locked">
-                <div class="badge-medal locked-medal"><i class="fa-solid fa-lock"></i></div>
-                <h5>Perfectionist</h5>
-                <p>100% completion for a month</p>
-                
-            </div>
-            <div class="badge-card locked">
-                <div class="badge-medal locked-medal"><i class="fa-solid fa-lock"></i></div>
-                <h5>Marathoner</h5>
-                <p>365-day streak</p>
-                
-            </div>
-            <div class="badge-card locked">
-                <div class="badge-medal locked-medal"><i class="fa-solid fa-lock"></i></div>
-                <h5>Night Owl</h5>
-                <p>10 late-night journal entries</p>
-                <div class="progress-bar-container" style="width:100%"><div class="progress-bar-fill green" data-value="60"></div></div><span style="font-size:10px;color:var(--text-secondary)">3/5</span>
-            </div></div>
+
+            <p class="no-results" id="noResults" style="display:none;text-align:center;color:var(--text-muted);padding:24px 0;">
+                No achievements match your search.
+            </p>
+        </div>
+
+        <!-- Motivational message -->
+        <div class="motivation-banner">
+            <i class="fa-solid fa-bullseye"></i>
+            <span>You're only <strong>2 achievements</strong> away from reaching Gold Level! Keep going 💪</span>
         </div>
 
     </main>
 
+    <!-- Unlock toast (triggered by JS demo / real unlock events) -->
+    <div class="unlock-toast" id="unlockToast">
+        <div class="toast-icon">🏆</div>
+        <div>
+            <h6>Achievement Unlocked!</h6>
+            <p id="toastTitle">Week Warrior</p>
+            <span id="toastXp">+100 XP</span>
+        </div>
+    </div>
+
     <script src="pages.js" defer></script>
+    <script src="achievements.js" defer></script>
 </body>
 </html>
