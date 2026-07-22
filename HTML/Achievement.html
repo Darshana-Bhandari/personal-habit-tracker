@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Habit Tracker - Achievements</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="Dashboard.css">
-    <link rel="stylesheet" href="pages.css">
-    <link rel="stylesheet" href="../CSS/Achievement.css"
+    <link rel="stylesheet" href="../CSS/Dashboard.css">
+    <link rel="stylesheet" href="../CSS/Achievement.css">
 </head>
 <body>
     <button id="menuToggle" class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
 
+    <!-- ============ SIDEBAR (copied from Dashboard, Achievements active) ============ -->
     <aside id="sidebar">
         <div>
             <div class="logo">
@@ -19,104 +19,151 @@
                 <span>Habit Tracker</span>
             </div>
             <ul class="nav-links">
-                <li class="nav-item "><a href="Dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
-                <li class="nav-item "><a href="Habits.html"><i class="fa-solid fa-list-check"></i> Habits</a></li>
-                <li class="nav-item "><a href="Calendar.html"><i class="fa-regular fa-calendar"></i> Calendar</a></li>
-                <li class="nav-item "><a href="Statistics.html"><i class="fa-solid fa-chart-simple"></i> Statistics</a></li>
-                <li class="nav-item "><a href="Goals.html"><i class="fa-solid fa-bullseye"></i> Goals</a></li>
-                <li class="nav-item active"><a href="Achievements.html"><i class="fa-solid fa-trophy"></i> Achievements</a></li>
-                <li class="nav-item "><a href="Notes.html"><i class="fa-regular fa-file-lines"></i> Notes</a></li>
+                <li class="nav-item"><a href="Dashboard.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+                <li class="nav-item"><a href="Habits.html"><i class="fa-solid fa-list-check"></i> Habits</a></li>
+                <li class="nav-item"><a href="Calendar.html"><i class="fa-regular fa-calendar"></i> Calendar</a></li>
+                <li class="nav-item"><a href="Statistics.html"><i class="fa-solid fa-chart-simple"></i> Statistics</a></li>
+                <li class="nav-item"><a href="Goals.html"><i class="fa-solid fa-bullseye"></i> Goals</a></li>
+                <li class="nav-item active"><a href="Achievement.html"><i class="fa-solid fa-trophy"></i> Achievements</a></li>
+                <li class="nav-item"><a href="Notes.html"><i class="fa-regular fa-file-lines"></i> Notes</a></li>
             </ul>
         </div>
 
         <div class="upgrade-card">
             <i class="fa-solid fa-crown"></i>
-            <h4>Upgrade to Pro</h4>
-            <p>Unlock unlimited habits, advanced statistics and reminders.</p>
-            <button class="upgrade-btn">Upgrade Now</button>
+            <h4>Level <span id="sidebarLevel">1</span></h4>
+            <p id="sidebarXpText">0 / 500 XP</p>
+            <div class="progress-bar-container"><div class="progress-bar-fill purple" id="sidebarXpBar" data-value="0"></div></div>
         </div>
 
-        <a href="#" class="settings-btn">
+        <a href="#" class="settings-btn" id="openSettingsBtn">
             <span><i class="fa-solid fa-gear"></i> Settings</span>
             <i class="fa-solid fa-chevron-right chevron-sm"></i>
         </a>
     </aside>
 
     <main>
+        <!-- ============ HEADER (copied from Dashboard: greeting, clock, weather, date, search, notif, theme, profile) ============ -->
         <header>
             <div class="welcome-text">
-                <h1 id="greeting">Achievements 🏆</h1>
-                <p id="quote">Badges earned by showing up</p>
+                <h1 id="greeting">Good Evening, Darshana! 👋</h1>
+                <p id="quote">Earn badges by staying consistent.</p>
             </div>
             <div class="header-actions">
-                <div class="weather-widget">
+                <div class="clock-widget" id="liveClock">🕒 --:--:--</div>
+
+                <div class="weather-widget" id="weatherWidget">
                     <i class="fa-solid fa-cloud-sun"></i>
                     <span class="weather-city">Kathmandu</span>
-                    <span class="weather-temp">28°C</span>
+                    <span class="weather-temp">--°C</span>
                 </div>
+
                 <div class="date-widget">
-                    <div class="date-day">Wednesday</div>
-                    <div class="date-full">8 July 2026</div>
+                    <div class="date-day" id="dateDay">Wednesday</div>
+                    <div class="date-full" id="dateFull">22 July 2026</div>
                 </div>
-                <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i></div>
+
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="achievementSearch" placeholder="Search achievements..." class="search-input">
+                </div>
+
                 <div class="notif-box" id="notifBox">
                     <i class="fa-regular fa-bell"></i>
-                    <span class="notif-badge">3</span>
-                </div>
-                <div class="theme-toggle">
-                    <div class="theme-btn"><i class="fa-regular fa-sun"></i></div>
-                    <div class="theme-btn active"><i class="fa-solid fa-moon"></i></div>
-                </div>
-                <div class="profile-section">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Profile" class="profile-img">
-                    <div class="profile-info">
-                        <h4>Darshana</h4>
-                        <span>Frontend Developer</span>
+                    <span class="notif-badge" id="notifBadge">0</span>
+                    <div class="notif-dropdown" id="notifDropdown">
+                        <h5>🔔 Notifications</h5>
+                        <ul id="notifList"></ul>
                     </div>
-                    <button class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                </div>
+
+                <div class="theme-toggle" id="themeToggle">
+                    <div class="theme-btn" data-theme="light" title="Light"><i class="fa-regular fa-sun"></i></div>
+                    <div class="theme-btn active" data-theme="dark" title="Dark"><i class="fa-solid fa-moon"></i></div>
+                    <div class="theme-btn" data-theme="green" title="Green"><i class="fa-solid fa-leaf"></i></div>
+                    <div class="theme-btn" data-theme="blue" title="Blue"><i class="fa-solid fa-water"></i></div>
+                    <div class="theme-btn" data-theme="purple" title="Purple"><i class="fa-solid fa-gem"></i></div>
+                </div>
+
+                <div class="profile-section" id="profileSection">
+                    <img id="profileImg" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Profile" class="profile-img">
+                    <div class="profile-info">
+                        <h4 id="profileName">Darshana</h4>
+                        <span id="profileRole">Frontend Developer</span>
+                    </div>
+                    <button id="logoutBtn" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
                 </div>
             </div>
         </header>
 
-        <!-- Achievement Statistics -->
-        <div class="tier-summary">
-            <div class="tier-pill" style="--pill-color:#f1c40f">
-                <div class="m-icon" style="background:#f1c40f26;color:#f1c40f"><i class="fa-solid fa-bolt"></i></div>
-                <div><h3>1250</h3><p>Total XP</p></div>
+        <!-- ============ ACHIEVEMENT STATS (Dashboard stat-card style) ============ -->
+        <div class="top-stats-grid">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <p>Total XP</p>
+                    <h2 id="statTotalXp">0</h2>
+                    <span class="stat-subtext pos" id="statTotalXpSub">+0 this month</span>
+                </div>
+                <div class="stat-icon green"><i class="fa-solid fa-bolt"></i></div>
             </div>
-            <div class="tier-pill" style="--pill-color:#2ecc71">
-                <div class="m-icon" style="background:#2ecc7126;color:#2ecc71"><i class="fa-solid fa-star"></i></div>
-                <div><h3>8</h3><p>Current Level</p></div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <p>Current Level</p>
+                    <h2 id="statLevel">1</h2>
+                    <span class="stat-subtext neu" id="statLevelSub">Keep earning XP 🎯</span>
+                </div>
+                <div class="stat-icon purple"><i class="fa-solid fa-star"></i></div>
             </div>
-            <div class="tier-pill" style="--pill-color:#e74c3c">
-                <div class="m-icon" style="background:#e74c3c26;color:#e74c3c"><i class="fa-solid fa-fire"></i></div>
-                <div><h3>30</h3><p>Highest Streak</p></div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <p>Highest Streak</p>
+                    <h2 id="statHighestStreak">0 <span class="unit-label">days</span></h2>
+                </div>
+                <div class="stat-icon orange"><i class="fa-solid fa-fire"></i></div>
             </div>
-            <div class="tier-pill" style="--pill-color:#a55eea">
-                <div class="m-icon" style="background:#a55eea26;color:#a55eea"><i class="fa-solid fa-medal"></i></div>
-                <div><h3>50%</h3><p>Completion Rate</p></div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <p>Completion Rate</p>
+                    <span class="stat-subtext pos" id="statCompletionSub">+0% from last month</span>
+                </div>
+                <div class="progress-ring" data-percent="0" id="ringWrapper">
+                    <svg viewBox="0 0 100 100">
+                        <circle class="ring-bg" cx="50" cy="50" r="42"></circle>
+                        <circle class="ring-fill" id="completionRing" cx="50" cy="50" r="42"></circle>
+                    </svg>
+                    <span class="ring-label" id="ringLabel">0%</span>
+                </div>
             </div>
         </div>
 
-        <div class="tier-summary" style="margin-bottom:24px">
-            <div class="tier-pill" style="--pill-color:#f1c40f">
-                <div class="m-icon" style="background:#f1c40f26;color:#f1c40f"><i class="fa-solid fa-trophy"></i></div>
-                <div><h3>5</h3><p>Unlocked</p></div>
+        <div class="top-stats-grid secondary">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <p>Unlocked</p>
+                    <h2 id="statUnlocked">0</h2>
+                </div>
+                <div class="stat-icon green"><i class="fa-solid fa-trophy"></i></div>
             </div>
-            <div class="tier-pill" style="--pill-color:#a55eea">
-                <div class="m-icon" style="background:#a55eea26;color:#a55eea"><i class="fa-solid fa-lock-open"></i></div>
-                <div><h3>2</h3><p>In Progress</p></div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <p>In Progress</p>
+                    <h2 id="statInProgress">0</h2>
+                </div>
+                <div class="stat-icon purple"><i class="fa-solid fa-lock-open"></i></div>
             </div>
-            <div class="tier-pill" style="--pill-color:#e74c3c">
-                <div class="m-icon" style="background:#e74c3c26;color:#e74c3c"><i class="fa-solid fa-lock"></i></div>
-                <div><h3>3</h3><p>Locked</p></div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <p>Locked</p>
+                    <h2 id="statLocked">0</h2>
+                </div>
+                <div class="stat-icon orange"><i class="fa-solid fa-lock"></i></div>
             </div>
         </div>
 
-        <!-- Featured Achievement -->
-        <div class="featured-achievement">
+        <!-- ============ FEATURED ACHIEVEMENT (Dashboard section-card style) ============ -->
+        <div class="section-card featured-achievement">
             <div class="featured-medal"><i class="fa-solid fa-fire"></i></div>
-            <div class="featured-info">
+            <div class="featured-info" style="flex:1;">
                 <div class="featured-label"><i class="fa-solid fa-star"></i> Achievement of the Week</div>
                 <h2>Week Warrior</h2>
                 <p>7-Day Streak on any habit</p>
@@ -125,34 +172,41 @@
                     <span class="featured-date"><i class="fa-regular fa-clock"></i> Unlocked yesterday</span>
                 </div>
             </div>
+            <div class="featured-progress">
+                <div class="progress-bar-container"><div class="progress-bar-fill green" id="featuredProgressBar" data-value="80"></div></div>
+                <div class="featured-progress-label"><span>Progress</span><span id="featuredProgressPercent">80%</span></div>
+            </div>
         </div>
 
-        <!-- Toolbar: Search + Filters -->
+        <!-- ============ TOOLBAR: chips + search (Dashboard chip/search-box style) ============ -->
         <div class="achievement-toolbar">
-            <div class="filter-group" id="filterGroup">
-                <button class="filter-chip active" data-filter="all">All</button>
-                <button class="filter-chip" data-filter="unlocked">Unlocked</button>
-                <button class="filter-chip" data-filter="locked">Locked</button>
-                <button class="filter-chip" data-filter="in-progress">In Progress</button>
-                <button class="filter-chip" data-filter="bronze">Bronze</button>
-                <button class="filter-chip" data-filter="silver">Silver</button>
-                <button class="filter-chip" data-filter="gold">Gold</button>
+            <div class="filter-chips" id="filterChips">
+                <span class="chip active" data-filter="all">All</span>
+                <span class="chip" data-filter="unlocked">Unlocked</span>
+                <span class="chip" data-filter="locked">Locked</span>
+                <span class="chip" data-filter="in-progress">In Progress</span>
+                <span class="chip" data-filter="gold">Gold</span>
+                <span class="chip" data-filter="silver">Silver</span>
+                <span class="chip" data-filter="bronze">Bronze</span>
             </div>
-            <div class="achievement-search">
+            <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="achievementSearch" placeholder="Search achievements...">
+                <input type="text" id="achievementSearchToolbar" placeholder="Search achievements..." class="search-input">
             </div>
         </div>
 
+        <!-- ============ ACHIEVEMENT GRID ============ -->
         <div class="section-card">
-            <div class="section-header"><h3 class="section-title">All Achievements</h3><span class="link-green">10 total</span></div>
+            <div class="section-header">
+                <h3 class="section-title">All Achievements</h3>
+                <span class="link-green">10 total</span>
+            </div>
 
-            <!-- Streak category -->
             <div class="category-group" data-category="streak">
                 <div class="category-heading"><i class="fa-solid fa-fire"></i> Streak</div>
                 <div class="badge-grid">
 
-                    <div class="badge-card tier-gold" data-status="unlocked" data-tier="gold" data-name="first step">
+                    <div class="badge-card tier-gold" data-status="unlocked" data-tier="gold" data-name="first step" data-xp="50">
                         <span class="badge-ribbon new">NEW</span>
                         <div class="badge-medal gold"><i class="fa-solid fa-shoe-prints"></i></div>
                         <span class="rarity-label gold">🥇 Gold Badge</span>
@@ -162,7 +216,7 @@
                         <span class="badge-unlock-date"><i class="fa-solid fa-check"></i> Unlocked 1 July 2026</span>
                     </div>
 
-                    <div class="badge-card tier-gold" data-status="unlocked" data-tier="gold" data-name="week warrior">
+                    <div class="badge-card tier-gold" data-status="unlocked" data-tier="gold" data-name="week warrior" data-xp="100">
                         <div class="badge-medal gold"><i class="fa-solid fa-fire"></i></div>
                         <span class="rarity-label gold">🥇 Gold Badge</span>
                         <h5>Week Warrior</h5>
@@ -171,7 +225,7 @@
                         <span class="badge-unlock-date"><i class="fa-solid fa-check"></i> Unlocked 7 July 2026</span>
                     </div>
 
-                    <div class="badge-card tier-silver" data-status="unlocked" data-tier="silver" data-name="consistency king">
+                    <div class="badge-card tier-silver" data-status="unlocked" data-tier="silver" data-name="consistency king" data-xp="150">
                         <div class="badge-medal silver"><i class="fa-solid fa-crown"></i></div>
                         <span class="rarity-label silver">🥈 Silver Badge</span>
                         <h5>Consistency King</h5>
@@ -213,12 +267,10 @@
                 </div>
             </div>
 
-            <!-- Fitness category -->
             <div class="category-group" data-category="fitness">
                 <div class="category-heading"><i class="fa-solid fa-dumbbell"></i> Fitness</div>
                 <div class="badge-grid">
-
-                    <div class="badge-card tier-silver" data-status="unlocked" data-tier="silver" data-name="century club">
+                    <div class="badge-card tier-silver" data-status="unlocked" data-tier="silver" data-name="century club" data-xp="150">
                         <div class="badge-medal silver"><i class="fa-solid fa-medal"></i></div>
                         <span class="rarity-label silver">🥈 Silver Badge</span>
                         <h5>Century Club</h5>
@@ -226,16 +278,13 @@
                         <span class="badge-xp">+150 XP</span>
                         <span class="badge-unlock-date"><i class="fa-solid fa-check"></i> Unlocked 28 June 2026</span>
                     </div>
-
                 </div>
             </div>
 
-            <!-- Health category -->
             <div class="category-group" data-category="health">
                 <div class="category-heading"><i class="fa-solid fa-heart-pulse"></i> Health</div>
                 <div class="badge-grid">
-
-                    <div class="badge-card tier-bronze" data-status="unlocked" data-tier="bronze" data-name="early bird">
+                    <div class="badge-card tier-bronze" data-status="unlocked" data-tier="bronze" data-name="early bird" data-xp="50">
                         <div class="badge-medal bronze"><i class="fa-solid fa-sun"></i></div>
                         <span class="rarity-label bronze">🥉 Bronze Badge</span>
                         <h5>Early Bird</h5>
@@ -258,15 +307,12 @@
                             <span class="locked-req">Hit 100% completion for a month</span>
                         </div>
                     </div>
-
                 </div>
             </div>
 
-            <!-- Reading category -->
             <div class="category-group" data-category="reading">
                 <div class="category-heading"><i class="fa-solid fa-book"></i> Reading</div>
                 <div class="badge-grid">
-
                     <div class="badge-card in-progress tier-bronze" data-status="in-progress" data-tier="bronze" data-name="bookworm">
                         <div class="progress-ring-wrap">
                             <svg viewBox="0 0 64 64">
@@ -281,15 +327,12 @@
                         <span class="badge-xp">+50 XP</span>
                         <span class="progress-caption">3 / 5 complete</span>
                     </div>
-
                 </div>
             </div>
 
-            <!-- Journaling category -->
             <div class="category-group" data-category="journaling">
                 <div class="category-heading"><i class="fa-solid fa-pen"></i> Journaling</div>
                 <div class="badge-grid">
-
                     <div class="badge-card in-progress tier-bronze" data-status="in-progress" data-tier="bronze" data-name="night owl">
                         <div class="progress-ring-wrap">
                             <svg viewBox="0 0 64 64">
@@ -304,34 +347,33 @@
                         <span class="badge-xp">+50 XP</span>
                         <span class="progress-caption">3 / 5 complete</span>
                     </div>
-
                 </div>
             </div>
 
-            <p class="no-results" id="noResults" style="display:none;text-align:center;color:var(--text-muted);padding:24px 0;">
-                No achievements match your search.
-            </p>
+            <p class="empty-state" id="noResults" style="display:none;">No achievements match your search.</p>
         </div>
 
-        <!-- Motivational message -->
+        <!-- ============ MOTIVATION BANNER ============ -->
         <div class="motivation-banner">
             <i class="fa-solid fa-bullseye"></i>
             <span>You're only <strong>2 achievements</strong> away from reaching Gold Level! Keep going 💪</span>
         </div>
-
     </main>
 
-    <!-- Unlock toast (triggered by JS demo / real unlock events) -->
+    <!-- Unlock toast (upgraded: shows XP transition + level progress) -->
     <div class="unlock-toast" id="unlockToast">
-        <div class="toast-icon">🏆</div>
-        <div>
-            <h6>Achievement Unlocked!</h6>
-            <p id="toastTitle">Week Warrior</p>
-            <span id="toastXp">+100 XP</span>
+        <div class="unlock-toast-head">
+            <div class="toast-icon">🏆</div>
+            <div>
+                <h6>Achievement Unlocked</h6>
+                <p id="toastTitle">Week Warrior</p>
+            </div>
         </div>
+        <div class="toast-xp-line">Current XP <b id="toastXpRange">1250 → 1350</b></div>
+        <div class="progress-bar-container"><div class="progress-bar-fill purple" id="toastLevelBar" data-value="0"></div></div>
+        <div class="toast-level-line"><span id="toastLevelLabel">Level 8</span><span id="toastLevelPercent">0%</span></div>
     </div>
 
-    <script src="pages.js" defer></script>
     <script src="../Javascript/Achievement.js"></script>
 </body>
 </html>
