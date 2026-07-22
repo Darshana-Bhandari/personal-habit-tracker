@@ -1,708 +1,218 @@
-/* ==========================================================================
-   1. GLOBAL VARIABLES & RESET
+/*==========================================================================
+   Achievement.css
+   Loaded AFTER Dashboard.css. Reuses Dashboard's variables, sidebar, header,
+   stat-card, section-card, chip, search-box, modal and toast styles as-is.
+   This file only adds the achievement/badge-specific pieces that Dashboard
+   doesn't already have.
    ========================================================================== */
+ 
 :root {
-    /* Color Palette */
-    --bg-primary: #121214;
-    --bg-secondary: #1a1a1e;
-    --bg-surface: #26262b;
-    --border-color: rgba(255, 255, 255, 0.08);
-    
-    --text-primary: #ffffff;
-    --text-secondary: #a0a0ab;
-    --text-muted: #71717a;
-    
-    --accent-color: #2ecc71;
-    --accent-hover: #27ae60;
-    --gold: #FFD700;
-    --gold-dark: #B8860B;
-    --silver: #C0C0C0;
+    /* Badge tier colors — used ONLY on badge medals/labels, nowhere else */
+    --gold: #f1c40f;
+    --gold-dark: #b8860b;
+    --silver: #c0c0c0;
     --silver-dark: #8a8a90;
-    --bronze: #CD7F32;
+    --bronze: #cd7f32;
     --bronze-dark: #8a5522;
-    
-    /* Transitions & Layout constants */
-    --sidebar-width: 260px;
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --radius-lg: 16px;
-    --radius-md: 12px;
-    --radius-sm: 8px;
+    --diamond: #7fd8ff;
 }
-
-/* Light Theme overrides (Activated via your theme toggle script) */
-body.light-theme {
-    --bg-primary: #f8f9fa;
-    --bg-secondary: #ffffff;
-    --bg-surface: #f1f3f5;
-    --border-color: rgba(0, 0, 0, 0.08);
-    --text-primary: #1a1a1e;
-    --text-secondary: #495057;
-    --text-muted: #868e96;
+ 
+/* ---------------------------------------------------------------------
+   Secondary stat row (Unlocked / In Progress / Locked) — thin spacing fix
+   --------------------------------------------------------------------- */
+.top-stats-grid.secondary {
+    margin-top: -4px;
 }
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-}
-
-body {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    display: flex;
-    min-height: 100vh;
-    overflow-x: hidden;
-}
-
-/* ==========================================================================
-   2. SIDEBAR NAVIGATION
-   ========================================================================== */
-#sidebar {
-    width: var(--sidebar-width);
-    background-color: var(--bg-secondary);
-    border-right: 1px solid var(--border-color);
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 100;
-    transition: var(--transition);
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--accent-color);
-    margin-bottom: 32px;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.nav-item a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 12px 16px;
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 500;
-    border-radius: var(--radius-md);
-    transition: var(--transition);
-}
-
-.nav-item a i {
-    font-size: 18px;
-    width: 20px;
-    text-align: center;
-}
-
-.nav-item a:hover, 
-.nav-item.active a {
-    background-color: var(--bg-surface);
-    color: var(--text-primary);
-}
-
-.nav-item.active a {
-    color: var(--accent-color);
-    font-weight: 600;
-}
-
-/* Upgrade Card */
-.upgrade-card {
-    background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(46, 204, 113, 0.05));
-    border: 1px solid rgba(46, 204, 113, 0.2);
-    border-radius: var(--radius-lg);
-    padding: 20px;
-    text-align: center;
-    margin: 24px 0;
-}
-
-.upgrade-card i {
-    font-size: 28px;
-    color: var(--gold);
-    margin-bottom: 12px;
-}
-
-.upgrade-card h4 {
-    margin-bottom: 6px;
-    font-size: 16px;
-}
-
-.upgrade-card p {
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin-bottom: 16px;
-    line-height: 1.4;
-}
-
-.upgrade-btn {
-    width: 100%;
-    background-color: var(--accent-color);
-    color: #fff;
-    border: none;
-    padding: 10px;
-    border-radius: var(--radius-sm);
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.upgrade-btn:hover {
-    background-color: var(--accent-hover);
-    transform: translateY(-1px);
-}
-
-/* Settings button at bottom */
-.settings-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 14px;
-    padding: 12px 4px;
-    border-top: 1px solid var(--border-color);
-    margin-top: auto;
-}
-
-.settings-btn span {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* ==========================================================================
-   3. MAIN CONTENT LAYER
-   ========================================================================== */
-main {
-    margin-left: var(--sidebar-width);
-    flex-grow: 1;
-    padding: 40px;
-    max-width: 1400px;
-    width: calc(100% - var(--sidebar-width));
-}
-
-/* Header Layout */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 32px;
-    gap: 20px;
-}
-
-.welcome-text h1 {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 4px;
-}
-
-.welcome-text p {
-    color: var(--text-secondary);
-    font-size: 14px;
-}
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-/* Widgets Styling */
-.weather-widget, .date-widget {
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    padding: 8px 16px;
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-}
-
-.date-widget {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-}
-
-.date-day { font-weight: 600; }
-.date-full { color: var(--text-secondary); font-size: 11px; }
-
-.search-box, .notif-box, .theme-btn {
-    width: 40px;
-    height: 40px;
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    position: relative;
-    transition: var(--transition);
-}
-
-.search-box:hover, .notif-box:hover, .theme-btn:hover {
-    background-color: var(--bg-surface);
-}
-
-.notif-badge {
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    background-color: #e74c3c;
-    color: white;
-    font-size: 10px;
-    font-weight: 700;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--bg-primary);
-}
-
-.theme-toggle {
-    display: flex;
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    padding: 2px;
-    border-radius: var(--radius-md);
-}
-
-.theme-btn {
-    border: none;
-    width: 34px;
-    height: 34px;
-}
-
-.theme-btn.active {
-    background-color: var(--bg-surface);
-    color: var(--accent-color);
-}
-
-/* Profile Section */
-.profile-section {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    padding: 6px 14px;
-    border-radius: var(--radius-md);
-    position: relative;
-}
-
-.profile-img {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.profile-info h4 {
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.profile-info span {
-    font-size: 11px;
-    color: var(--text-secondary);
-}
-
-.logout-btn {
-    background: none;
-    border: none;
-    color: #e74c3c;
-    font-size: 12px;
-    cursor: pointer;
-    margin-left: 8px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px;
-    opacity: 0.7;
-    transition: var(--transition);
-}
-
-.logout-btn:hover { opacity: 1; }
-
-/* ==========================================================================
-   4. TIER SUMMARY STATS (Upgraded: colorful stat cards)
-   ========================================================================== */
-.tier-summary {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 32px;
-}
-
-.tier-pill {
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 18px 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
-}
-
-.tier-pill::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--pill-color, transparent);
-    opacity: 0.06;
-    pointer-events: none;
-}
-
-.tier-pill:hover {
-    transform: translateY(-3px);
-    border-color: var(--pill-color, var(--border-color));
-    box-shadow: 0 10px 24px rgba(0,0,0,0.18);
-}
-
-.tier-pill h3 {
-    font-size: 22px;
-    font-weight: 700;
-}
-
-.tier-pill p {
-    font-size: 11px;
-    color: var(--text-secondary);
-    margin-top: 2px;
-}
-
-.m-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-}
-
-/* ==========================================================================
-   5. FEATURED ACHIEVEMENT CARD
-   ========================================================================== */
+ 
+/* ---------------------------------------------------------------------
+   Featured Achievement — built from .section-card, not a separate banner
+   --------------------------------------------------------------------- */
 .featured-achievement {
-    background: linear-gradient(135deg, #1f1a0d 0%, #2b2210 40%, #1a1a1e 100%);
-    border: 1px solid rgba(255, 215, 0, 0.35);
-    border-radius: var(--radius-lg);
-    padding: 28px 32px;
-    margin-bottom: 32px;
     display: flex;
     align-items: center;
     gap: 24px;
-    position: relative;
-    overflow: hidden;
 }
-
-body.light-theme .featured-achievement {
-    background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 40%, #ffffff 100%);
+ 
+.featured-medal {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffe680, var(--gold));
+    color: #7f6000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+    box-shadow: 0 6px 18px rgba(241, 196, 15, 0.3);
 }
-
-.featured-achievement::after {
-    content: '';
-    position: absolute;
-    top: -40%;
-    right: -10%;
-    width: 260px;
-    height: 260px;
-    background: radial-gradient(circle, rgba(255,215,0,0.18) 0%, transparent 70%);
-    pointer-events: none;
-}
-
+ 
 .featured-label {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 8px;
+    color: var(--color-green);
+    margin-bottom: 6px;
 }
-
-.featured-medal {
-    width: 84px;
-    height: 84px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #ffe066, #f1c40f);
-    color: #7f6000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 34px;
-    flex-shrink: 0;
-    box-shadow: 0 6px 20px rgba(241,196,15,0.35);
-    animation: featuredPulse 2.4s ease-in-out infinite;
-}
-
-@keyframes featuredPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-
+ 
 .featured-info h2 {
-    font-size: 22px;
+    font-size: 20px;
     margin-bottom: 4px;
 }
-
+ 
 .featured-info p {
     font-size: 13px;
     color: var(--text-secondary);
     margin-bottom: 10px;
 }
-
+ 
 .featured-meta {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     font-size: 12px;
     flex-wrap: wrap;
 }
-
+ 
 .featured-xp {
-    background: rgba(46, 204, 113, 0.15);
-    color: var(--accent-color);
+    background: rgba(46, 204, 113, 0.12);
+    color: var(--color-green);
     font-weight: 700;
     padding: 4px 10px;
     border-radius: 20px;
 }
-
+ 
 .featured-date {
-    color: var(--text-muted);
+    color: var(--text-secondary);
 }
-
-/* ==========================================================================
-   6. FILTERS & SEARCH
-   ========================================================================== */
+ 
+.featured-progress {
+    flex: 1;
+    min-width: 160px;
+}
+ 
+.featured-progress .progress-bar-container {
+    margin-top: 8px;
+}
+ 
+.featured-progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 6px;
+}
+ 
+/* ---------------------------------------------------------------------
+   Toolbar (filter chips + search) — layout glue only, reuses .chip /
+   .search-box / .search-input from Dashboard.css untouched
+   --------------------------------------------------------------------- */
 .achievement-toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    margin-bottom: 24px;
     flex-wrap: wrap;
 }
-
-.filter-group {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.filter-chip {
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.filter-chip:hover {
-    color: var(--text-primary);
-    border-color: var(--accent-color);
-}
-
-.filter-chip.active {
-    background-color: var(--accent-color);
-    color: #fff;
-    border-color: var(--accent-color);
-}
-
-.achievement-search {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 8px 14px;
-    min-width: 220px;
-}
-
-.achievement-search i {
-    color: var(--text-muted);
-}
-
-.achievement-search input {
-    background: none;
-    border: none;
-    outline: none;
-    color: var(--text-primary);
-    font-size: 13px;
-    width: 100%;
-}
-
-.achievement-search input::placeholder {
-    color: var(--text-muted);
-}
-
-/* ==========================================================================
-   7. ACHIEVEMENTS SYSTEM (CARDS & PROGRESS)
-   ========================================================================== */
-.section-card {
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 32px;
-}
-
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-}
-
-.section-title {
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.link-green {
-    color: var(--accent-color);
-    font-size: 13px;
-    font-weight: 600;
-    background: rgba(46, 204, 113, 0.1);
-    padding: 4px 10px;
-    border-radius: 20px;
-}
-
-/* Category groups */
+ 
+/* ---------------------------------------------------------------------
+   Category grouping inside the section-card
+   --------------------------------------------------------------------- */
 .category-group {
-    margin-bottom: 32px;
+    margin-bottom: 28px;
 }
-
+ 
 .category-group:last-child {
     margin-bottom: 0;
 }
-
+ 
 .category-heading {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 }
-
-/* Responsive Grid Matrix */
+ 
+/* ---------------------------------------------------------------------
+   Badge grid + cards — same footprint as Dashboard's habit/stat cards
+   --------------------------------------------------------------------- */
 .badge-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 20px;
 }
-
-/* Cards Base */
+ 
 .badge-card {
-    background-color: var(--bg-surface);
+    background-color: var(--bg-sidebar);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 28px 20px 22px;
+    border-radius: 14px;
+    padding: 24px 18px 18px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, border-color 0.25s ease;
     overflow: hidden;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, border-color 0.25s ease;
 }
-
+ 
 .badge-card:hover:not(.locked) {
-    transform: translateY(-6px) scale(1.04);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3);
 }
-
-.badge-card.tier-gold:hover:not(.locked) {
-    border-color: rgba(255, 215, 0, 0.5);
-    box-shadow: 0 12px 30px rgba(255, 215, 0, 0.25);
-}
-
-.badge-card.tier-silver:hover:not(.locked) {
-    border-color: rgba(192, 192, 192, 0.5);
-    box-shadow: 0 12px 30px rgba(192, 192, 192, 0.2);
-}
-
-.badge-card.tier-bronze:hover:not(.locked) {
-    border-color: rgba(205, 127, 50, 0.5);
-    box-shadow: 0 12px 30px rgba(205, 127, 50, 0.22);
-}
-
+ 
+.badge-card.tier-gold:hover:not(.locked) { border-color: rgba(241, 196, 15, 0.5); }
+.badge-card.tier-silver:hover:not(.locked) { border-color: rgba(192, 192, 192, 0.5); }
+.badge-card.tier-bronze:hover:not(.locked) { border-color: rgba(205, 127, 50, 0.5); }
+ 
 .badge-card:hover:not(.locked) .badge-medal {
-    transform: rotate(-8deg) scale(1.08);
+    transform: rotate(-6deg) scale(1.06);
 }
-
-/* Ribbon */
+ 
 .badge-ribbon {
     position: absolute;
-    top: 14px;
+    top: 13px;
     right: -30px;
     transform: rotate(40deg);
-    background: var(--accent-color);
+    background: var(--color-green);
     color: #fff;
     font-size: 9px;
     font-weight: 800;
     letter-spacing: 0.05em;
     padding: 3px 34px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
-
-.badge-ribbon.legendary { background: linear-gradient(135deg, #a55eea, #8854d0); }
-.badge-ribbon.epic { background: linear-gradient(135deg, #f1c40f, #e67e22); }
-.badge-ribbon.rare { background: linear-gradient(135deg, #3498db, #2980b9); }
-.badge-ribbon.new { background: linear-gradient(135deg, #2ecc71, #27ae60); }
-
-/* Medals Styling */
+.badge-ribbon.legendary { background: linear-gradient(135deg, var(--color-purple), #6e3ba0); }
+.badge-ribbon.epic { background: linear-gradient(135deg, var(--gold), var(--color-orange)); }
+.badge-ribbon.rare { background: linear-gradient(135deg, var(--color-blue), #2980b9); }
+.badge-ribbon.new { background: linear-gradient(135deg, var(--color-green), #27ae60); }
+ 
 .badge-medal {
-    width: 64px;
-    height: 64px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 26px;
-    margin-bottom: 14px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    font-size: 24px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease;
 }
-
-.badge-medal.gold { background: linear-gradient(135deg, #ffe680, var(--gold)); color: #7f6000; box-shadow: 0 4px 16px rgba(255,215,0,0.35); }
-.badge-medal.silver { background: linear-gradient(135deg, #eef1f4, var(--silver)); color: #475569; box-shadow: 0 4px 16px rgba(192,192,192,0.3); }
-.badge-medal.bronze { background: linear-gradient(135deg, #e6a45f, var(--bronze)); color: #4a2c0d; box-shadow: 0 4px 16px rgba(205,127,50,0.35); }
-.badge-medal.diamond { background: linear-gradient(135deg, #c9f0ff, #7fd8ff); color: #044b6b; box-shadow: 0 4px 16px rgba(80,200,255,0.35); }
-
+.badge-medal.gold { background: linear-gradient(135deg, #ffe680, var(--gold)); color: #7f6000; }
+.badge-medal.silver { background: linear-gradient(135deg, #eef1f4, var(--silver)); color: #475569; }
+.badge-medal.bronze { background: linear-gradient(135deg, #e6a45f, var(--bronze)); color: #4a2c0d; }
+.badge-medal.diamond { background: linear-gradient(135deg, #c9f0ff, var(--diamond)); color: #044b6b; }
+ 
 .rarity-label {
     display: inline-flex;
     align-items: center;
@@ -715,73 +225,57 @@ body.light-theme .featured-achievement {
     border-radius: 20px;
     margin-bottom: 8px;
 }
-
-.rarity-label.gold { background: rgba(255,215,0,0.15); color: var(--gold); }
-.rarity-label.silver { background: rgba(192,192,192,0.15); color: var(--silver); }
-.rarity-label.bronze { background: rgba(205,127,50,0.18); color: var(--bronze); }
-.rarity-label.diamond { background: rgba(80,200,255,0.15); color: #7fd8ff; }
-
+.rarity-label.gold { background: rgba(241, 196, 15, 0.15); color: var(--gold); }
+.rarity-label.silver { background: rgba(192, 192, 192, 0.15); color: var(--silver); }
+.rarity-label.bronze { background: rgba(205, 127, 50, 0.18); color: var(--bronze); }
+.rarity-label.diamond { background: rgba(127, 216, 255, 0.15); color: var(--diamond); }
+ 
 .badge-card h5 {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     margin-bottom: 4px;
 }
-
+ 
 .badge-card .badge-desc {
-    font-size: 12px;
+    font-size: 11.5px;
     color: var(--text-secondary);
     line-height: 1.4;
     margin-bottom: 10px;
 }
-
+ 
 .badge-xp {
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 700;
-    color: var(--accent-color);
+    color: var(--color-green);
     background: rgba(46, 204, 113, 0.1);
     padding: 3px 10px;
     border-radius: 20px;
     margin-bottom: 10px;
 }
-
+ 
 .badge-unlock-date {
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: 11px;
-    color: var(--text-muted);
+    font-size: 10.5px;
+    color: var(--text-secondary);
     margin-top: auto;
 }
-
-.badge-unlock-date i {
-    color: var(--accent-color);
-}
-
-/* Locked States */
-.badge-card.locked {
-    background-color: rgba(26, 26, 30, 0.55);
-    cursor: default;
-}
-
-.badge-card.locked .locked-blur {
-    filter: blur(3px);
-    opacity: 0.55;
-    user-select: none;
-}
-
+.badge-unlock-date i { color: var(--color-green); }
+ 
+/* Locked state */
+.badge-card.locked { cursor: default; }
+.badge-card.locked .locked-blur { filter: blur(3px); opacity: 0.5; user-select: none; }
 .badge-card.locked::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.35);
+    background: rgba(0, 0, 0, 0.4);
     z-index: 1;
     pointer-events: none;
 }
-
-body.light-theme .badge-card.locked::before {
-    background: rgba(255,255,255,0.45);
-}
-
+body[data-theme="light"] .badge-card.locked::before { background: rgba(255, 255, 255, 0.5); }
+ 
 .locked-overlay {
     position: absolute;
     inset: 0;
@@ -793,189 +287,103 @@ body.light-theme .badge-card.locked::before {
     gap: 6px;
     padding: 16px;
 }
-
-.locked-overlay i {
-    font-size: 20px;
-    color: var(--text-muted);
-}
-
-.locked-overlay .locked-hint {
-    font-size: 11px;
-    color: var(--text-secondary);
-    font-weight: 600;
-}
-
-.locked-overlay .locked-req {
-    font-size: 10px;
-    color: var(--text-muted);
-}
-
+.locked-overlay i { font-size: 18px; color: var(--text-secondary); }
+.locked-overlay .locked-hint { font-size: 11px; color: var(--text-primary); font-weight: 600; }
+.locked-overlay .locked-req { font-size: 10px; color: var(--text-secondary); }
+ 
 .badge-medal.locked-medal {
-    background: var(--bg-secondary);
-    color: var(--text-muted);
+    background: var(--bg-card);
+    color: var(--text-secondary);
     border: 2px dashed var(--border-color);
     box-shadow: none;
 }
-
-/* In-progress cards keep content visible but muted */
-.badge-card.in-progress::before {
-    display: none;
-}
-
-.badge-card.in-progress .locked-overlay {
-    display: none;
-}
-
-.badge-card.in-progress .locked-blur {
-    filter: none;
-    opacity: 1;
-}
-
-/* ==========================================================================
-   8. PROGRESS COMPONENTS (bars + ring)
-   ========================================================================== */
-.progress-bar-container {
-    height: 7px;
-    width: 100%;
-    background-color: var(--bg-secondary);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: auto;
-    margin-bottom: 6px;
-}
-
-.progress-bar-fill {
-    height: 100%;
-    border-radius: 10px;
-    width: 0%;
-    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.progress-bar-fill.green {
-    background: linear-gradient(90deg, var(--accent-hover), var(--accent-color));
-}
-
-.progress-caption {
-    font-size: 10px;
-    color: var(--text-secondary);
-    font-weight: 600;
-}
-
-/* Circular progress ring */
+ 
+/* In-progress cards stay fully visible */
+.badge-card.in-progress::before { display: none; }
+.badge-card.in-progress .locked-overlay { display: none; }
+.badge-card.in-progress .locked-blur { filter: none; opacity: 1; }
+ 
+/* Circular progress ring on in-progress badges (distinct from Dashboard's stat ring) */
 .progress-ring-wrap {
     position: relative;
-    width: 64px;
-    height: 64px;
-    margin-bottom: 14px;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 12px;
 }
-
-.progress-ring-wrap svg {
-    transform: rotate(-90deg);
-    width: 64px;
-    height: 64px;
-}
-
-.progress-ring-track {
-    fill: none;
-    stroke: var(--bg-secondary);
-    stroke-width: 6;
-}
-
+.progress-ring-wrap svg { transform: rotate(-90deg); width: 60px; height: 60px; }
+.progress-ring-track { fill: none; stroke: var(--bg-card); stroke-width: 6; }
 .progress-ring-fill {
     fill: none;
-    stroke: var(--accent-color);
+    stroke: var(--color-green);
     stroke-width: 6;
     stroke-linecap: round;
-    stroke-dasharray: 163.36;
-    stroke-dashoffset: 163.36;
     transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .progress-ring-percent {
     position: absolute;
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
-    color: var(--text-primary);
 }
-
-/* ==========================================================================
-   9. MOTIVATIONAL BANNER
-   ========================================================================== */
+.progress-caption {
+    font-size: 10px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+ 
+/* ---------------------------------------------------------------------
+   Motivation banner
+   --------------------------------------------------------------------- */
 .motivation-banner {
-    margin-top: 28px;
-    background: linear-gradient(135deg, rgba(46, 204, 113, 0.12), rgba(46, 204, 113, 0.03));
-    border: 1px solid rgba(46, 204, 113, 0.25);
-    border-radius: var(--radius-lg);
-    padding: 18px 24px;
+    background: rgba(46, 204, 113, 0.08);
+    border: 1px solid rgba(46, 204, 113, 0.2);
+    border-radius: 16px;
+    padding: 16px 22px;
     display: flex;
     align-items: center;
     gap: 12px;
-    font-size: 14px;
-    color: var(--text-primary);
+    font-size: 13.5px;
 }
-
-.motivation-banner i {
-    color: var(--accent-color);
-    font-size: 18px;
-}
-
-.motivation-banner strong {
-    color: var(--accent-color);
-}
-
-/* ==========================================================================
-   10. ACHIEVEMENT UNLOCK TOAST / CONFETTI
-   ========================================================================== */
+.motivation-banner i { color: var(--color-green); font-size: 17px; }
+.motivation-banner strong { color: var(--color-green); }
+ 
+/* ---------------------------------------------------------------------
+   Unlock toast + confetti
+   --------------------------------------------------------------------- */
 .unlock-toast {
     position: fixed;
     top: 24px;
     right: 24px;
     z-index: 1000;
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-card);
     border: 1px solid var(--gold);
-    border-radius: var(--radius-lg);
-    padding: 16px 22px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+    border-radius: 16px;
+    padding: 18px 22px;
+    min-width: 240px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
     transform: translateX(120%);
     opacity: 0;
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
 }
-
-.unlock-toast.show {
-    transform: translateX(0);
-    opacity: 1;
-}
-
-.unlock-toast .toast-icon {
-    font-size: 28px;
-}
-
+.unlock-toast.show { transform: translateX(0); opacity: 1; }
+ 
+.unlock-toast-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.unlock-toast .toast-icon { font-size: 26px; }
 .unlock-toast h6 {
-    font-size: 11px;
+    font-size: 10.5px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--gold);
     margin-bottom: 2px;
 }
-
-.unlock-toast p {
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.unlock-toast span {
-    font-size: 12px;
-    color: var(--accent-color);
-    font-weight: 600;
-}
-
+.unlock-toast p { font-size: 14px; font-weight: 700; }
+.unlock-toast .toast-xp-line { font-size: 11.5px; color: var(--text-secondary); margin-bottom: 6px; }
+.unlock-toast .toast-xp-line b { color: var(--color-green); }
+.unlock-toast .toast-level-line { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--text-secondary); margin-top: 6px; }
+ 
 .confetti-piece {
     position: fixed;
     top: -10px;
@@ -984,67 +392,15 @@ body.light-theme .badge-card.locked::before {
     pointer-events: none;
     animation: confettiFall linear forwards;
 }
-
 @keyframes confettiFall {
-    to {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-    }
+    to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
 }
-
-/* ==========================================================================
-   11. RESPONSIVE MEDIA QUERIES & MOBILE DRIVEN WRAPS
-   ========================================================================== */
-.menu-toggle {
-    display: none;
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 110;
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-sm);
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    cursor: pointer;
-}
-
-@media (max-width: 1024px) {
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .header-actions {
-        width: 100%;
-        flex-wrap: wrap;
-    }
-    .featured-achievement {
-        flex-direction: column;
-        text-align: center;
-    }
-}
-
+ 
+/* ---------------------------------------------------------------------
+   Responsive
+   --------------------------------------------------------------------- */
 @media (max-width: 768px) {
-    .menu-toggle { display: flex; align-items: center; justify-content: center; }
-    
-    #sidebar {
-        transform: translateX(-100%);
-    }
-    
-    /* Toggle this class active via your JavaScript */
-    #sidebar.open {
-        transform: translateX(0);
-    }
-    
-    main {
-        margin-left: 0;
-        width: 100%;
-        padding: 80px 20px 20px 20px; /* Space out top elements for menu button toggle layout */
-    }
-
-    .achievement-toolbar {
-        flex-direction: column;
-        align-items: stretch;
-    }
+    .achievement-toolbar { flex-direction: column; align-items: stretch; }
+    .featured-achievement { flex-direction: column; text-align: center; }
 }
+ 
